@@ -1,16 +1,7 @@
 posts:
   2023:
-    March:
-      - title: "This is an example"
-        ref: "/2022/March/mytechexample"
-        category: "technology"
-      - title: "Another Blog"
-        ref: "/2022/feb/mytechexample"
-        category: "news"
     April:
-      - title: "This is an example"
-        ref: "mytechexample"
-        category: "technology"
-      - title: "Another Blog"
-        ref: "/2022/feb/1"
-        category: "news"
+      - title: "Announcement: First Post!"
+        ref: "posts/2023/April/first.md"
+        category: "announcement"
+        new: true
