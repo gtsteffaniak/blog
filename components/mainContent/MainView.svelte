@@ -1,16 +1,43 @@
 <script>
-  //import { marked } from 'marked';
   export let theme = "light";
   export let isMobile = false;
+  import { marked } from 'marked'
+  import { onMount } from 'svelte'
+  let post = 'loading post...'
+  onMount(() => {
+    fetchPost()
+  });
+  let hash = 'posts/2023/April/test'
+  export let title = "Title of blog"
+  async function fetchPost() {
+    let url = window.location.href.split("#")
+    if (url.length > 1){
+      hash = url[1]
+    }
+    var response = await fetch(hash);
+    let data = await response.text();
+    if ( !response.ok ) {
+      console.log(data)
+      data = 'Unable to find post! **so sad**'
+    }
+    post = marked.parse(data);
+    return
+  }
+
 </script>
+
+<svelte:window on:hashchange={fetchPost} />
 
 <wrapper>
   {#if isMobile}
-    <div class="card" class:light-mode={theme === "light"} />
+    <div class="card" class:light-mode={theme === "light"} >
+      {@html post}
+    </div>
   {:else}
     <div class="card" class:light-mode={theme === "light"}>
-      <div class="card-header">Title here of blog</div>
+      <div class="card-header">{title}</div>
       <div class="ui divider" />
+      {@html post}
     </div>
   {/if}
 </wrapper>
@@ -19,6 +46,7 @@
   wrapper {
     height: 100%;
     width: 100%;
+    overflow:hidden;
     margin-left: 1em;
   }
   @media (max-device-width: 768px) {
@@ -49,7 +77,9 @@
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     padding: 10px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    object-fit: cover;
     z-index: 100;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
@@ -65,13 +95,14 @@
   }
 
   .light-mode {
+    color: black;
     background: transparent;
     background-color: rgb(193, 193, 193);
   }
   @supports (backdrop-filter: none) {
     .light-mode {
       background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(200%);
+      backdrop-filter: blur(10px) brightness(300%);
     }
   }
   .card-header {

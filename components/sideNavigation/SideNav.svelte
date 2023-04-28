@@ -2,6 +2,8 @@
   import yaml from "js-yaml";
   import { onMount } from "svelte";
   import jQuery from 'jquery';
+  export let currentlySelected = 'none'
+  export let title = "Title of blog"
   onMount(() => {
     window.jQuery = jQuery;
   })
@@ -12,7 +14,6 @@
     var response = await fetch("public/static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
-    console.log(posts);
     return posts;
   }
 
@@ -61,25 +62,29 @@
       {:then blog_schema}
         <div class="ui inverted fluid accordion">
           {#each Object.entries(blog_schema) as [year,months]}
-            <div class="active title">
+            <div class:blackText={theme === "light"} class="active title">
               <i class="dropdown icon"></i>
               {year}
             </div>
             <div style="padding-left:1em" class="active content">
               {#each Object.entries(months) as [month,posts] }
-                <div class="active title">
+                <div class:blackText={theme === "light"} class="active title">
                   <i class="dropdown icon"></i>
                   {month}
                 </div>
                 <div style="padding-left:1em"  class="active content">
                   {#each posts as post }
-                    <div style="padding-left:1em"  class="active content">
-                      <i class="dropdown icon"></i>
-                      <a href={'#' + post.ref} >{post.title}</a>
+                    <div style="padding-left:1em"  class="content">
+                      <i class="caret right icon"></i>
+                      <a
+                        href={'#' + post.ref}
+                        on:click={() => { title = post.title }}
+                        class:bolded="{currentlySelected === post.ref}"
+                        on:click={() => { currentlySelected = post.ref }}
+                      >{post.title}</a>
                     </div>
                   {/each}
                 </div>
-
               {/each}
             </div>
           {/each}
@@ -137,6 +142,7 @@
   }
   @supports (backdrop-filter: none) {
     .card {
+      color:black;
       background-color: rgba(59, 59, 59, 0.5);
       backdrop-filter: blur(10px) brightness(50%);
     }
@@ -149,10 +155,13 @@
   @supports (backdrop-filter: none) {
     .light-mode {
       background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(200%);
+      backdrop-filter: blur(10px) brightness(300%);
     }
   }
 
+  .blackText {
+    color:black !important;
+  }
   @keyframes shake {
     0% {
       transform: translate(1px, 0px);
@@ -187,6 +196,9 @@
     100% {
       transform: translate(1px, 0px);
     }
+  }
+  .bolded {
+    font-weight:bolder !important;
   }
   .card-header {
     vertical-align: middle;

@@ -1,7 +1,8 @@
 <script>
   let theme = "dark";
   let showLogin = false;
-  let isMobile = window.innerWidth < 750;
+  let isMobile = window.innerWidth < 850;
+  let title = "Title of blog"
   let storedTheme = localStorage.getItem("theme");
   if (storedTheme == "light") {
     theme = "light";
@@ -18,8 +19,8 @@
 <Sidebar bind:open bind:theme />
 <Navbar bind:sidebar={open} bind:showLogin bind:theme />
 <main class:light-mode={theme === "light"}>
-  <SideNav bind:isMobile bind:theme />
-  <MainView bind:isMobile bind:theme />
+  <SideNav bind:title bind:isMobile bind:theme />
+  <MainView bind:title bind:isMobile bind:theme />
 </main>
 
 <style>
