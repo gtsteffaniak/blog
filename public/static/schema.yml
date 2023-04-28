@@ -3,5 +3,5 @@ posts:
     April:
       - title: "Announcement: First Post!"
         ref: "posts/2023/April/first.md"
-        category: "announcement"
-        new: true
+        tags: ["announcement"]
+        pinned: true
