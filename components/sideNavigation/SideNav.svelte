@@ -9,7 +9,7 @@
   export let isMobile = false
   let blog_schema = fetchSchema();
   async function fetchSchema() {
-    var response = await fetch("/static/schema.yml");
+    var response = await fetch("static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     console.log(posts);
