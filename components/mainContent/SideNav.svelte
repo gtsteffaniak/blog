@@ -1,87 +1,106 @@
 <script>
   import yaml from "js-yaml";
   import { onMount } from "svelte";
-  import jQuery from 'jquery';
-  export let currentlySelected = 'none'
-  export let title = "Title of blog"
+  import jQuery from "jquery";
+  export let currentlySelected = "";
+  let isLoading = true;
+  export let title = "Title of blog";
+  export let hash = "";
   onMount(() => {
     window.jQuery = jQuery;
-  })
-  let url = window.location.href.split("#")[0];
-  export let isMobile = false
-  let blog_schema = fetchSchema();
+    setTimeout(function () {
+      window.jQuery(".ui.accordion").accordion();
+    }, 1000); // after 1s TRY AGAIN
+  });
+  export let isMobile = false;
+  export let blog_schema
+  let promise = fetchSchema();
   async function fetchSchema() {
     var response = await fetch("public/static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
+    if (response.ok) {
+      let url = window.location.href.split("#")
+      if (url.length > 1){
+        hash = url[1]
+        console.log("hash 2",hash)
+      }
+      getLatestPinned(posts);
+    }
+    isLoading = false;
+    blog_schema = posts
     return posts;
   }
-
-  import Searchbox from "./Searchbox.svelte";
+  async function getLatestPinned(posts) {
+    for (const [year, months] of Object.entries(posts)) {
+      for (const [month, posts] of Object.entries(months)) {
+        posts.forEach((e) => {
+          if (hash == "") {
+            if ("pinned" in e) {
+              console.log("set pin")
+              setCurrentlyActive(e);
+              return;
+            }
+          } else {
+            if (hash == e.ref) {
+              console.log("current activew pin")
+              setCurrentlyActive(e);
+            }
+            return;
+          }
+        });
+      }
+    }
+  }
+  async function setCurrentlyActive(e) {
+    currentlySelected = e.ref;
+    location.hash = currentlySelected;
+    title = e.title;
+  }
   export let theme = "light";
 </script>
 
-<wrapper>
+<svelte:head>
+  <script
+    src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"
+  ></script>
+</svelte:head>
 
-  {#if isMobile}
-  <div class="card" class:light-mode={theme === "light"}>
+<wrapper class:hide={isMobile === true} >
+  <div class="card" class:expandWidth={isMobile === true} class:light-mode={theme === "light"}>
     <div class="card-header">Posts</div>
     <div class="ui divider" />
     <div class="schemas_listing">
-      {#await blog_schema}
-        <p>...Loading</p>
-      {:then blog_schema}
-      <div class="ui fluid search selection dropdown">
-        <input type="hidden" name="post">
-        <i class="dropdown icon"></i>
-        <div class="default text">Select Post</div>
-        <div class="menu">
-          {#each Object.entries(blog_schema) as [year,months]}
-              {#each Object.entries(months) as [month,posts] }
-                  {#each posts as post }
-                    <div class="item" data-value={post.ref}><i class="tg flag"></i>{post.title}</div>
-                  {/each}
-              {/each}
-          {/each}
-        </div>
-      </div>
-      {:catch error}
-        error
-      {/await}
-    </div>
-  </div>
-  {:else}
-  <div class="card" class:light-mode={theme === "light"}>
-    <div class="card-header">Posts</div>
-    <div class="ui divider" />
-    <div class="schemas_listing">
-      <Searchbox />
       <h4>Choose from below:</h4>
-      {#await blog_schema}
+      {#await promise}
         <p>...Loading</p>
-      {:then blog_schema}
+      {:then data}
         <div class="ui inverted fluid accordion">
-          {#each Object.entries(blog_schema) as [year,months]}
+          {#each Object.entries(data) as [year, months]}
             <div class:blackText={theme === "light"} class="active title">
-              <i class="dropdown icon"></i>
+              <i class="dropdown icon" />
               {year}
             </div>
             <div style="padding-left:1em" class="active content">
-              {#each Object.entries(months) as [month,posts] }
+              {#each Object.entries(months) as [month, posts]}
                 <div class:blackText={theme === "light"} class="active title">
-                  <i class="dropdown icon"></i>
+                  <i class="dropdown icon" />
                   {month}
                 </div>
-                <div style="padding-left:1em"  class="active content">
-                  {#each posts as post }
-                    <div style="padding-left:1em"  class="content">
-                      <i class="caret right icon"></i>
+                <div style="padding-left:1em" class="active content">
+                  {#each posts as post}
+                    <div style="padding-left:1em" class="content">
+                      <i class="caret right icon" />
                       <a
-                        href={'#' + post.ref}
-                        on:click={() => { title = post.title }}
-                        class:bolded="{currentlySelected === post.ref}"
-                        on:click={() => { currentlySelected = post.ref }}
-                      >{post.title}</a>
+                        href={"#" + post.ref}
+                        on:click={() => {
+                          title = post.title;
+                        }}
+                        class:bolded={currentlySelected == post.ref}
+                        on:click={() => {
+                          currentlySelected = post.ref;
+                        }}>{post.title}</a
+                      >
                     </div>
                   {/each}
                 </div>
@@ -94,19 +113,19 @@
       {/await}
     </div>
   </div>
-  {/if}
 </wrapper>
 
 <style>
   wrapper {
+    display:flex;
     height: 100%;
-    width: 30em;
+    width: fit-content;
   }
   @media (max-device-width: 768px) {
-      wrapper {
-        height: 10em;
-        width: 100%;
-        margin-bottom: 1em;
+    wrapper {
+      height: 10em;
+      width: 100%;
+      margin-bottom: 1em;
     }
   }
   @keyframes slideIn {
@@ -133,22 +152,25 @@
     margin-bottom: 0;
     padding: 10px;
     overflow: hidden;
-    z-index: 100;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
     padding: 20px;
     height: 100%;
     color: white;
+    width: max-content
   }
   @supports (backdrop-filter: none) {
     .card {
-      color:black;
       background-color: rgba(59, 59, 59, 0.5);
       backdrop-filter: blur(10px) brightness(50%);
     }
   }
-
+  .hide {
+    display:none;
+    width: 0;
+  }
   .light-mode {
+    color: black !important;
     background: transparent;
     background-color: rgb(193, 193, 193);
   }
@@ -160,7 +182,7 @@
   }
 
   .blackText {
-    color:black !important;
+    color: black !important;
   }
   @keyframes shake {
     0% {
@@ -198,7 +220,7 @@
     }
   }
   .bolded {
-    font-weight:bolder !important;
+    font-weight: bolder !important;
   }
   .card-header {
     vertical-align: middle;

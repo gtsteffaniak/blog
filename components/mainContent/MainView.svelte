@@ -1,36 +1,43 @@
 <script>
   export let theme = "light";
   export let isMobile = false;
+  import Selector from './Selector.svelte'
+  export let blog_schema
   import { marked } from 'marked'
   import { onMount } from 'svelte'
   let post = 'loading post...'
   onMount(() => {
-    fetchPost()
+    fetchPost(hash)
   });
-  let hash = 'posts/2023/April/test'
+  export let hash = ''
   export let title = "Title of blog"
-  async function fetchPost() {
-    let url = window.location.href.split("#")
-    if (url.length > 1){
-      hash = url[1]
-    }
+  async function fetchPost(hash) {
     var response = await fetch(hash);
     let data = await response.text();
     if ( !response.ok ) {
-      console.log(data)
       data = 'Unable to find post! **so sad**'
     }
     post = marked.parse(data);
     return
   }
+  window.addEventListener(
+    "hashchange",
+    () => {
+      let url = window.location.href.split("#")
+      if (url.length > 1){
+        hash = url[1]
+        console.log("hash to",hash)
+      }
+      fetchPost(hash)
+    },
+    false
+  );
 
 </script>
-
-<svelte:window on:hashchange={fetchPost} />
-
 <wrapper>
   {#if isMobile}
     <div class="card" class:light-mode={theme === "light"} >
+      <Selector bind:blog_schema bind:hash bind:title ></Selector>
       {@html post}
     </div>
   {:else}
@@ -80,7 +87,6 @@
     overflow-x: hidden;
     overflow-y: scroll;
     object-fit: cover;
-    z-index: 100;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
     padding: 20px;

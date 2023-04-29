@@ -41,7 +41,6 @@
     padding: 0;
     overflow: hidden;
     height: 57px;
-    z-index: 100;
   }
   @supports (backdrop-filter: none) {
     nav {
