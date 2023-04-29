@@ -1,43 +1,43 @@
 <script>
   export let theme = "light";
   export let isMobile = false;
-  import Selector from './Selector.svelte'
-  export let blog_schema
-  import { marked } from 'marked'
-  import { onMount } from 'svelte'
-  let post = 'loading post...'
+  import Selector from "./Selector.svelte";
+  export let blog_schema;
+  export let currentlySelected;
+  import { marked } from "marked";
+  import { onMount } from "svelte";
+  let post = "loading post...";
   onMount(() => {
-    fetchPost(hash)
+    fetchPost(hash);
   });
-  export let hash = ''
-  export let title = "Title of blog"
+  export let hash = "";
+  export let title = "Title of blog";
   async function fetchPost(hash) {
-    var response = await fetch(hash);
+    var response = await fetch(hash.substring(1));
     let data = await response.text();
-    if ( !response.ok ) {
-      data = 'Unable to find post! **so sad**'
+    if (!response.ok) {
+      data = "Unable to find post! **so sad**";
     }
     post = marked.parse(data);
-    return
+    return;
   }
   window.addEventListener(
     "hashchange",
     () => {
-      let url = window.location.href.split("#")
-      if (url.length > 1){
-        hash = url[1]
-        console.log("hash to",hash)
+      let url = window.location.href.split("#");
+      if (url.length > 1) {
+        hash = url[1];
       }
       fetchPost(hash)
     },
     false
   );
-
 </script>
-<wrapper>
+
+<wrapper class:mobile={isMobile === true}>
   {#if isMobile}
-    <div class="card" class:light-mode={theme === "light"} >
-      <Selector bind:blog_schema bind:hash bind:title ></Selector>
+    <div class="card" class:light-mode={theme === "light"}>
+      <Selector bind:blog_schema bind:currentlySelected bind:hash />
       {@html post}
     </div>
   {:else}
@@ -53,14 +53,13 @@
   wrapper {
     height: 100%;
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
     margin-left: 1em;
   }
-  @media (max-device-width: 768px) {
-    wrapper {
-      margin-left: 0;
-    }
+  .mobile {
+    margin-left: 0 !important;
   }
+
   @keyframes slideIn {
     0% {
       transform: translateY(10%);

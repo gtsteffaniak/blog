@@ -1,19 +1,24 @@
 <script>
   let theme = "dark";
-  let blog_schema
+  let blog_schema;
+  let currentlySelected;
   let showLogin = false;
   let isMobile = window.innerWidth < 850;
   window.addEventListener("resize", reportWindowSize);
-  let title = "Title of blog"
+  let title = "Title of blog";
   let storedTheme = localStorage.getItem("theme");
-  function reportWindowSize(){
+  function reportWindowSize() {
     isMobile = window.innerWidth < 850;
   }
   if (storedTheme == "light") {
     theme = "light";
     window.document.body.classList.toggle("light-mode");
   }
-  let hash = ''
+  let hash = "";
+  let url = window.location.href.split("#");
+  if (url.length > 1) {
+    hash = url[1];
+  }
   let open = false;
   import Navbar from "./topNavbar/Navbar.svelte";
   import Sidebar from "./slideOutControls/Sidebar.svelte";
@@ -24,8 +29,22 @@
 <Sidebar bind:open bind:theme />
 <Navbar bind:sidebar={open} bind:showLogin bind:theme />
 <main class:light-mode={theme === "light"}>
-  <SideNav bind:blog_schema bind:hash bind:title bind:isMobile bind:theme />
-  <MainView bind:blog_schema bind:hash bind:title bind:isMobile bind:theme />
+  <SideNav
+    bind:currentlySelected
+    bind:blog_schema
+    bind:hash
+    bind:title
+    bind:isMobile
+    bind:theme
+  />
+  <MainView
+    bind:currentlySelected
+    bind:blog_schema
+    bind:hash
+    bind:title
+    bind:isMobile
+    bind:theme
+  />
 </main>
 
 <style>

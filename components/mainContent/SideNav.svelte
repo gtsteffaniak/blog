@@ -10,25 +10,24 @@
     window.jQuery = jQuery;
     setTimeout(function () {
       window.jQuery(".ui.accordion").accordion();
-    }, 1000); // after 1s TRY AGAIN
+    }, 500); // after 1s TRY AGAIN
   });
   export let isMobile = false;
-  export let blog_schema
+  export let blog_schema;
   let promise = fetchSchema();
   async function fetchSchema() {
     var response = await fetch("public/static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     if (response.ok) {
-      let url = window.location.href.split("#")
-      if (url.length > 1){
-        hash = url[1]
-        console.log("hash 2",hash)
+      let url = window.location.href.split("#");
+      if (url.length > 1) {
+        hash = url[1];
       }
       getLatestPinned(posts);
     }
     isLoading = false;
-    blog_schema = posts
+    blog_schema = posts;
     return posts;
   }
   async function getLatestPinned(posts) {
@@ -37,13 +36,11 @@
         posts.forEach((e) => {
           if (hash == "") {
             if ("pinned" in e) {
-              console.log("set pin")
               setCurrentlyActive(e);
               return;
             }
           } else {
             if (hash == e.ref) {
-              console.log("current activew pin")
               setCurrentlyActive(e);
             }
             return;
@@ -66,8 +63,12 @@
   ></script>
 </svelte:head>
 
-<wrapper class:hide={isMobile === true} >
-  <div class="card" class:expandWidth={isMobile === true} class:light-mode={theme === "light"}>
+<wrapper class:hide={isMobile === true}>
+  <div
+    class="card"
+    class:expandWidth={isMobile === true}
+    class:light-mode={theme === "light"}
+  >
     <div class="card-header">Posts</div>
     <div class="ui divider" />
     <div class="schemas_listing">
@@ -117,7 +118,7 @@
 
 <style>
   wrapper {
-    display:flex;
+    display: flex;
     height: 100%;
     width: fit-content;
   }
@@ -157,7 +158,7 @@
     padding: 20px;
     height: 100%;
     color: white;
-    width: max-content
+    width: max-content;
   }
   @supports (backdrop-filter: none) {
     .card {
@@ -166,7 +167,7 @@
     }
   }
   .hide {
-    display:none;
+    display: none;
     width: 0;
   }
   .light-mode {
