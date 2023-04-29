@@ -1,3 +1,4 @@
+Posted Date: Sat Apr 28th 2023
 # Bash vs Powershell
 
 I will start out by saying, I am a fan of powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:
