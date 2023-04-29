@@ -2,6 +2,6 @@ posts:
   2023:
     April:
       - title: "Announcement: First Post!"
-        ref: "posts/2023/April/first.md"
+        ref: "/posts/2023/April/first.md"
         tags: ["announcement"]
         pinned: true
