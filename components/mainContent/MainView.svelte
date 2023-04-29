@@ -70,6 +70,7 @@
   }
 
   .card {
+    font-size: medium;
     animation: 0.3s ease-in 0s 1 slideIn;
     transition: all 0.5s ease-in-out;
     justify-content: center;
