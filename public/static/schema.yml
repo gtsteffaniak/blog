@@ -2,15 +2,19 @@ posts:
   2023:
     March:
       - title: "This is an example"
-        ref: "/2022/March/mytechexample"
+        ref: "posts/2022/March/mytechexample"
         category: "technology"
       - title: "Another Blog"
-        ref: "/2022/feb/mytechexample"
+        ref: "posts/2022/feb/mytechexample"
         category: "news"
+        pinned: true
     April:
       - title: "This is an example"
         ref: "mytechexample"
         category: "technology"
       - title: "Another Blog"
         ref: "/2022/feb/1"
+        category: "news"
+      - title: "fake post Blog"
+        ref: "/public/2023/April/first.md"
         category: "news"

@@ -1,36 +1,43 @@
 <script>
   export let theme = "light";
   export let isMobile = false;
-  import { marked } from 'marked'
-  import { onMount } from 'svelte'
-  let post = 'loading post...'
+  import Selector from "./Selector.svelte";
+  export let blog_schema;
+  export let currentlySelected;
+  import { marked } from "marked";
+  import { onMount } from "svelte";
+  let post = "loading post...";
   onMount(() => {
-    fetchPost()
+    fetchPost(hash);
   });
-  let hash = 'posts/2023/April/test'
-  export let title = "Title of blog"
-  async function fetchPost() {
-    let url = window.location.href.split("#")
-    if (url.length > 1){
-      hash = url[1]
-    }
-    var response = await fetch(hash);
+  export let hash = "";
+  export let title = "Title of blog";
+  async function fetchPost(hash) {
+    var response = await fetch(hash.substring(1));
     let data = await response.text();
-    if ( !response.ok ) {
-      console.log(data)
-      data = 'Unable to find post! **so sad**'
+    if (!response.ok) {
+      data = "Unable to find post! **so sad**";
     }
     post = marked.parse(data);
-    return
+    return;
   }
-
+  window.addEventListener(
+    "hashchange",
+    () => {
+      let url = window.location.href.split("#");
+      if (url.length > 1) {
+        hash = url[1];
+      }
+      fetchPost(hash)
+    },
+    false
+  );
 </script>
 
-<svelte:window on:hashchange={fetchPost} />
-
-<wrapper>
+<wrapper class:mobile={isMobile === true}>
   {#if isMobile}
-    <div class="card" class:light-mode={theme === "light"} >
+    <div class="card" class:light-mode={theme === "light"}>
+      <Selector bind:blog_schema bind:currentlySelected bind:hash />
       {@html post}
     </div>
   {:else}
@@ -46,14 +53,13 @@
   wrapper {
     height: 100%;
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
     margin-left: 1em;
   }
-  @media (max-device-width: 768px) {
-    wrapper {
-      margin-left: 0;
-    }
+  .mobile {
+    margin-left: 0 !important;
   }
+
   @keyframes slideIn {
     0% {
       transform: translateY(10%);
@@ -80,7 +86,6 @@
     overflow-x: hidden;
     overflow-y: scroll;
     object-fit: cover;
-    z-index: 100;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
     padding: 20px;
