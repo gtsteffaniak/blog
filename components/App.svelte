@@ -12,7 +12,6 @@
   }
   if (storedTheme == "light") {
     theme = "light";
-    window.document.body.classList.toggle("light-mode");
   }
   let hash = "";
   let url = window.location.href.split("#");

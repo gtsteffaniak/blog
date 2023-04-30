@@ -1,20 +1,10 @@
 posts:
   2023:
-    March:
-      - title: "This is an example"
-        ref: "posts/2022/March/mytechexample"
-        category: "technology"
-      - title: "Another Blog"
-        ref: "posts/2022/feb/mytechexample"
-        category: "news"
-        pinned: true
     April:
-      - title: "This is an example"
-        ref: "mytechexample"
-        category: "technology"
-      - title: "Another Blog"
-        ref: "/2022/feb/1"
-        category: "news"
-      - title: "fake post Blog"
-        ref: "/public/2023/April/first.md"
-        category: "news"
+      - title: "Bash vs. Powershell"
+        ref: "/posts/2023/April/bash-vs-powershell.md"
+        tags: ["technology"]
+      - title: "It's My First Post!"
+        ref: "/posts/2023/April/first-post.md"
+        tags: ["announcement"]
+        pinned: true
