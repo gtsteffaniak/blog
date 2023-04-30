@@ -103,12 +103,12 @@
   .light-mode {
     color: black;
     background: transparent;
-    background-color: rgb(193, 193, 193);
+    background-color: rgb(220, 220, 220);
   }
   @supports (backdrop-filter: none) {
     .light-mode {
-      background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(300%);
+      background-color: rgba(250 , 250, 250, 0.8);
+      backdrop-filter: blur(10px) brightness(100%);
     }
   }
   .card-header {
