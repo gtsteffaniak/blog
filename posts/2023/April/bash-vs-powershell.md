@@ -1,5 +1,5 @@
 Posted Date: Sat Apr 28th 2023
-# Bash vs Powershell
+# Part 1: Bash vs Powershell
 
 I will start out by saying, I am a fan of powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:
 
@@ -50,6 +50,7 @@ My laptop:
 
 I will test 15 different operations on each and judge each on the attributes listed above. Here are the 15 operations I have chosen to compare:
 
+Part 1
 1) Make directory
 2) Download file
 3) write file size to console
@@ -57,14 +58,14 @@ I will test 15 different operations on each and judge each on the attributes lis
 5) find a string in any file
 6) count file sizes of a type
 7) Get process by name and append to new file
+Part 2:
 8) find a file
 9) list file content
 10) find a string in a file
-11)
-12) Make directory
-13) find a file
-14) list file content
-15) find a string in a file
+11) Make directory
+12) find a file
+13) list file content
+14) find a string in a file
 
 Ready? Go!
 

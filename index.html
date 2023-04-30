@@ -9,9 +9,9 @@
   <meta name="keywords" content="">
   <meta name="author" content="Graham Steffaniak">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
   <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css">
   <link rel="stylesheet" type="text/css" href="public/build/bundle.css">
   <script defer src='public/build/bundle.js'></script>
@@ -29,14 +29,19 @@
     color: rgb(90, 90, 213)
   }
 
+  pre {
+    display: grid;
+    width: 100%
+  }
+
   code {
-    background-color: #9e9e9e92;
-    border-radius: 3px;
+    background-color: darkgray;
     font-family: courier, monospace;
     padding: 0 3px;
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
+    overflow-x: auto;
   }
 </style>
 
