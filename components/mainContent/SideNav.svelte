@@ -63,21 +63,18 @@
   ></script>
 </svelte:head>
 
-<wrapper class:hide={isMobile === true}>
-  <div
-    class="card"
-    class:expandWidth={isMobile === true}
-    class:light-mode={theme === "light"}
-  >
-    <div class="card-header">Posts</div>
-    <div class="ui divider" />
-    <div class="schemas_listing">
-      <h4>Choose from below:</h4>
-      {#await promise}
-        <p>...Loading</p>
-      {:then data}
+{#if blog_schema != null}
+  <wrapper class:hide={isMobile === true}>
+    <div
+      class="card"
+      class:expandWidth={isMobile === true}
+      class:light-mode={theme === "light"}
+    >
+      <div class="card-header">Posts</div>
+      <div class="ui divider" />
+      <div class="schemas_listing">
         <div class="ui inverted fluid accordion">
-          {#each Object.entries(data) as [year, months]}
+          {#each Object.entries(blog_schema) as [year, months]}
             <div class:blackText={theme === "light"} class="active title">
               <i class="dropdown icon" />
               {year}
@@ -109,25 +106,18 @@
             </div>
           {/each}
         </div>
-      {:catch error}
-        error
-      {/await}
+      </div>
     </div>
-  </div>
-</wrapper>
+  </wrapper>
+{/if}
 
 <style>
   wrapper {
     display: flex;
     height: 100%;
     width: fit-content;
-  }
-  @media (max-device-width: 768px) {
-    wrapper {
-      height: 10em;
-      width: 100%;
-      margin-bottom: 1em;
-    }
+    animation: 0.3s ease-in 0s 1 slideIn;
+    transition: all 0.5s ease-in-out;
   }
   @keyframes slideIn {
     0% {
@@ -139,8 +129,6 @@
   }
 
   .card {
-    animation: 0.3s ease-in 0s 1 slideIn;
-    transition: all 0.5s ease-in-out;
     justify-content: center;
     margin: 0;
     background: transparent;
@@ -177,7 +165,7 @@
   }
   @supports (backdrop-filter: none) {
     .light-mode {
-      background-color: rgba(250 , 250, 250, 0.8);
+      background-color: rgba(250, 250, 250, 0.8);
       backdrop-filter: blur(10px) brightness(100%);
     }
   }
