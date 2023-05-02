@@ -7,4 +7,4 @@ by Graham Steffaniak
 1. not much here...
   - maybe soon
 
-
+https://gportal.link/blog
