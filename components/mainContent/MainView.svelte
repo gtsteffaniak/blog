@@ -5,30 +5,69 @@
   export let blog_schema;
   export let currentlySelected;
   import { marked } from "marked";
-  import hljs from 'highlight.js';
+  import hljs from "highlight.js";
   import { onMount } from "svelte";
-  let post = "loading post...";
+  let post = "";
+  import jQuery from "jquery";
   onMount(() => {
+    window.jQuery = jQuery;
     marked.setOptions({
-      highlight: function(code) {
+      highlight: function (code) {
         return hljs.highlightAuto(code).value;
       },
-    })
-
-    window.marked = marked
+    });
+    window.marked = marked;
     fetchPost(hash);
   });
 
   export let hash = "";
   export let title = "Title of blog";
   async function fetchPost(hash) {
+    post = "";
     var response = await fetch(hash.substring(1));
     let data = await response.text();
     if (!response.ok) {
       data = "Unable to find post! **so sad**";
     }
     post = marked.parse(data);
+    updateCSS();
     return;
+  }
+  function updateCSS() {
+    setTimeout(function () {
+      document.querySelectorAll("img").forEach((img) => {
+        img.setAttribute("loading","lazy")
+        img.setAttribute("alt","dominant color placeholder")
+      });
+      document.querySelectorAll("pre code").forEach((code) => {
+        code.style.padding = "0.5em";
+      });
+      let inverted = "inverted";
+      if (theme == "light") {
+        inverted = "violet";
+        // Set the background color of all code elements to black
+        document.querySelectorAll("code").forEach((code) => {
+          code.style.backgroundColor = "lightgray";
+        });
+      } else {
+        // Set the background color of all code elements to black
+        document.querySelectorAll("code").forEach((code) => {
+          code.style.backgroundColor = "black";
+        });
+      }
+      let table = document.querySelectorAll("table");
+      for (var i = 0; i < table.length; ++i) {
+        table[i].classList.add(
+          "ui",
+          "sortable",
+          "selectable",
+          inverted,
+          "collapsing",
+          "celled",
+          "table"
+        );
+      }
+    }, 100);
   }
   window.addEventListener(
     "hashchange",
@@ -45,23 +84,79 @@
 
 <wrapper class:mobile={isMobile === true} class:light-mode={theme === "light"}>
   {#if isMobile}
-    <div class="card" >
+    <div class="card">
       <Selector bind:blog_schema bind:currentlySelected bind:hash />
       <div class="ui divider" />
-      {@html post}
+      {#if post == ""}
+      <div class:inverted={theme != 'light'} class="ui fluid placeholder">
+        <div class="image header">
+          <div class="line" />
+          <div class="line" />
+        </div>
+        <div class="paragraph">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+      {:else}
+        {@html post}
+      {/if}
     </div>
   {:else}
     <div class="card">
       <div class="card-header">{title}</div>
       <div class="ui divider" />
-      {@html post}
+      {#if post == ""}
+        <div class:inverted={theme != 'light'} class="ui fluid placeholder">
+          <div class="image header">
+            <div class="line" />
+            <div class="line" />
+          </div>
+          <div class="paragraph">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="paragraph">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="paragraph">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+      {:else}
+        {@html post}
+      {/if}
     </div>
   {/if}
 </wrapper>
 
 <style>
   wrapper {
-    display:flex;
+    display: flex;
     justify-content: center;
     height: 100%;
     width: 100%;
