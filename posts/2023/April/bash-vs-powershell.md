@@ -1,5 +1,6 @@
 Posted Date: Sat Apr 28th 2023
-# Part 1: Bash vs Powershell
+
+## Part 1
 
 I will start out by saying, I am a fan of powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:
 
@@ -21,53 +22,48 @@ each attribute will get a score on a scale from `1-3`
 2 = average or no difference
 3 = superior
 ```
-![](https://i.imgur.com/cp4fWip.png)
 
 But first a bit of background for context.
 
-## History of bash
+## History
 
-The Bourne Again SHell -- or bash was created in 1988 and ulitmately released as a product by the 90's. The current version of bash is 5.1 (2020), which is not much different syntactically to the version 3.0 released in 2004 around the time powershell was being developed.
+#### bash
 
-## History of powershell
+The Bourne Again SHell -- or bash was created in 1988 and ultimately released as a product by the 90's. The current version of bash is 5.1 (2020), which is not much different syntactically to the version 3.0 released in 2004 around the time powershell was being developed.
+
+#### powershell
 
 Driven by a lack of a cohesive scripting language needed for modern automation on windows, Microsoft created Powershell in 2005. Eventually, Powershell v1.0 was out of beta in 2006. Shortly after, powershell v2.0 was released in in 2008.
 
-
-## Test rig
-
-My laptop:
-* 10th gen intel Windows 10 with bash using WSL
-
 ## Before we begin
 
+My laptop:
+
+- 10th gen intel Windows 10 with bash using WSL
+
 ### Powershel prompt style:
+
 ![](https://i.imgur.com/nfFDE4Y.png)
+
 ### bash prompt style:
+
 ![](https://i.imgur.com/6FKxQbV.png)
 
-## Testing commands and functions
+### Testing commands and functions
 
 I will test 15 different operations on each and judge each on the attributes listed above. Here are the 15 operations I have chosen to compare:
 
-Part 1
-1) Make directory
-2) Download file
-3) write file size to console
-4) find file and unzip it
-5) find a string in any file
-6) count file sizes of a type
-7) Get process by name and append to new file
-Part 2:
-8) find a file
-9) list file content
-10) find a string in a file
-11) Make directory
-12) find a file
-13) list file content
-14) find a string in a file
+Part 1:
 
-Ready? Go!
+1. Make directory
+1. Download file
+1. write file size to console
+1. find file and unzip it
+1. find a string in any file
+1. count file sizes of a type
+1. Get process by name and append to new file
+
+## Ready? Go!
 
 ### Test 1 : Make Directory
 
@@ -76,26 +72,26 @@ I will create test directories for each shell
 #### Bash
 
 Command : `mkdir -p bash/test{1..15}`
+
 ![](https://i.imgur.com/m0cj7UU.png)
 ![](https://i.imgur.com/HYfy5rM.png)
-TotalMilliseconds : 33
-
-Result:
 
 #### Powershell
 
 Command `new-item -itemType directory $(1..15 | foreach{"powershell/test$_"})`
+
 ![](https://i.imgur.com/nawxV6q.png)
-TotalMilliseconds : 16.7
 
 #### Score
 
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 3 | 1 |
-| Syntax     | 1 | 3 |
-| Consistency| 2 | 2 |
-| Total      | 6 | 6 |
+| Stat           | Powershell | Bash  |
+| -------------- | ---------- | ----- |
+| Performance    | 2          | 2     |
+| Syntax         | 1          | 3     |
+| Consistency    | 2          | 2     |
+| execution time | 16.7 ms    | 11 ms |
+| ------------   | ---------- | ----  |
+| Total          | 6          | 6     |
 
 **Winner: Tie**
 
@@ -105,26 +101,24 @@ TotalMilliseconds : 16.7
 
 Command : `wget https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip`
 
-TotalSeconds : 1.724
-
 #### Powershell
 
 Command : `Invoke-WebRequest https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip -outfile master.zip`
 
-TotalSeconds : 19.364
-
 #### Score
 
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 1 | 3 |
-| Syntax     | 1 | 3 |
-| Consistency| 2 | 2 |
-| Total      | 4 | 8 |
+| Stat           | Powershell | Bash     |
+| -------------- | ---------- | -------- |
+| Performance    | 1          | 3        |
+| Syntax         | 1          | 3        |
+| Consistency    | 2          | 2        |
+| execution time | 1.724 s    | 19.364 s |
+| ------------   | ---------- | ----     |
+| Total          | 4          | 8        |
 
 **Winner: Bash**
 
-###  Test 3 : Write file size to console
+### Test 3 : Write file size to console
 
 simple example where you want to list a file's size in console
 
@@ -132,20 +126,17 @@ simple example where you want to list a file's size in console
 
 Command : `echo "Size : $(ls -lh master.zip|awk '{print $5}')"`
 
-TotalMilliseconds : 15
-
 #### Powershell
 
 Command : `write-host "Size: $((Get-Item master.zip).length/1KB)K"`
 
-TotalMilliseconds : 12.3
-
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 2 | 2 |
-| Syntax     | 3 | 2 |
-| Consistency| 3 | 3 |
-| Total      | 8 | 7 |
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 2          | 2    |
+| Syntax       | 3          | 2    |
+| Consistency  | 3          | 3    |
+| ------------ | ---------- | ---- |
+| Total        | 8          | 7    |
 
 **Winner : Powershell**
 
@@ -155,22 +146,19 @@ TotalMilliseconds : 12.3
 
 Command: `find $(pwd) -name *.zip -exec unzip -q {} \;`
 
-TotalSeconds : 41
-
 #### Powershell
 
 Command: `gci -name *.zip|foreach{Expand-Archive $_}`
 
-TotalSeconds : 31.7
-
-
 #### Score
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 1 | 3 |
-| Syntax     | 3 | 1 |
-| Consistency| 3 | 1 |
-| Total      | 7 | 5 |
+
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 1          | 3    |
+| Syntax       | 3          | 1    |
+| Consistency  | 3          | 1    |
+| ------------ | ---------- | ---- |
+| Total        | 7          | 5    |
 
 **Winner : Powershell**
 
@@ -180,21 +168,19 @@ TotalSeconds : 31.7
 
 Command : `grep -R testing`
 
-TotalMilliseconds: 10
-
 #### Powershell
 
 Command : `gci -Recurse | Select-String "testing" -List`
-TotalMilliseconds : 70
 
 #### Score
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 2 | 3 |
-| Syntax     | 2 | 3 |
-| Consistency| 3 | 2 |
-| Total      | 7 | 8 |
 
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 2          | 3    |
+| Syntax       | 2          | 3    |
+| Consistency  | 3          | 2    |
+| ------------ | ---------- | ---- |
+| Total        | 7          | 8    |
 
 **Winner : Bash**
 
@@ -203,6 +189,7 @@ TotalMilliseconds : 70
 #### Bash
 
 Script:
+
 ```
 #!/bin/bash
 files=$(find . -name *.go)
@@ -217,11 +204,13 @@ echo "Total goLang file size:"
 echo "Bytes: $size"
 echo "Kilobytes: $(($size / 1000))"
 ```
+
 TotalMilliseconds : 1879
 
 #### Powershell
 
 Script:
+
 ```
 $files=(gci -recurse *.go)
 $size = ($files | Measure-Object -Sum Length).Sum
@@ -231,15 +220,18 @@ write-host "Bytes: $size"
 write-host "Kilobytes: $($size/1KB)"
 
 ```
+
 TotalMilliseconds : 80.0936
 
 #### Score
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 3 | 1 |
-| Syntax     | 3 | 1 |
-| Consistency| 3 | 2 |
-| Total      | 9 | 4 |
+
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 3          | 1    |
+| Syntax       | 3          | 1    |
+| Consistency  | 3          | 2    |
+| ------------ | ---------- | ---- |
+| Total        | 9          | 4    |
 
 **Winner: Powershell**
 
@@ -248,26 +240,36 @@ TotalMilliseconds : 80.0936
 #### Bash
 
 Command : `pgrep -f bash > out-file.txt && wc out-file.txt`
-TotalMilliseconds : 45
 
 #### Powershell
 
 Command : `(get-process -name system).id|out-file out-file.txt; gci out-file.txt|Measure-Object –Line`
-TotalMilliseconds : 14
 
 #### Score
-| Stat       |Powershell|Bash|
-|------------|----------|----|
-| Performance| 3 | 2 |
-| Syntax     | 2 | 2 |
-| Consistency| 2 | 2 |
-| Total      | 7 | 6 |
+
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 3          | 2    |
+| Syntax       | 2          | 2    |
+| Consistency  | 2          | 2    |
+| ------------ | ---------- | ---- |
+| Total        | 7          | 6    |
 
 **Winner: Powershell**
 
-## Odds and ends
+## Summary
 
-Powershell Feature spotlight:
+Aggregate total for first 7 tests:
+
+| Stat         | Powershell | Bash |
+| ------------ | ---------- | ---- |
+| Performance  | 15         | 15   |
+| Syntax       | 16         | 15   |
+| Consistency  | 18         | 14   |
+| ------------ | ---------- | ---- |
+| Total        | 49         | 44   |
+
+## Powershell Feature spotlight:
 
 ### Advanced help pages.
 
@@ -303,14 +305,15 @@ Get-NetTCPConnection              Function  NetTCPIP                  ...
 Test-NetConnection                Function  NetTCPIP                  ...
 ```
 
-### Consitency
-* All of microsofts cmdlets have a `Verb-Noun` structure.
+### Consistency
 
-* All of microsofts cmdlets can easily be researched on google because no other program calls their commands "cmdlets". So, you will always get something on powershell if you use that word.
+- All of microsoft's cmdlets have a `Verb-Noun` structure.
 
-* All functions are object-oriented, making scripting and automation work the same way on every command. No more guessing which column a specific value you are looking for is on like in bash. No more trimming whitespace and tab characters.
+- All of microsoft's cmdlets can easily be researched on google because no other program calls their commands "cmdlets". So, you will always get something on powershell if you use that word.
 
-* All loops automatically use the `$_` notation for the object being looped over. So for example, every loop can reference `$_.name` to get the name property if it exists.
+- All functions are object-oriented, making scripting and automation work the same way on every command. No more guessing which column a specific value you are looking for is on like in bash. No more trimming whitespace and tab characters.
+
+- All loops automatically use the `$_` notation for the object being looped over. So for example, every loop can reference `$_.name` to get the name property if it exists.
 
 ## Bottom Line
 
