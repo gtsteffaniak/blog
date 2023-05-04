@@ -5,12 +5,12 @@
   export let currentlySelected = "";
   let isLoading = true;
   export let title = "Title of blog";
-  export let hash = "";
+  export let post = "";
   onMount(() => {
     window.jQuery = jQuery;
     setTimeout(function () {
       window.jQuery(".ui.accordion").accordion();
-    }, 500); // after 1s TRY AGAIN
+    }, 1000); // after 1s TRY AGAIN
   });
   export let isMobile = false;
   export let blog_schema;
@@ -20,9 +20,9 @@
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     if (response.ok) {
-      let url = window.location.href.split("#");
+      let url = window.location.href.split("#")[0];
       if (url.length > 1) {
-        hash = url[1];
+        post = url.split("/?")[1];
       }
       getLatestPinned(posts);
     }
@@ -30,17 +30,26 @@
     blog_schema = posts;
     return posts;
   }
+  function updateLocation(path) {
+    const nextURL = path;
+    const nextTitle = "My new page title";
+    const nextState = { additionalInformation: "Updated the URL with JS" };
+    // This will create a new entry in the browser's history, without reloading
+    window.history.pushState(nextState, nextTitle, nextURL);
+    // This will replace the current entry in the browser's history, without reloading
+    window.history.replaceState(nextState, nextTitle, nextURL);
+  }
   async function getLatestPinned(posts) {
     for (const [year, months] of Object.entries(posts)) {
       for (const [month, posts] of Object.entries(months)) {
         posts.forEach((e) => {
-          if (hash == "") {
+          if (post == "") {
             if ("pinned" in e) {
               setCurrentlyActive(e);
               return;
             }
           } else {
-            if (hash == e.ref) {
+            if (post == e.ref) {
               setCurrentlyActive(e);
             }
             return;
@@ -49,10 +58,17 @@
       }
     }
   }
-  async function setCurrentlyActive(e) {
-    currentlySelected = e.ref;
-    location.hash = currentlySelected;
-    title = e.title;
+  async function setCurrentlyActive(p) {
+    title = p.title;
+    post = p.ref;
+    const nextURL = "/?" + p.ref;
+    const nextTitle = "My new page title";
+    const nextState = { additionalInformation: "Updated the URL with JS" };
+    // This will create a new entry in the browser's history, without reloading
+    window.history.pushState(nextState, nextTitle, nextURL);
+    // This will replace the current entry in the browser's history, without reloading
+    window.history.replaceState(nextState, nextTitle, nextURL);
+    currentlySelected = p.ref;
   }
   export let theme = "light";
 </script>
@@ -66,6 +82,7 @@
 {#if blog_schema != null}
   <wrapper class:hide={isMobile === true}>
     <div
+      id="sideNav"
       class="card"
       class:expandWidth={isMobile === true}
       class:light-mode={theme === "light"}
@@ -89,15 +106,12 @@
                   {#each posts as post}
                     <div style="padding-left:1em" class="content">
                       <i class="caret right icon" />
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-missing-attribute -->
                       <a
-                        href={"#" + post.ref}
-                        on:click={() => {
-                          title = post.title;
-                        }}
+                        on:click={() => setCurrentlyActive(post)}
                         class:bolded={currentlySelected == post.ref}
-                        on:click={() => {
-                          currentlySelected = post.ref;
-                        }}>{post.title}</a
+                        >{post.title}</a
                       >
                     </div>
                   {/each}
@@ -147,6 +161,7 @@
     height: 100%;
     color: white;
     width: max-content;
+    overflow-y: scroll;
   }
   @supports (backdrop-filter: none) {
     .card {
@@ -169,7 +184,9 @@
       backdrop-filter: blur(10px) brightness(100%);
     }
   }
-
+  a {
+    cursor: pointer;
+  }
   .blackText {
     color: black !important;
   }

@@ -2,9 +2,9 @@ posts:
   2023:
     April:
       - title: "Bash vs. Powershell"
-        ref: "/posts/2023/April/bash-vs-powershell.md"
+        ref: "posts/2023/April/bash-vs-powershell.md"
         tags: ["technology"]
       - title: "It's My First Post!"
-        ref: "/posts/2023/April/first-post.md"
+        ref: "posts/2023/April/first-post.md"
         tags: ["announcement"]
         pinned: true

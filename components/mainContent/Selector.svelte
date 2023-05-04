@@ -2,19 +2,18 @@
   import { onMount } from "svelte";
   import jQuery from "jquery";
   export let blog_schema;
-  export let isLoading = true;
   export let currentlySelected = "";
-  export let hash = "";
+  export let post = "";
   onMount(() => {
     window.jQuery = jQuery;
     setTimeout(function () {
-      let selector = window.jQuery(".ui.selection.dropdown")
+      let selector = window.jQuery(".ui.selection.dropdown");
       selector.dropdown({
         clearable: true,
       });
-      selector.on('click', function() {
-        window.location.hash = selector.dropdown('get value');
-      })
+      selector.on("click", function () {
+        window.location.path = "?path=" + selector.dropdown("get value");
+      });
     }, 500); // after 1s TRY AGAIN
   });
 </script>
@@ -29,14 +28,14 @@
     <div class="menu">
       {#each Object.entries(blog_schema) as [year, months]}
         {#each Object.entries(months) as [month, posts]}
-          {#each posts as post}
-            {#if post.ref == hash}
-              <div class="item active selected" data-value={post.ref}>
-                <i class="tg flag" />{post.title}
+          {#each posts as p}
+            {#if p.ref == post}
+              <div class="item active selected" data-value={p.ref}>
+                <i class="tg flag" />{p.title}
               </div>
             {:else}
-              <div class="item" data-value={post.ref}>
-                <i class="tg flag" />{post.title}
+              <div class="item" data-value={p.ref}>
+                <i class="tg flag" />{p.title}
               </div>
             {/if}
           {/each}
