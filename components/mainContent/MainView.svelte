@@ -41,13 +41,6 @@
 
   function updateCSS() {
     setTimeout(function () {
-      document.querySelectorAll("h2").forEach((h2) => {
-        const link = document.createElement("a");
-        link.setAttribute("href", "/?" + post + "#" + h2.id);
-        link.appendChild(h2.cloneNode(true));
-        h2.parentNode.replaceChild(link, h2);
-      });
-
       document.querySelectorAll("img").forEach((img) => {
         img.setAttribute("loading", "lazy");
         img.setAttribute("alt", "dominant color placeholder");
@@ -84,17 +77,7 @@
       }
     }, 100);
   }
-  window.addEventListener(
-    "popstate",
-    () => {
-      let url = window.location.href.split("#")[0];
-      if (url.length > 1) {
-        post = url.split("/?")[1];
-      }
-      fetchPost(post);
-    },
-    false
-  );
+
 </script>
 
 <wrapper class:mobile={isMobile === true} class:light-mode={theme === "light"}>
