@@ -4,7 +4,7 @@
   export let isLoading = true
 </script>
 
-<div class:hidden={isLoading} class:visible={!isLoading} class="card" class:style-theme={currentPost.theme == "space"}>
+<div class:hidden={isLoading} class="card" class:style-theme={currentPost.theme == "space"}>
   {#if currentPost.theme == "space"}
     <link
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
@@ -623,11 +623,7 @@
     opacity: 0;
     transition: visibility 0s 0.5s, opacity 0.5s ease-in-out;
   }
-  .visible {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s linear 0s, opacity 300ms;
-  }
+
   #title {
     color: #fff;
     text-align: center;
