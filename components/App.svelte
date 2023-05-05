@@ -13,10 +13,10 @@
   if (storedTheme == "light") {
     theme = "light";
   }
-  let hash = "";
-  let url = window.location.href.split("#");
+  let post = "";
+  let url = window.location.href.split("#")[0];
   if (url.length > 1) {
-    hash = url[1];
+    post = url.split("/?")[1];
   }
   let open = false;
   import Navbar from "./topNavbar/Navbar.svelte";
@@ -31,7 +31,7 @@
   <SideNav
     bind:currentlySelected
     bind:blog_schema
-    bind:hash
+    bind:post
     bind:title
     bind:isMobile
     bind:theme
@@ -39,7 +39,7 @@
   <MainView
     bind:currentlySelected
     bind:blog_schema
-    bind:hash
+    bind:post
     bind:title
     bind:isMobile
     bind:theme

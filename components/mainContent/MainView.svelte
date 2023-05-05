@@ -7,8 +7,10 @@
   import { marked } from "marked";
   import hljs from "highlight.js";
   import { onMount } from "svelte";
-  let post = "";
   import jQuery from "jquery";
+  let postOutput = "";
+  let currentPost = "";
+  export let post = "";
   onMount(() => {
     window.jQuery = jQuery;
     marked.setOptions({
@@ -17,34 +19,43 @@
       },
     });
     window.marked = marked;
-    fetchPost(hash);
+    fetchPost(post);
   });
-
-  export let hash = "";
+  $: post && fetchPost(post); // post change event listener
+  $: theme && updateCSS(); // post change event listener
   export let title = "Title of blog";
-  async function fetchPost(hash) {
-    post = "";
-    var response = await fetch(hash.substring(1));
+  async function fetchPost(post) {
+    if (post == "" || post == currentPost) {
+      return;
+    }
+    currentPost = post;
+    var response = await fetch(post);
     let data = await response.text();
     if (!response.ok) {
       data = "Unable to find post! **so sad**";
     }
-    post = marked.parse(data);
+    postOutput = marked.parse(data);
     updateCSS();
     return;
   }
+
   function updateCSS() {
     setTimeout(function () {
+      document.querySelectorAll("h2").forEach((h2) => {
+        const link = document.createElement("a");
+        link.setAttribute("href", "/?" + post + "#" + h2.id);
+        link.appendChild(h2.cloneNode(true));
+        h2.parentNode.replaceChild(link, h2);
+      });
+
       document.querySelectorAll("img").forEach((img) => {
-        img.setAttribute("loading","lazy")
-        img.setAttribute("alt","dominant color placeholder")
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("alt", "dominant color placeholder");
       });
       document.querySelectorAll("pre code").forEach((code) => {
         code.style.padding = "0.5em";
       });
-      let inverted = "inverted";
       if (theme == "light") {
-        inverted = "violet";
         // Set the background color of all code elements to black
         document.querySelectorAll("code").forEach((code) => {
           code.style.backgroundColor = "lightgray";
@@ -57,11 +68,15 @@
       }
       let table = document.querySelectorAll("table");
       for (var i = 0; i < table.length; ++i) {
+        if (theme == "light") {
+          table[i].classList.remove("inverted");
+        } else {
+          table[i].classList.add("inverted");
+        }
         table[i].classList.add(
           "ui",
           "sortable",
           "selectable",
-          inverted,
           "collapsing",
           "celled",
           "table"
@@ -70,13 +85,13 @@
     }, 100);
   }
   window.addEventListener(
-    "hashchange",
+    "popstate",
     () => {
-      let url = window.location.href.split("#");
+      let url = window.location.href.split("#")[0];
       if (url.length > 1) {
-        hash = url[1];
+        post = url.split("/?")[1];
       }
-      fetchPost(hash);
+      fetchPost(post);
     },
     false
   );
@@ -84,71 +99,71 @@
 
 <wrapper class:mobile={isMobile === true} class:light-mode={theme === "light"}>
   {#if isMobile}
-    <div class="card">
-      <Selector bind:blog_schema bind:currentlySelected bind:hash />
+    <div id="infoCard" class="card">
+      <Selector bind:blog_schema bind:currentlySelected bind:post />
       <div class="ui divider" />
-      {#if post == ""}
-      <div class:inverted={theme != 'light'} class="ui fluid placeholder">
-        <div class="image header">
-          <div class="line" />
-          <div class="line" />
+      {#if postOutput == ""}
+        <div class:inverted={theme != "light"} class="ui fluid placeholder">
+          <div class="image header">
+            <div class="line" />
+            <div class="line" />
+          </div>
+          <div class="paragraph">
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+          </div>
+          <div class="paragraph">
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+          </div>
+          <div class="paragraph">
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+          </div>
         </div>
-        <div class="paragraph">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-      </div>
       {:else}
-        {@html post}
+        {@html postOutput}
       {/if}
     </div>
   {:else}
     <div class="card">
       <div class="card-header">{title}</div>
       <div class="ui divider" />
-      {#if post == ""}
-        <div class:inverted={theme != 'light'} class="ui fluid placeholder">
+      {#if postOutput == ""}
+        <div class:inverted={theme != "light"} class="ui fluid placeholder">
           <div class="image header">
             <div class="line" />
             <div class="line" />
           </div>
           <div class="paragraph">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
           </div>
           <div class="paragraph">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
           </div>
           <div class="paragraph">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
+            <div class="line" />
           </div>
         </div>
       {:else}
-        {@html post}
+        {@html postOutput}
       {/if}
     </div>
   {/if}
