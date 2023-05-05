@@ -1,5 +1,9 @@
 posts:
   2023:
+    May:
+      - title: "Bash vs. Powershell"
+        ref: "posts/2023/May/may-the-4th.md"
+        tags: ["culture","entertainment"]
     April:
       - title: "Bash vs. Powershell"
         ref: "posts/2023/April/bash-vs-powershell.md"
