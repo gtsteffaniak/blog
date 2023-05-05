@@ -2,15 +2,18 @@
   export let theme = "light";
   export let isMobile = false;
   import Selector from "./Selector.svelte";
+  import { SyncLoader } from "svelte-loading-spinners";
   export let blog_schema;
-  export let currentlySelected;
   import { marked } from "marked";
   import hljs from "highlight.js";
   import { onMount } from "svelte";
+  export let isLoading = true;
+  import StyleCard from "./styleCard/space.svelte";
   import jQuery from "jquery";
   let postOutput = "";
-  let currentPost = "";
-  export let post = "";
+  export let currentPost = {};
+  currentPost.ref = "";
+  let prevRef = "";
   onMount(() => {
     window.jQuery = jQuery;
     marked.setOptions({
@@ -19,24 +22,27 @@
       },
     });
     window.marked = marked;
-    fetchPost(post);
+    fetchPost(currentPost.ref);
   });
-  $: post && fetchPost(post); // post change event listener
+  $: currentPost && fetchPost(currentPost.ref); // post change event listener
   $: theme && updateCSS(); // post change event listener
-  export let title = "Title of blog";
-  async function fetchPost(post) {
-    if (post == "" || post == currentPost) {
+  async function fetchPost(ref) {
+    if (ref == "" || ref == prevRef) {
       return;
     }
-    currentPost = post;
-    var response = await fetch(post);
+    postOutput = ""
+    isLoading = true;
+    prevRef = ref;
+    var response = await fetch(ref);
     let data = await response.text();
     if (!response.ok) {
       data = "Unable to find post! **so sad**";
     }
     postOutput = marked.parse(data);
     updateCSS();
-    return;
+    isLoading = false;
+    window.scrollTo(0, 0);
+    return false;
   }
 
   function updateCSS() {
@@ -79,82 +85,23 @@
   }
 </script>
 
-<wrapper class:mobile={isMobile === true} class:light-mode={theme === "light"}>
+<wrapper class:mobile={isMobile} class:light-mode={theme === "light"}>
+  <section class:hidden={!isLoading} class="preloader">
+    <SyncLoader size="6" color="#7d0e9e" unit="em" />
+  </section>
   {#if isMobile}
-    <div id="infoCard" class="card">
-      <Selector bind:blog_schema bind:currentlySelected bind:post />
-      <div class="ui divider" />
-      {#if postOutput == ""}
-        <div class:inverted={theme != "light"} class="ui fluid placeholder">
-          <div class="image header">
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-        </div>
-      {:else}
-        {@html postOutput}
-      {/if}
-    </div>
+    <Selector bind:blog_schema bind:currentPost />
   {:else}
-    <div class="card">
-      <div class="card-header">{title}</div>
-      <div class="ui divider" />
-      {#if postOutput == ""}
-        <div class:inverted={theme != "light"} class="ui fluid placeholder">
-          <div class="image header">
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-          <div class="paragraph">
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-            <div class="line" />
-          </div>
-        </div>
-      {:else}
-        {@html postOutput}
-      {/if}
-    </div>
+    <div class="card-header">{currentPost.title}</div>
+    <div stlye="margin-left:20px;margin-right:20px" class="ui divider" />
   {/if}
+  <StyleCard bind:isLoading bind:postOutput bind:currentPost />
 </wrapper>
 
 <style>
   wrapper {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -172,6 +119,7 @@
     background-color: rgba(59, 59, 59, 1);
     margin-bottom: 0;
     color: white;
+    align-items: center;
   }
   @supports (backdrop-filter: none) {
     wrapper {
@@ -191,19 +139,6 @@
       transform: translateX(0);
     }
   }
-
-  .card {
-    width: 1000px;
-    backdrop-filter: contrast(1.5);
-    font-size: medium;
-    padding: 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    object-fit: cover;
-    padding: 20px;
-    height: 100%;
-  }
-
   .light-mode {
     color: black;
     background: transparent;
@@ -215,15 +150,31 @@
       backdrop-filter: blur(10px) brightness(100%);
     }
   }
+  .divider {
+    width: 90%;
+    margin-top: 0;
+  }
   .card-header {
-    vertical-align: middle;
+    margin: 1em;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
     width: 100%;
     font-size: 1em;
     font-weight: 600;
+  }
+  .hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s ease-in-out;
+  }
+
+  .preloader {
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
   }
 </style>

@@ -1,66 +1,55 @@
 <script>
   import yaml from "js-yaml";
   import { onMount } from "svelte";
-  import jQuery from "jquery";
-  export let currentlySelected = "";
-  let isLoading = true;
-  export let title = "Title of blog";
-  export let post = "";
+  export let isLoading = true;
+  export let currentPost = {};
+  currentPost.ref = ""
   onMount(() => {
-    window.jQuery = jQuery;
-    setTimeout(function () {
-      window.jQuery(".ui.accordion").accordion();
-    }, 1000); // after 1s TRY AGAIN
+    fetchSchema();
   });
   export let isMobile = false;
+  import { SyncLoader } from "svelte-loading-spinners";
   export let blog_schema;
-  let promise = fetchSchema();
   async function fetchSchema() {
     var response = await fetch("public/static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     if (response.ok) {
-      let url = window.location.href.split("#")[0];
-      if (url.length > 1) {
-        post = url.split("/?")[1];
-      }
-      getLatestPinned(posts);
+      getCurrentPost(posts)
     }
     isLoading = false;
     blog_schema = posts;
-    return posts;
+    return;
   }
-  function updateLocation(path) {
-    const nextURL = path;
-    const nextTitle = "My new page title";
-    const nextState = { additionalInformation: "Updated the URL with JS" };
-    // This will create a new entry in the browser's history, without reloading
-    window.history.pushState(nextState, nextTitle, nextURL);
-    // This will replace the current entry in the browser's history, without reloading
-    window.history.replaceState(nextState, nextTitle, nextURL);
-  }
-  async function getLatestPinned(posts) {
-    for (const [year, months] of Object.entries(posts)) {
-      for (const [month, posts] of Object.entries(months)) {
-        posts.forEach((e) => {
-          if (post == "") {
-            if ("pinned" in e) {
-              setCurrentlyActive(e);
-              return;
+  function getCurrentPost(posts) {
+    let url = window.location.href.split("#")[0];
+    let path = ""
+    let notFound = true
+    let pinned = {}
+    if (url.length > 1) {
+      path = url.split("/?")[1]
+      for (const [year, months] of Object.entries(posts)) {
+        for (const [month, posts] of Object.entries(months)) {
+          posts.forEach((e) => {
+            if (notFound) {
+              if (e.ref == path) {
+                setCurrentlyActive(e)
+                notFound = false
+              }
+              if ("pinned" in e && pinned != null ){
+                pinned = e
+              }
             }
-          } else {
-            if (post == e.ref) {
-              setCurrentlyActive(e);
-            }
-            return;
-          }
-        });
+          })
+        }
       }
+    }
+    if (notFound){
+      setCurrentlyActive(pinned)
     }
   }
   async function setCurrentlyActive(p) {
-    title = p.title;
-    post = p.ref;
+    currentPost = p;
     const nextURL = "?" + p.ref;
     const nextTitle = "My new page title";
     const nextState = { additionalInformation: "Updated the URL with JS" };
@@ -68,7 +57,6 @@
     window.history.pushState(nextState, nextTitle, nextURL);
     // This will replace the current entry in the browser's history, without reloading
     window.history.replaceState(nextState, nextTitle, nextURL);
-    currentlySelected = p.ref;
   }
   export let theme = "light";
 </script>
@@ -79,17 +67,21 @@
   ></script>
 </svelte:head>
 
-{#if blog_schema != null}
-  <wrapper class:hide={isMobile === true}>
-    <div
-      id="sideNav"
-      class="card"
-      class:expandWidth={isMobile === true}
-      class:light-mode={theme === "light"}
-    >
-      <div class="card-header">Posts</div>
-      <div class="ui divider" />
-      <div class="schemas_listing">
+<wrapper class:hide={isMobile === true}>
+  <div
+    id="sideNav"
+    class="card"
+    class:expandWidth={isMobile === true}
+    class:light-mode={theme === "light"}
+  >
+    <div class="card-header">Posts</div>
+    <div class="ui divider" />
+    <div class="schemas_listing">
+      {#if blog_schema == null}
+        <section class="preloader">
+          <SyncLoader size="6" color="#7d0e9e" unit="em" />
+        </section>
+      {:else}
         <div class="ui inverted fluid accordion">
           {#each Object.entries(blog_schema) as [year, months]}
             <div class:blackText={theme === "light"} class="active title">
@@ -110,7 +102,7 @@
                       <!-- svelte-ignore a11y-missing-attribute -->
                       <a
                         on:click={() => setCurrentlyActive(post)}
-                        class:bolded={currentlySelected == post.ref}
+                        class:bolded={currentPost.ref == post.ref}
                         >{post.title}</a
                       >
                     </div>
@@ -120,13 +112,14 @@
             </div>
           {/each}
         </div>
-      </div>
+      {/if}
     </div>
-  </wrapper>
-{/if}
+  </div>
+</wrapper>
 
 <style>
-  wrapper {
+
+wrapper {
     display: flex;
     height: 100%;
     width: fit-content;
@@ -141,9 +134,11 @@
       transform: translateX(0);
     }
   }
-
+.card::-webkit-scrollbar {
+  display: none;
+}
   .card {
-    justify-content: center;
+    justify-content: flex-start;
     margin: 0;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
@@ -153,15 +148,19 @@
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
-    padding: 10px;
     overflow: hidden;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
-    padding: 20px;
     height: 100%;
     color: white;
     width: max-content;
+    min-width: 300px;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
   }
   @supports (backdrop-filter: none) {
     .card {
@@ -169,6 +168,18 @@
       backdrop-filter: blur(10px) brightness(50%);
     }
   }
+  .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    z-index: 1;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
   .hide {
     display: none;
     width: 0;
@@ -228,13 +239,13 @@
   .bolded {
     font-weight: bolder !important;
   }
+  .divider {
+    width: 90%;
+    margin-top: 0;
+  }
   .card-header {
-    vertical-align: middle;
+    margin:1em;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
     width: 100%;
     font-size: 1em;
     font-weight: 600;

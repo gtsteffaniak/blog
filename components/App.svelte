@@ -1,11 +1,11 @@
 <script>
   let theme = "dark";
   let blog_schema;
-  let currentlySelected;
+  let isLoading = true;
+  let currentPost = {};
   let showLogin = false;
   let isMobile = window.innerWidth < 850;
   window.addEventListener("resize", reportWindowSize);
-  let title = "Title of blog";
   let storedTheme = localStorage.getItem("theme");
   function reportWindowSize() {
     isMobile = window.innerWidth < 850;
@@ -13,11 +13,7 @@
   if (storedTheme == "light") {
     theme = "light";
   }
-  let post = "";
-  let url = window.location.href.split("#")[0];
-  if (url.length > 1) {
-    post = url.split("/?")[1];
-  }
+
   let open = false;
   import Navbar from "./topNavbar/Navbar.svelte";
   import Sidebar from "./slideOutControls/Sidebar.svelte";
@@ -29,18 +25,16 @@
 <Navbar bind:sidebar={open} bind:showLogin bind:theme />
 <main class:light-mode={theme === "light"}>
   <SideNav
-    bind:currentlySelected
+    bind:isLoading
     bind:blog_schema
-    bind:post
-    bind:title
+    bind:currentPost
     bind:isMobile
     bind:theme
   />
   <MainView
-    bind:currentlySelected
+    bind:isLoading
     bind:blog_schema
-    bind:post
-    bind:title
+    bind:currentPost
     bind:isMobile
     bind:theme
   />
@@ -78,7 +72,7 @@
   .light-mode {
     background-image: radial-gradient(
       farthest-corner at -10px -10px,
-      #7d0e9e 0%,
+      #fff 0%,
       darkgray 90%
     );
   }
