@@ -61,7 +61,7 @@
   async function setCurrentlyActive(p) {
     title = p.title;
     post = p.ref;
-    const nextURL = "/?" + p.ref;
+    const nextURL = "?" + p.ref;
     const nextTitle = "My new page title";
     const nextState = { additionalInformation: "Updated the URL with JS" };
     // This will create a new entry in the browser's history, without reloading
