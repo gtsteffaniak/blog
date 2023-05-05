@@ -657,10 +657,10 @@
   }
   @keyframes animText {
     from {
-      transform: translateY(-51vh);
+      transform: translateY(-60vh);
     }
     to {
-      transform: translateY(51vh);
+      transform: translateY(60vh);
     }
   }
 </style>
