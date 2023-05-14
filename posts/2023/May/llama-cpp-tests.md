@@ -192,6 +192,51 @@ All runs behaved similarly - the first 2 tokens take forever, but then performan
 
 Ok, that's enough of that.
 
+## Bonus round
+
+The llama.cpp repo released GPU support for the program - so I had to try that out too. I don't have anything too beefy to test it on , but I have a 1050 GPU laptop. So I went there and tested with GPU support enabled:
+
+```
+.\main.exe -m C:\Users\graha\OneDrive\Desktop\llama-7b-fp32.bin -p "what is a banana doing on my lawn?" -t 12 -ngl 4 -c 45 -n 45
+main: build = 550 (79b2d5b)
+main: seed  = 1684092347
+llama.cpp: loading model from C:\Users\graha\OneDrive\Desktop\llama-7b-fp32.bin
+llama_model_load_internal: format     = ggjt v1 (pre #1405)
+llama_model_load_internal: n_vocab    = 32000
+llama_model_load_internal: n_ctx      = 45
+llama_model_load_internal: n_embd     = 4096
+llama_model_load_internal: n_mult     = 256
+llama_model_load_internal: n_head     = 32
+llama_model_load_internal: n_layer    = 32
+llama_model_load_internal: n_rot      = 128
+llama_model_load_internal: ftype      = 0 (all F32)
+llama_model_load_internal: n_ff       = 11008
+llama_model_load_internal: n_parts    = 1
+llama_model_load_internal: model size = 7B
+llama_model_load_internal: ggml ctx size =  72.75 KB
+llama_model_load_internal: mem required  = 27497.09 MB (+ 1026.00 MB per state)
+llama_model_load_internal: [cublas] offloading 4 layers to GPU
+llama_model_load_internal: [cublas] total VRAM used: 3088 MB
+llama_init_from_file: kv self size  =   22.50 MB
+
+system_info: n_threads = 12 / 12 | AVX = 1 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 1 | VSX = 0 |
+sampling: repeat_last_n = 64, repeat_penalty = 1.100000, presence_penalty = 0.000000, frequency_penalty = 0.000000, top_k = 40, tfs_z = 1.000000, top_p = 0.950000, typical_p = 1.000000, temp = 0.800000, mirostat = 0, mirostat_lr = 0.100000, mirostat_ent = 5.000000
+generate: n_ctx = 45, n_batch = 512, n_predict = 45, n_keep = 0
+
+
+ what is a banana doing on my lawn?
+the other day i was looking out the window and saw a banana sitting in our front yard. i walked outside to see if anyone had left it there by accident, but no one answered when i called for them inside
+llama_print_timings:        load time = 35609.62 ms
+llama_print_timings:      sample time =    10.52 ms /    45 runs   (    0.23 ms per token)
+llama_print_timings: prompt eval time = 31931.20 ms /    35 tokens (  912.32 ms per token)
+llama_print_timings:        eval time = 36327.48 ms /    43 runs   (  844.83 ms per token)
+llama_print_timings:       total time = 74111.62 ms
+```
+CPU usage    : 100%
+memory usage : 25GB
+
+Hmm ok so GPU support doesn't really help much other than offloading some of the RAM -- **844 ms per token** (similar without GPU). So, for the macbook optimized code, it doesn't use any RAM at all. So, maybe if you have a super GPU that can really crunch through processing , I don't see GPU helping much with this version of llama program. Cool to see though!
+
 ## Conclusion
 
 What did we learn? optimizations are important, languages matter, and python is complicated to get everything wired up to work low-level, so I didn't bother comparing it.
