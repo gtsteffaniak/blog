@@ -1,6 +1,6 @@
 <script>
   import Logo from "./Logo.svelte";
-  export let theme = "light";
+  export let theme = {};
   export let sidebar = false;
   // List of navigation items
   const navItems = [
@@ -10,7 +10,7 @@
   ];
 </script>
 
-<nav class:light-mode={theme == "light"}>
+<nav class:light-mode={theme.lightmode}>
   <div class="inner">
     {#each navItems as item}
       <button class="ui button" style="background-color:{item.color}">
@@ -41,6 +41,7 @@
     padding: 0;
     overflow: hidden;
     height: 57px;
+    z-index: 1;
   }
   @supports (backdrop-filter: none) {
     nav {
@@ -54,8 +55,8 @@
   }
   @supports (backdrop-filter: none) {
     .light-mode {
-      background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(200%);
+      background-color: rgba(59, 59, 59, 0.3);
+      backdrop-filter: blur(10px) brightness(100%);
     }
   }
 

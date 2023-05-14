@@ -58,7 +58,7 @@
     // This will replace the current entry in the browser's history, without reloading
     window.history.replaceState(nextState, nextTitle, nextURL);
   }
-  export let theme = "light";
+  export let theme = {};
 </script>
 
 <svelte:head>
@@ -72,7 +72,7 @@
     id="sideNav"
     class="card"
     class:expandWidth={isMobile === true}
-    class:light-mode={theme === "light"}
+    class:light-mode={theme.lightmode}
   >
     <div class="card-header">Posts</div>
     <div class="ui divider" />
@@ -84,13 +84,13 @@
       {:else}
         <div class="ui inverted fluid accordion">
           {#each Object.entries(blog_schema) as [year, months]}
-            <div class:blackText={theme === "light"} class="active title">
+            <div class:blackText={theme.lightmode} class="active title">
               <i class="dropdown icon" />
               {year}
             </div>
             <div style="padding-left:1em" class="active content">
               {#each Object.entries(months) as [month, posts]}
-                <div class:blackText={theme === "light"} class="active title">
+                <div class:blackText={theme.lightmode} class="active title">
                   <i class="dropdown icon" />
                   {month}
                 </div>
@@ -138,6 +138,7 @@ wrapper {
   display: none;
 }
   .card {
+    font-size: large;
     justify-content: flex-start;
     margin: 0;
     background: transparent;
@@ -154,7 +155,7 @@ wrapper {
     height: 100%;
     color: white;
     width: max-content;
-    min-width: 300px;
+    min-width: 350px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;

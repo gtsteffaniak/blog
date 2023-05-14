@@ -1,5 +1,5 @@
 <script>
-  export let theme = "light";
+  export let theme = {};
   export let isMobile = false;
   import Selector from "./Selector.svelte";
   import { SyncLoader } from "svelte-loading-spinners";
@@ -8,11 +8,13 @@
   import hljs from "highlight.js";
   import { onMount } from "svelte";
   export let isLoading = true;
-  import StyleCard from "./styleCard/space.svelte";
+  import StarsCard from "./styleCard/space.svelte";
+  import GeneralCard from "./styleCard/general.svelte";
   import jQuery from "jquery";
   let postOutput = "";
   export let currentPost = {};
   currentPost.ref = "";
+  let styleTheme = ""
   let prevRef = "";
   onMount(() => {
     window.jQuery = jQuery;
@@ -39,6 +41,9 @@
       data = "Unable to find post! **so sad**";
     }
     postOutput = marked.parse(data);
+    if (currentPost.theme != null) {
+      styleTheme = currentPost.theme
+    }
     updateCSS();
     isLoading = false;
     window.scrollTo(0, 0);
@@ -54,7 +59,7 @@
       document.querySelectorAll("pre code").forEach((code) => {
         code.style.padding = "0.5em";
       });
-      if (theme == "light") {
+      if (theme.lightmode) {
         // Set the background color of all code elements to black
         document.querySelectorAll("code").forEach((code) => {
           code.style.backgroundColor = "lightgray";
@@ -67,7 +72,7 @@
       }
       let table = document.querySelectorAll("table");
       for (var i = 0; i < table.length; ++i) {
-        if (theme == "light") {
+        if (theme.lightmode) {
           table[i].classList.remove("inverted");
         } else {
           table[i].classList.add("inverted");
@@ -85,7 +90,7 @@
   }
 </script>
 
-<wrapper class:mobile={isMobile} class:light-mode={theme === "light"}>
+<wrapper class:mobile={isMobile} class:light-mode={theme.lightmode}>
   <section class:hidden={!isLoading} class="preloader">
     <SyncLoader size="6" color="#7d0e9e" unit="em" />
   </section>
@@ -95,7 +100,11 @@
     <div class="card-header">{currentPost.title}</div>
     <div stlye="margin-left:20px;margin-right:20px" class="ui divider" />
   {/if}
-  <StyleCard bind:isLoading bind:postOutput bind:currentPost />
+  {#if (styleTheme == "space")}
+    <StarsCard bind:isLoading bind:postOutput bind:currentPost />
+  {:else}
+    <GeneralCard bind:isLoading bind:postOutput bind:currentPost />
+  {/if}
 </wrapper>
 
 <style>
