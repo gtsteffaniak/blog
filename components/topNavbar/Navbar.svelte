@@ -4,9 +4,9 @@
   export let sidebar = false;
   // List of navigation items
   const navItems = [
-    { content: "logo", type: "label", color: "'#ff3e00'" },
-    { content: "name", type: "label", color: "'#ff3e00'" },
-    { content: "Item 2", type: "button", color: "'#ff3e00'" },
+    { content: "logo", type: "label", color: "#7d0e9e" },
+    { content: "name", type: "label", color: "#7d0e9e" },
+    { content: "Item 2", type: "button", color: "#7d0e9e" },
   ];
 </script>
 
@@ -32,7 +32,7 @@
     width: 100%;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
-    border-top: 5px solid '#ff3e00';
+    border-top: 5px solid #7d0e9e;
     border-bottom: 0;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
@@ -55,8 +55,8 @@
   }
   @supports (backdrop-filter: none) {
     .light-mode {
-      background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(200%);
+      background-color: rgba(59, 59, 59, 0.3);
+      backdrop-filter: blur(10px) brightness(100%);
     }
   }
 

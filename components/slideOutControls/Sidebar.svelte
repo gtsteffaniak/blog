@@ -39,7 +39,7 @@
     transition: left 0.5s ease-in-out;
     top: 0;
     background: transparent;
-    background-color: rgba(59, 59, 59, 1);
+    background-color: rgb(111, 107, 107);
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
@@ -51,18 +51,18 @@
   }
   @supports (backdrop-filter: none) {
     aside {
-      background-color: rgba(59, 59, 59, 0.5);
+      background-color: rgba(186, 186, 186, 0.5);
       backdrop-filter: blur(10px) brightness(50%);
     }
   }
   .light-mode {
     background: transparent;
-    background-color: rgb(193, 193, 193);
+    background-color: rgb(111, 111, 111);
   }
   @supports (backdrop-filter: none) {
     .light-mode {
-      background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(200%);
+      background-color: rgba(59, 59, 59, 0.3);
+      backdrop-filter: blur(10px) brightness(100%);
     }
   }
   .open {
@@ -76,7 +76,7 @@
   }
   button {
     color:white;
-    background-color:'#ff3e00';
+    background-color:#7d0e9e;
     display:block;
     margin:auto
   }

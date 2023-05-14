@@ -79,7 +79,7 @@
     <div class="schemas_listing">
       {#if blog_schema == null}
         <section class="preloader">
-          <SyncLoader size="6" color="'#ff3e00'" unit="em" />
+          <SyncLoader size="6" color="#7d0e9e" unit="em" />
         </section>
       {:else}
         <div class="ui inverted fluid accordion">
@@ -138,23 +138,24 @@ wrapper {
   display: none;
 }
   .card {
+    font-size: large;
     justify-content: flex-start;
     margin: 0;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
-    border-top: 5px solid '#ff3e00';
-    border-bottom: 5px solid '#ff3e00';
+    border-top: 5px solid #7d0e9e;
+    border-bottom: 5px solid #7d0e9e;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     overflow: hidden;
     border-radius: 15px;
-    border: 2px solid '#ff3e00';
+    border: 2px solid #7d0e9e;
     height: 100%;
     color: white;
     width: max-content;
-    min-width: 300px;
+    min-width: 350px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;

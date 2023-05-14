@@ -92,7 +92,7 @@
 
 <wrapper class:mobile={isMobile} class:light-mode={theme.lightmode}>
   <section class:hidden={!isLoading} class="preloader">
-    <SyncLoader size="6" color="'#ff3e00'" unit="em" />
+    <SyncLoader size="6" color="#7d0e9e" unit="em" />
   </section>
   {#if isMobile}
     <Selector bind:blog_schema bind:currentPost />
@@ -100,7 +100,7 @@
     <div class="card-header">{currentPost.title}</div>
     <div stlye="margin-left:20px;margin-right:20px" class="ui divider" />
   {/if}
-  {#if (styleTheme == "stars")}
+  {#if (styleTheme == "space")}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
   {:else}
     <GeneralCard bind:isLoading bind:postOutput bind:currentPost />
@@ -116,7 +116,7 @@
     overflow: hidden;
     margin-left: 1em;
     border-radius: 15px;
-    border: 2px solid '#ff3e00';
+    border: 2px solid #7d0e9e;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
