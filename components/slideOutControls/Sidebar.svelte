@@ -1,30 +1,29 @@
 <script>
   export let open = false;
-  export let theme = "light";
-  theme = localStorage.getItem("theme");
+  export let theme = {};
+  theme.lightmode = localStorage.getItem("lightmode");
   export let active = false;
   function toggleTheme() {
-    if (theme == "light") {
-      theme = "dark";
+    if (theme.lightmode) {
+      theme.lightmode = false;
     } else {
-      theme = "light";
+      theme.lightmode = true;
     }
     window.document.body.classList.toggle("light-mode");
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("lightmode", theme.lightmode);
   }
 </script>
 
 <aside
   class="sidenav absolute w-full h-full bg-gray-200 border-r-2 shadow-lg"
   class:open
-  class:light-mode={theme === "light"}
+  class:light-mode={theme.lightmode}
 >
   <div class="sidelinks">
     <a style="text-align:center" href="/about">About</a>
   </div>
   <button
     class="ui button"
-    style="color:white;background-color:#7d0e9e;display:block;margin:auto"
     on:click={() => (open = !open)}
     on:click={() => (active = !active)}
     on:click={toggleTheme}
@@ -75,7 +74,12 @@
     margin: 1em;
     padding-top: 60px;
   }
-
+  button {
+    color:white;
+    background-color:'#ff3e00';
+    display:block;
+    margin:auto
+  }
   /* The navigation menu links */
   aside a {
     padding: 6px 8px 6px 16px;

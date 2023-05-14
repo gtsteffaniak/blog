@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import jQuery from "jquery";
-  import set from "js-yaml/lib/type/set";
   export let blog_schema;
   export let currentPost = {};
   onMount(() => {

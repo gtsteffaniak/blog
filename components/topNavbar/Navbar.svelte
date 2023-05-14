@@ -1,16 +1,16 @@
 <script>
   import Logo from "./Logo.svelte";
-  export let theme = "light";
+  export let theme = {};
   export let sidebar = false;
   // List of navigation items
   const navItems = [
-    { content: "logo", type: "label", color: "#7d0e9e" },
-    { content: "name", type: "label", color: "#7d0e9e" },
-    { content: "Item 2", type: "button", color: "#7d0e9e" },
+    { content: "logo", type: "label", color: "'#ff3e00'" },
+    { content: "name", type: "label", color: "'#ff3e00'" },
+    { content: "Item 2", type: "button", color: "'#ff3e00'" },
   ];
 </script>
 
-<nav class:light-mode={theme == "light"}>
+<nav class:light-mode={theme.lightmode}>
   <div class="inner">
     {#each navItems as item}
       <button class="ui button" style="background-color:{item.color}">
@@ -32,7 +32,7 @@
     width: 100%;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
-    border-top: 5px solid #7d0e9e;
+    border-top: 5px solid '#ff3e00';
     border-bottom: 0;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
@@ -41,6 +41,7 @@
     padding: 0;
     overflow: hidden;
     height: 57px;
+    z-index: 1;
   }
   @supports (backdrop-filter: none) {
     nav {

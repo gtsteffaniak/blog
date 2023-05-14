@@ -58,7 +58,7 @@
     // This will replace the current entry in the browser's history, without reloading
     window.history.replaceState(nextState, nextTitle, nextURL);
   }
-  export let theme = "light";
+  export let theme = {};
 </script>
 
 <svelte:head>
@@ -72,25 +72,25 @@
     id="sideNav"
     class="card"
     class:expandWidth={isMobile === true}
-    class:light-mode={theme === "light"}
+    class:light-mode={theme.lightmode}
   >
     <div class="card-header">Posts</div>
     <div class="ui divider" />
     <div class="schemas_listing">
       {#if blog_schema == null}
         <section class="preloader">
-          <SyncLoader size="6" color="#7d0e9e" unit="em" />
+          <SyncLoader size="6" color="'#ff3e00'" unit="em" />
         </section>
       {:else}
         <div class="ui inverted fluid accordion">
           {#each Object.entries(blog_schema) as [year, months]}
-            <div class:blackText={theme === "light"} class="active title">
+            <div class:blackText={theme.lightmode} class="active title">
               <i class="dropdown icon" />
               {year}
             </div>
             <div style="padding-left:1em" class="active content">
               {#each Object.entries(months) as [month, posts]}
-                <div class:blackText={theme === "light"} class="active title">
+                <div class:blackText={theme.lightmode} class="active title">
                   <i class="dropdown icon" />
                   {month}
                 </div>
@@ -142,15 +142,15 @@ wrapper {
     margin: 0;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
-    border-top: 5px solid #7d0e9e;
-    border-bottom: 5px solid #7d0e9e;
+    border-top: 5px solid '#ff3e00';
+    border-bottom: 5px solid '#ff3e00';
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     overflow: hidden;
     border-radius: 15px;
-    border: 2px solid #7d0e9e;
+    border: 2px solid '#ff3e00';
     height: 100%;
     color: white;
     width: max-content;
