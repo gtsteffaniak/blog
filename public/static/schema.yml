@@ -4,6 +4,9 @@ posts:
       - title: "AI in the news"
         ref: "posts/2023/May/ai-in-the-news.md"
         tags: ["culture","news"]
+      - title: "Testing LLAMA AI chat versions"
+        ref: "posts/2023/May/llama-cpp-tests.md"
+        tags: ["technology"]
       - title: "May the 4th be with you"
         ref: "posts/2023/May/may-the-4th.md"
         tags: ["culture","entertainment"]
