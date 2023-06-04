@@ -1,14 +1,13 @@
 ## My experience benchmarking llama
 
-There's a cpp program called "llama.cpp" that has been ported to work with multiple languages, including Python and golang which I use in this comparison.
+Today, I had the opportunity to benchmark a fascinating program called "llama.cpp" that has been ported to work with multiple programming languages, including Python and Golang. As an enthusiast of both Python and Golang, I was particularly interested in comparing the performance of these two implementations on my M1 Arm64 MacBook.
 
-I have 3 implementations I will test on an M1 arm64 macbook:
+In this benchmark, I tested three different implementations:
 
- - [llama.cpp]()
- - [llama.go]()
+ - [llama.cpp](https://github.com/ggerganov/llama.cpp)
+ - [llama.go](https://github.com/gotzmann/llama.go)
 
-
-Aren't you a little curious about which is fastest? Admittedly, the native llama.cpp is going to have the advantage. This is not because the language is the fastest, but because it is the "upstream" branch that gets all the changes and performance optimizations first. So, the Python and Golang version may not have these optimizations yet.
+Naturally, you might be curious about which implementation performed the fastest. It's worth noting that the native version of llama.cpp is likely to have the advantage in terms of speed. This advantage stems not from the inherent speed of the programming language but rather from the fact that it is the "upstream" branch that receives all the changes and performance optimizations first. Consequently, the Python and Golang versions may not have benefited from these optimizations yet.
 
 ## llama.cpp
 
@@ -177,9 +176,13 @@ Testing neon first:
 Memory usage : 25GB
 CPU usage    : 66%
 
-That was much faster! Although the output shows it was only **754 ms per token**. Ouch , an L for golang. But upon closer inspection, the first token takes 40x times longer and the second 10x longer than all the other tokens. So that is skewing the average, realistically it felt faster - **315 ms per token** does seem more accurate. Though, I can see the program wasn't fully optimized - it didn't use the entire CPU available. Sigh... we will have to wait for better optimizations. It really is sad it has to load the model into ram -- the native cpp version only uses a small amount of ram to accomplish the same thing faster.
+The execution time significantly improved with the latest changes! The reported duration stands at approximately **754 ms per token**. However, upon closer examination, it becomes evident that the initial token took a whopping 40 times longer to process, while the second token took 10 times longer compared to the rest. This disparity skews the average calculation, and a more realistic estimate would be around **315 ms per token**, which aligns better with the perceived speed.
 
-Any way we can use 100% of the CPU and squeeze out better performance? let's try.
+Nonetheless, it is worth noting that the program still has room for further optimization, as it did not fully utilize the available CPU resources. It is disappointing to observe that the current implementation falls short in this regard. Additionally, the necessity to load the model into RAM remains a drawback, especially when compared to the native C++ version, which accomplishes the same task with minimal RAM usage and greater efficiency.
+
+While the recent improvements have led to a noticeable boost in performance, there is still potential for even better optimizations. The requirement to load the model into RAM remains a limitation that hampers efficiency, particularly when compared to the native C++ version's streamlined approach.
+
+Lastly, is there any way we can use 100% of the CPU and squeeze out better performance? let's try.
 
 1. using `--neon --context 45 --predict 45 --threads 10 --silent --profile
 2023/05/14 10:25:56 profile: CPU profiling enabled, cpu.pprof` I get 65% usage with 675 ms.
@@ -188,7 +191,9 @@ Any way we can use 100% of the CPU and squeeze out better performance? let's try
 4. 4 gave 35% usage with 915 ms per token
 5. 2 gave 20% usage with 1608 ms per token
 
-All runs behaved similarly - the first 2 tokens take forever, but then performance picks up. Realistically, if there were better optimizations, the native go version could see faster performance than the native cpp version if it utilized all CPU threads via goroutines efficiently. However, at this time it isn't ideal for performance reasons and for the fact it lacks the nice feature of the native cpp version of loading the model in small chunks that don't use up 25GB of RAM.
+During the course of testing, it became evident that all the runs exhibited a similar pattern. The initial two tokens took an exceptionally long time to process, but subsequently, the performance noticeably improved. In a hypothetical scenario where superior optimizations were implemented, it is plausible that the native Go version could outperform the native C++ version, particularly if it efficiently utilized all CPU threads through goroutines. However, it must be acknowledged that the current implementation falls short in terms of performance. Additionally, one notable disadvantage of the native Go version is its inability to load the model in smaller segments, as the native C++ version does, thereby avoiding the excessive consumption of 25GB of RAM.
+
+In summary, although the native Go version has the potential for faster performance through effective CPU thread utilization, it currently lags behind due to performance limitations. Furthermore, it lacks the advantageous feature present in the native C++ version of loading the model in smaller, more memory-efficient chunks.
 
 Ok, that's enough of that.
 
@@ -235,8 +240,8 @@ llama_print_timings:       total time = 74111.62 ms
 CPU usage    : 100%
 memory usage : 25GB
 
-Hmm ok so GPU support doesn't really help much other than offloading some of the RAM -- **844 ms per token** (similar without GPU). So, for the macbook optimized code, it doesn't use any RAM at all. So, maybe if you have a super GPU that can really crunch through processing , I don't see GPU helping much with this version of llama program. Cool to see though!
+Hmm, okay, so GPU support doesn't provide significant benefits apart from offloading some of the RAM usage, resulting in a token processing time of approximately 844 ms (which is similar to the non-GPU version). Interestingly, the MacBook optimized code doesn't utilize any RAM at all. Therefore, even if you possess a powerful GPU capable of efficient processing, it seems unlikely that it would greatly enhance the performance of this particular version of the llama program. Nevertheless, it's still fascinating to observe!
 
 ## Conclusion
 
-What did we learn? optimizations are important, languages matter, and python is complicated to get everything wired up to work low-level, so I didn't bother comparing it.
+What have we learned from this analysis? Optimizations play a vital role in programming, the choice of programming language can significantly impact performance, and Python can be complex to configure for low-level operations. Due to these reasons, I refrained from making a direct comparison in this regard.
