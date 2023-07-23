@@ -1,6 +1,3 @@
-[submodule "components/svelte-shared"]
-	path = components/svelte-shared
-	url = git@github.com:gtsteffaniak/svelte-shared.git
 [submodule "components/shared"]
 	path = components/shared
 	url = git@github.com:gtsteffaniak/svelte-shared.git
