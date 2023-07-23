@@ -7,25 +7,29 @@
   let currentPost = {};
   let showLogin = false;
   let isMobile = window.innerWidth < 850;
+  import { getCookie,setCookie } from "../utils/cookie.js";
   window.addEventListener("resize", reportWindowSize);
-  const storedMode = localStorage.getItem("lightmode");
-  if (storedMode != null) {
-    theme.lightmode = storedMode;
+  theme.lightmode = false;
+  if ( getCookie("lightmode") == "true" ) {
+    theme.lightmode = true
+  } else {
+    theme.lightmode = false
   }
   function reportWindowSize() {
     isMobile = window.innerWidth < 850;
   }
   let open = false;
-  import Navbar from "./topNavbar/Navbar.svelte";
-  import Sidebar from "./slideOutControls/Sidebar.svelte";
-  import SideNav from "./mainContent/SideNav.svelte";
-  import MainView from "./mainContent/MainView.svelte";
+  import Navbar from "./navbarTop/App.svelte";
+  import Sidebar from "./slideOutControls/App.svelte";
+  import SidebarLeft from "./sidebarLeft/App.svelte";
+  import SidebarRight from "./sidebarRight/App.svelte";
+  import MainView from "./mainContent/App.svelte";
 </script>
 
 <Sidebar bind:open bind:theme />
 <Navbar bind:sidebar={open} bind:showLogin bind:theme />
 <main class:lightmode={theme.lightmode}>
-  <SideNav
+  <SidebarLeft
     bind:isLoading
     bind:blog_schema
     bind:currentPost
@@ -39,6 +43,13 @@
     bind:isMobile
     bind:theme
   />
+  <SidebarRight
+  bind:isLoading
+  bind:blog_schema
+  bind:currentPost
+  bind:isMobile
+  bind:theme
+/>
 </main>
 
 <style>
@@ -67,12 +78,6 @@
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
-  }
-
-  @media (max-device-width: 768px) {
-    main {
-      flex-direction: column;
-    }
   }
   .lightmode {
     background-image: radial-gradient(

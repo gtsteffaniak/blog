@@ -98,7 +98,7 @@
     <Selector bind:blog_schema bind:currentPost />
   {:else}
     <div class="card-header">{currentPost.title}</div>
-    <div stlye="margin-left:20px;margin-right:20px" class="ui divider" />
+    <div class="ui divider" />
   {/if}
   {#if (styleTheme == "space")}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
@@ -114,7 +114,6 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
-    margin-left: 1em;
     border-radius: 15px;
     border: 2px solid #7d0e9e;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
@@ -123,13 +122,14 @@
     animation: 0.3s ease-in 0s 1 slideIn;
     transition: all 0.5s ease-in-out;
     justify-content: center;
-    margin-left: 1em;
+    margin-right: 0.5em;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
     margin-bottom: 0;
     color: white;
     align-items: center;
   }
+  
   @supports (backdrop-filter: none) {
     wrapper {
       background-color: rgba(59, 59, 59, 0.5);
@@ -175,7 +175,6 @@
     opacity: 0;
     transition: visibility 0s 0.5s, opacity 0.5s ease-in-out;
   }
-
   .preloader {
     position: fixed;
     top: 50%;
