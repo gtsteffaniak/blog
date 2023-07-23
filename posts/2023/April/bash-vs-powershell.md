@@ -1,13 +1,13 @@
-Posted Date: Sat Apr 28th 2023
+Posted Date: Sat Apr 28th, 2023
 
 ## Part 1
 
-I will start out by saying, I am a fan of powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:
+I will start by saying, I am a fan of Powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:
 
-1. It's object oriented
+1. It's object-oriented
 1. Almost all commands follow the same naming convention
 1. Arguments also follow a logical naming scheme.
-   - Consider in bash what will `-f` do for any random command? what about `-c` ? Always completely different. The only consistent one may be `v` for `verbose`.
+   - Consider in bash what will `-f` do for any random command. What about `-c`? Always completely different. The only consistent one may be `v` for `verbose`.
 
 I decided to compare the two. I will grade with the following attributes of each in mind:
 
@@ -29,11 +29,11 @@ But first a bit of background for context.
 
 #### bash
 
-The Bourne Again SHell -- or bash was created in 1988 and ultimately released as a product by the 90's. The current version of bash is 5.1 (2020), which is not much different syntactically to the version 3.0 released in 2004 around the time powershell was being developed.
+The Bourne Again SHell -- or bash was created in 1988 and ultimately released as a product by the '90s. The current version of bash is 5.1 (2020), which is not much different syntactically from version 3.0 released in 2004 around the time Powershell was being developed.
 
-#### powershell
+#### PowerShell
 
-Driven by a lack of a cohesive scripting language needed for modern automation on windows, Microsoft created Powershell in 2005. Eventually, Powershell v1.0 was out of beta in 2006. Shortly after, powershell v2.0 was released in in 2008.
+Driven by a lack of a cohesive scripting language needed for modern automation on Windows, Microsoft created Powershell in 2005. Eventually, Powershell v1.0 was out of beta in 2006. Shortly after, PowerShell v2.0 was released in 2008.
 
 ## Before we begin
 
@@ -41,7 +41,7 @@ My laptop:
 
 - 10th gen intel Windows 10 with bash using WSL
 
-### Powershel prompt style:
+### Powershell prompt style:
 
 ![](https://i.imgur.com/nfFDE4Y.png)
 
@@ -55,23 +55,23 @@ I will test 15 different operations on each and judge each on the attributes lis
 
 Part 1:
 
-1. Make directory
-1. Download file
-1. write file size to console
-1. find file and unzip it
+1. Make the directory
+1. Download the file
+1. write file size to the console
+1. find the file and unzip it
 1. find a string in any file
 1. count file sizes of a type
-1. Get process by name and append to new file
+1. Get the process by name and append it to a new file
 
 ## Ready? Go!
 
-### Test 1 : Make Directory
+### Test 1: Make a Directory
 
 I will create test directories for each shell
 
 #### Bash
 
-Command : `mkdir -p bash/test{1..15}`
+Command: `mkdir -p bash/test{1..15}`
 
 ![](https://i.imgur.com/m0cj7UU.png)
 ![](https://i.imgur.com/HYfy5rM.png)
@@ -95,11 +95,11 @@ Command `new-item -itemType directory $(1..15 | foreach{"powershell/test$_"})`
 
 **Winner: Tie**
 
-### Test 2 : download zip form online
+### Test 2: Download the zip form online
 
 #### Bash
 
-Command : `wget https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip`
+Command: `wget https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip`
 
 #### Powershell
 
@@ -118,9 +118,9 @@ Command : `Invoke-WebRequest https://github.com/mongodb/mongodb-kubernetes-opera
 
 **Winner: Bash**
 
-### Test 3 : Write file size to console
+### Test 3: Write file size to console
 
-simple example where you want to list a file's size in console
+A simple example where you want to list a file's size in the console
 
 #### Bash
 
@@ -138,9 +138,9 @@ Command : `write-host "Size: $((Get-Item master.zip).length/1KB)K"`
 | ------------ | ---------- | ---- |
 | Total        | 8          | 7    |
 
-**Winner : Powershell**
+**Winner: Powershell**
 
-### Test 4 : Find file and unzip it
+### Test 4: Find a file and unzip it
 
 #### Bash
 
@@ -160,17 +160,17 @@ Command: `gci -name *.zip|foreach{Expand-Archive $_}`
 | ------------ | ---------- | ---- |
 | Total        | 7          | 5    |
 
-**Winner : Powershell**
+**Winner: Powershell**
 
-### Test 5 : Find a string in any file
+### Test 5: Find a string in any file
 
 #### Bash
 
-Command : `grep -R testing`
+Command: `grep -R testing`
 
 #### Powershell
 
-Command : `gci -Recurse | Select-String "testing" -List`
+Command: `gci -Recurse | Select-String "testing" -List`
 
 #### Score
 
@@ -182,9 +182,9 @@ Command : `gci -Recurse | Select-String "testing" -List`
 | ------------ | ---------- | ---- |
 | Total        | 7          | 8    |
 
-**Winner : Bash**
+**Winner: Bash**
 
-### Test 6 : Count file sizes of a type
+### Test 6: Count file sizes of a type
 
 #### Bash
 
@@ -196,8 +196,8 @@ files=$(find . -name *.go)
 size=0
 for i in $files
 do
-	val=$(ls -l $i|awk '{print $5}')
-	size=$(( $size + $val ))
+    val=$(ls -l $i|awk '{print $5}')
+    size=$(( $size + $val ))
 done
 
 echo "Total goLang file size:"
@@ -205,7 +205,7 @@ echo "Bytes: $size"
 echo "Kilobytes: $(($size / 1000))"
 ```
 
-TotalMilliseconds : 1879
+TotalMilliseconds: 1879
 
 #### Powershell
 
@@ -221,7 +221,7 @@ write-host "Kilobytes: $($size/1KB)"
 
 ```
 
-TotalMilliseconds : 80.0936
+TotalMilliseconds: 80.0936
 
 #### Score
 
@@ -235,11 +235,11 @@ TotalMilliseconds : 80.0936
 
 **Winner: Powershell**
 
-### Test 7 : Get process by name and append to new file
+### Test 7: Get the process by name and append it to a new file
 
 #### Bash
 
-Command : `pgrep -f bash > out-file.txt && wc out-file.txt`
+Command: `pgrep -f bash > out-file.txt && wc out-file.txt`
 
 #### Powershell
 
@@ -273,7 +273,7 @@ Aggregate total for first 7 tests:
 
 ### Advanced help pages.
 
-Powershell has an intuative way to find commands that you may want to use. Unlike man pages on bash, which require you to know and read the exact binary that you are needing help with. Powershell allows for searching all help pages, for example:
+Powershell has an intuitive way to find commands that you may want to use. Unlike man pages on bash, which require you to know and read the exact binary that you are needing help with. Powershell allows for searching all help pages, for example:
 
 `Get-Help -Name remoting`
 
@@ -307,9 +307,9 @@ Test-NetConnection                Function  NetTCPIP                  ...
 
 ### Consistency
 
-- All of microsoft's cmdlets have a `Verb-Noun` structure.
+- All of Microsoft's cmdlets have a `Verb-Noun` structure.
 
-- All of microsoft's cmdlets can easily be researched on google because no other program calls their commands "cmdlets". So, you will always get something on powershell if you use that word.
+- All of Microsoft's cmdlets can easily be researched on Google because no other program calls their commands "cmdlets". So, you will always get something on PowerShell if you use that word.
 
 - All functions are object-oriented, making scripting and automation work the same way on every command. No more guessing which column a specific value you are looking for is on like in bash. No more trimming whitespace and tab characters.
 
@@ -317,8 +317,8 @@ Test-NetConnection                Function  NetTCPIP                  ...
 
 ## Bottom Line
 
-Powershell is fundumentally a more intuative and powerful language to script than bash. However, the most symetrical comparison for powershell would be something we didn't compare: python.
+Powershell is fundamentally a more intuitive and powerful scripting language than bash. However, the most symmetrical comparison for Powershell would be something we didn't compare: python.
 
-There is little reason to use powershell on linux because its not often packaged with linux. However, python is more powerful than bash and is your most likely target language on linux for automation. The only caveot being, you would want to use bash for system calls and configuration, and then have python specifically for automation. Whereas, on windows powershell can do it all.
+There is little reason to use Powershell on Linux because it's not often packaged with Linux. However, python is more powerful than bash and is your most likely target language on Linux for automation. The only caveat is that you would want to use bash for system calls and configuration, and then have Python specifically for automation. Whereas, on windows, PowerShell can do it all.
 
-If you are using windows and looking to script and automate, powershell is your friend.
+If you are using Windows and looking to script and automate, PowerShell is your friend.
