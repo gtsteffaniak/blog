@@ -1,16 +1,10 @@
 <script>
   export let open = false;
   export let theme = {};
-  theme.lightmode = localStorage.getItem("lightmode");
   export let active = false;
   function toggleTheme() {
-    if (theme.lightmode) {
-      theme.lightmode = false;
-    } else {
-      theme.lightmode = true;
-    }
-    window.document.body.classList.toggle("light-mode");
-    localStorage.setItem("lightmode", theme.lightmode);
+    theme.lightmode = !theme.lightmode
+    setCookie("lightmode",theme.lightmode)
   }
 </script>
 
