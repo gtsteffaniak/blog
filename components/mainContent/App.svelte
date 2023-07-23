@@ -129,7 +129,7 @@
     color: white;
     align-items: center;
   }
-  
+
   @supports (backdrop-filter: none) {
     wrapper {
       background-color: rgba(59, 59, 59, 0.5);
@@ -137,7 +137,7 @@
     }
   }
   .mobile {
-    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   @keyframes slideIn {

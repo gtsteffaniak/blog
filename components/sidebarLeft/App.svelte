@@ -68,7 +68,7 @@
   ></script>
 </svelte:head>
 
-<Card hide={isMobile} lightmode={theme.lightmode}>
+<Card bind:hidden={isMobile} bind:lightmode={theme.lightmode}>
     <div class="card-header">Posts</div>
     <div class="ui divider" />
     <div class="schemas_listing">
