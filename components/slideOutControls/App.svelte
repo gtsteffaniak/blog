@@ -14,7 +14,7 @@
   class:light-mode={theme.lightmode}
 >
   <div class="sidelinks">
-    <a style="text-align:center" href="/about">About</a>
+    <a style="text-align:center" href="?about">About</a>
   </div>
   <button
     class="ui button"

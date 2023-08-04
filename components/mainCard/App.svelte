@@ -1,7 +1,7 @@
 <script>
   export let theme = {};
   export let isMobile = false;
-  import Selector from "./Selector.svelte";
+  import { getPost } from "../selector.js";
   import { SyncLoader } from "svelte-loading-spinners";
   export let blog_schema;
   import { marked } from "marked";
@@ -9,30 +9,49 @@
   import { onMount } from "svelte";
   export let isLoading = true;
   import StarsCard from "./styleCard/space.svelte";
+  import Gcard from "../shared/Gcard.svelte";
+  import AboutCard from "./styleCard/about.svelte";
   import GeneralCard from "./styleCard/general.svelte";
   import jQuery from "jquery";
   let postOutput = "";
   export let currentPost = {};
-  currentPost.ref = "";
-  let styleTheme = ""
+  let styleTheme = "";
   let prevRef = "";
+  let header="Loading Post..."
+  let margin= ".5em"
   onMount(() => {
     window.jQuery = jQuery;
+    setTimeout(function () {
+      let selector = window.jQuery(".ui.selection.dropdown");
+      selector.dropdown({
+        clearable: true,
+      });
+      selector.on("click", function () {
+        let ref = selector.dropdown("get value");
+        if (ref != null) {
+          currentPost = getPost(ref,blog_schema)
+        }
+      });
+    }, 500); // after TRY AGAIN
     marked.setOptions({
       highlight: function (code) {
         return hljs.highlightAuto(code).value;
       },
     });
+    let url = window.location.href.split("#")[0];
+    if (url.length > 1) {
+      fetchPost(url.split("/?")[1]);
+    }
     window.marked = marked;
-    fetchPost(currentPost.ref);
   });
-  $: currentPost && fetchPost(currentPost.ref); // post change event listener
+  $: currentPost && fetchPost(currentPost.ref) && updateHeader(isMobile); // post change event listener
+
   $: theme && updateCSS(); // post change event listener
   async function fetchPost(ref) {
-    if (ref == "" || ref == prevRef) {
+    if (ref == "" || ref == prevRef || ref == "about") {
       return;
     }
-    postOutput = ""
+    postOutput = "";
     isLoading = true;
     prevRef = ref;
     var response = await fetch(ref);
@@ -42,7 +61,7 @@
     }
     postOutput = marked.parse(data);
     if (currentPost.theme != null) {
-      styleTheme = currentPost.theme
+      styleTheme = currentPost.theme;
     }
     updateCSS();
     isLoading = false;
@@ -81,65 +100,76 @@
           "ui",
           "sortable",
           "selectable",
-          "collapsing",
+          "unstackable",
           "celled",
           "table"
         );
       }
     }, 100);
   }
+  function updateHeader(isMobile){
+    if (isMobile){
+      header=""
+      margin="0px"
+    }else{
+      header=currentPost.title
+      margin="0.5em"
+    }
+  }
+
 </script>
 
-<wrapper class:mobile={isMobile} class:light-mode={theme.lightmode}>
+<Gcard
+  --card-margin-left={margin}
+  --theme-color={theme.color}
+  bordered="true"
+  bind:lightmode={theme.lightmode}
+  header={header}
+>
   <section class:hidden={!isLoading} class="preloader">
     <SyncLoader size="6" color="#7d0e9e" unit="em" />
   </section>
   {#if isMobile}
-    <Selector bind:blog_schema bind:currentPost />
-  {:else}
-    <div class="card-header">{currentPost.title}</div>
-    <div class="ui divider" />
+    {#if blog_schema === null || typeof blog_schema === "undefined"}
+      <p>...Loading</p>
+    {:else}
+      <div class="ui search selection fluid dropdown">
+        <input type="hidden" name="post" value={currentPost.ref} />
+        <i class="dropdown icon" />
+        <div class="default text">Select Post</div>
+        <div class="menu">
+          {#each Object.entries(blog_schema) as [year, months]}
+            {#each Object.entries(months) as [month, posts]}
+              {#each posts as p}
+                {#if p.ref == currentPost.ref}
+                  <div class="item active selected" data-value={p.ref}>
+                    <i class="tg flag" />{p.title}
+                  </div>
+                {:else}
+                  <div class="item" data-value={p.ref}>
+                    <i class="tg flag" />{p.title}
+                  </div>
+                {/if}
+              {/each}
+            {/each}
+          {/each}
+        </div>
+      </div>
+    {/if}
   {/if}
-  {#if (styleTheme == "space")}
+  {#if currentPost.ref == "about"}
+    <AboutCard bind:theme />
+  {:else if styleTheme == "space"}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
   {:else}
     <GeneralCard bind:isLoading bind:postOutput bind:currentPost />
   {/if}
-</wrapper>
+</Gcard>
 
 <style>
-  wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 15px;
-    border: 2px solid #7d0e9e;
-    -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
-    box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
-    -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
-    animation: 0.3s ease-in 0s 1 slideIn;
-    transition: all 0.5s ease-in-out;
-    justify-content: center;
-    margin-right: 0.5em;
-    background: transparent;
-    background-color: rgba(59, 59, 59, 1);
-    margin-bottom: 0;
-    color: white;
-    align-items: center;
+  .search {
+    margin-bottom: 1em;
   }
-
-  @supports (backdrop-filter: none) {
-    wrapper {
-      background-color: rgba(59, 59, 59, 0.5);
-      backdrop-filter: blur(10px) brightness(50%);
-    }
-  }
-  .mobile {
-    margin-right: 0 !important;
-  }
-
   @keyframes slideIn {
     0% {
       transform: translateY(10%);
@@ -148,27 +178,11 @@
       transform: translateX(0);
     }
   }
-  .light-mode {
-    color: black;
-    background: transparent;
-    background-color: rgb(220, 220, 220);
-  }
   @supports (backdrop-filter: none) {
     .light-mode {
       background-color: rgba(250, 250, 250, 0.8);
       backdrop-filter: blur(10px) brightness(100%);
     }
-  }
-  .divider {
-    width: 90%;
-    margin-top: 0;
-  }
-  .card-header {
-    margin: 1em;
-    text-align: center;
-    width: 100%;
-    font-size: 1em;
-    font-weight: 600;
   }
   .hidden {
     visibility: hidden;

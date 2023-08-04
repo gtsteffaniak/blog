@@ -4,7 +4,7 @@
   export let isLoading = true
 </script>
 
-<div class:hidden={isLoading} class="card" class:style-theme={currentPost.theme == "space"}>
+<div class:hidden={isLoading} class="myDiv" class:style-theme={currentPost.theme == "space"}>
   {#if currentPost.theme == "space"}
     <link
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
@@ -23,7 +23,8 @@
 </div>
 
 <style>
-  .card {
+  .myDiv {
+    margin: -1em;
     transition: opacity 1s;
     backdrop-filter: contrast(1.5);
     font-size: medium;
@@ -34,7 +35,9 @@
     padding: 20px;
     height: 100%;
     width: 100%;
-    max-width: 1000px;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
   }
   #stars {
     width: 1px;
