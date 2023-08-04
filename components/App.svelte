@@ -21,9 +21,9 @@
   let open = false;
   import Navbar from "./navbarTop/App.svelte";
   import Sidebar from "./slideOutControls/App.svelte";
-  import SidebarLeft from "./sidebarLeft/App.svelte";
-  import SidebarRight from "./sidebarRight/App.svelte";
-  import MainView from "./mainContent/App.svelte";
+  import SidebarLeft from "./leftCard/App.svelte";
+  import SidebarRight from "./rightCard/App.svelte";
+  import MainView from "./mainCard/App.svelte";
 </script>
 
 <Sidebar bind:open bind:theme />

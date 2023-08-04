@@ -3,12 +3,13 @@
   export let isLoading = true
 </script>
 
-<div class:hidden={isLoading} class="card">
+<div class:hidden={isLoading} class="myDiv">
       {@html postOutput}
 </div>
 
 <style>
-  .card {
+  .myDiv {
+    margin: -1em;
     transition: opacity 1s;
     backdrop-filter: contrast(1.5);
     font-size: medium;
@@ -19,7 +20,9 @@
     padding: 20px;
     height: 100%;
     width: 100%;
-    max-width: 1000px;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
   }
   .hidden {
     visibility: hidden;
