@@ -74,7 +74,7 @@
     padding-right: 1em;
     width: 100%;
     display: flex;
-    height: 100vh;
+    height: 100%;
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
