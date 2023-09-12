@@ -1,5 +1,9 @@
 posts:
   2023:
+    September:
+      - title: "Comparing the top 3 compiled low-level languages in 2023"
+        ref: "posts/2023/September/comparing_compiled.md"
+        tags: ["technology"]
     May:
       - title: "Testing LLAMA AI chat versions"
         ref: "posts/2023/May/llama-cpp-tests.md"
@@ -8,9 +12,6 @@ posts:
         ref: "posts/2023/May/may-the-4th.md"
         tags: ["culture","entertainment"]
         theme: "space"
-      - title: "Comparing the top 3 compiled low-level languages in 2023"
-        ref: "posts/2023/September/comparing_compiled.md"
-        tags: ["technology"]
     April:
       - title: "Bash vs. Powershell"
         ref: "posts/2023/April/bash-vs-powershell.md"
