@@ -1,5 +1,9 @@
 posts:
   2023:
+    October:
+      - title: "The doubled edge sword of modules when developing"
+        ref: "posts/2023/October/dependency-on-dependencies.md"
+        tags: ["technology"]
     September:
       - title: "Comparing the top 3 compiled low-level languages in 2023"
         ref: "posts/2023/September/comparing_compiled.md"
