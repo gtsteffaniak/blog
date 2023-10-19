@@ -1,5 +1,3 @@
-# The doubled edge sword of modules when developing
-
 Posted Date: Thursday, October 19th, 2023
 
 > Note: In this post, I will use the term "external module" to refer to an
