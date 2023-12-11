@@ -1,10 +1,12 @@
 <script>
   export let postOutput = "";
   export let isLoading = true
+  import { Render } from 'svelte-purify'
+
 </script>
 
 <div class:hidden={isLoading} class="myDiv">
-      {@html postOutput}
+  <Render html={postOutput} />
 </div>
 
 <style>

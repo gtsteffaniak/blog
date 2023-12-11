@@ -10,7 +10,7 @@
   import Gcard from "../shared/Gcard.svelte";
   export let blog_schema;
   async function fetchSchema() {
-    var response = await fetch("public/static/schema.yml");
+    var response = await fetch("static/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     if (response.ok) {
@@ -60,6 +60,7 @@
               {#each posts as post}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <!-- svelte-ignore a11y-missing-attribute -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <a
                   on:click={() => currentPost = setCurrentlyActive(post)}
                   class:bolded={currentPost.ref == post.ref}

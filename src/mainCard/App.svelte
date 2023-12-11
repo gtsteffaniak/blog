@@ -138,8 +138,8 @@
         <i class="dropdown icon" />
         <div class="default text">Select Post</div>
         <div class="menu">
-          {#each Object.entries(blog_schema) as [year, months]}
-            {#each Object.entries(months) as [month, posts]}
+          {#each Object.entries(blog_schema) as [months]}
+            {#each Object.entries(months) as [posts]}
               {#each posts as p}
                 {#if p.ref == currentPost.ref}
                   <div class="item active selected" data-value={p.ref}>
