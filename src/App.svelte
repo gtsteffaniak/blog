@@ -7,7 +7,7 @@
   let currentPost = {};
   let showLogin = false;
   let isMobile = window.innerWidth < 850;
-  import { getCookie,setCookie } from "../utils/cookie.js";
+  import { getCookie } from "./shared/cookie.js";
   window.addEventListener("resize", reportWindowSize);
   theme.lightmode = false;
   if ( getCookie("lightmode") == "true" ) {
