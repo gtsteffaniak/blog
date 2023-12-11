@@ -1,6 +1,5 @@
 <script>
   export let isMobile = false;
-  import { SyncLoader } from "svelte-loading-spinners";
   import Gcard from "../shared/Gcard.svelte";
   export let theme = {};
 </script>
@@ -11,8 +10,13 @@
   ></script>
 </svelte:head>
 
-<Gcard --card-margin-left=".5em" --card-width="35em" bind:hidden={isMobile} bind:lightmode={theme.lightmode} header="Contents">
-</Gcard>
+<Gcard
+  --card-margin-left=".5em"
+  --card-width="35em"
+  bind:hidden={isMobile}
+  bind:lightmode={theme.lightmode}
+  header="Contents"
+></Gcard>
 
 <style>
 </style>

@@ -1,10 +1,11 @@
 <script>
+  import { setCookie } from '../shared/cookie.js'
   export let open = false;
   export let theme = {};
   export let active = false;
   function toggleTheme() {
-    theme.lightmode = !theme.lightmode
-    setCookie("lightmode",theme.lightmode)
+    theme.lightmode = !theme.lightmode;
+    setCookie("lightmode", theme.lightmode);
   }
 </script>
 
@@ -69,10 +70,10 @@
     padding-top: 60px;
   }
   button {
-    color:white;
-    background-color:#7d0e9e;
-    display:block;
-    margin:auto
+    color: white;
+    background-color: #7d0e9e;
+    display: block;
+    margin: auto;
   }
   /* The navigation menu links */
   aside a {
