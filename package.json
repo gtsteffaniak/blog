@@ -29,6 +29,7 @@
     "jquery": "^3.7.1",
     "js-yaml": "^4.1.0",
     "marked": "^11.0.1",
+    "svelte-loading-spinners": "^0.3.4",
     "svelte-purify": "^1.0.0"
   }
 }
