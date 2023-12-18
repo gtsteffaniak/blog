@@ -1,34 +1,4 @@
-<script>
-  import { setCookie } from '../shared/cookie.js'
-  export let open = false;
-  export let theme = {};
-  export let active = false;
-  function toggleTheme() {
-    theme.lightmode = !theme.lightmode;
-    setCookie("lightmode", theme.lightmode);
-  }
-</script>
-
-<aside
-  class="sidenav absolute w-full h-full bg-gray-200 border-r-2 shadow-lg"
-  class:open
-  class:light-mode={theme.lightmode}
->
-  <div class="sidelinks">
-    <a style="text-align:center" href="?about">About</a>
-  </div>
-  <button
-    class="ui button"
-    on:click={() => (open = !open)}
-    on:click={() => (active = !active)}
-    on:click={toggleTheme}
-  >
-    Toggle Theme
-  </button>
-</aside>
-
-<style>
-  aside {
+aside {
     width: 350px;
     left: -110%;
     transition: left 0.5s ease-in-out;
@@ -108,4 +78,3 @@
       font-size: 18px;
     }
   }
-</style>

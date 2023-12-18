@@ -6,30 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "watch": "vite build --watch",
-    "lint": "eslint --ext .svelte,.js src/",
-    "lint:fix": "eslint --ext .svelte,.js --fix src/"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "@tsconfig/svelte": "^5.0.2",
-    "eslint": "^8.55.0",
-    "eslint-plugin-svelte": "^2.35.1",
-    "eslint-plugin-vue": "^9.17.0",
-    "svelte": "^4.2.8",
-    "svelte-check": "^3.6.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "highlight.js": "^11.9.0",
-    "jquery": "^3.7.1",
+    "fomantic-ui-css": "^2.9.3",
     "js-yaml": "^4.1.0",
-    "marked": "^11.0.1",
-    "svelte-loading-spinners": "^0.3.4",
-    "svelte-purify": "^1.0.0"
+    "solid-js": "^1.8.7",
+    "solid-spinner": "^0.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8",
+    "vite-plugin-solid": "^2.8.0"
   }
 }
