@@ -27,10 +27,7 @@ jobs:
         run: npm run build
 
       - name: Copy files to public folder
-        run: |
-          mkdir public
-          cp -r dist/* public/
-
+        run: cp -r dist/* public/
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions"
