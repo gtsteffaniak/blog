@@ -28,9 +28,12 @@ jobs:
 
       - name: Copy files to public folder
         run: cp -r dist/* public/
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Commit changes
         run: |
-          git checkout main
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add public/*
