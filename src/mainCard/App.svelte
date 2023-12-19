@@ -186,9 +186,7 @@
     width: 100%;
     margin-bottom: 1em;
   }
-  .search {
-    margin-bottom: 1em;
-  }
+
   @keyframes slideIn {
     0% {
       transform: translateY(10%);
