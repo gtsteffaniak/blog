@@ -34,6 +34,7 @@ jobs:
           ref: main
       - name: Commit changes
         run: |
+          git checkout build -- public/
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add public/*
