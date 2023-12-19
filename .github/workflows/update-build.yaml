@@ -32,7 +32,7 @@ jobs:
         run: cd build && npm run build
       - name: Copy files to public folder
         run: |
-          rm -rf main/assets
+          rm -rf main/assets/*
           cp -r build/dist/* main/
       - name: Commit changes
         run: |
