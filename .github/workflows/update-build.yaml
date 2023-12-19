@@ -31,13 +31,13 @@ jobs:
       - name: Build project
         run: cd build && npm run build
       - name: Copy files to public folder
-        run: cp -r build/dist/* main/public/
+        run: cp -r build/dist/* main/
       - name: Commit changes
         run: |
           cd main
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add public/*
+          git add .
           git commit -m "Auto-commit build changes"
           git push origin main
         env:
