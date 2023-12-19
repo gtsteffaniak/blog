@@ -8,11 +8,9 @@ on:
 jobs:
   auto_commit:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Commit build changes
         run: |
           git config user.name "GitHub Actions"
