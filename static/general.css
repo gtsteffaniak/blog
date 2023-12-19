@@ -1,0 +1,9 @@
+img {
+  max-width: 100%;
+}
+a {
+  color: rgb(59, 59, 221)
+}
+a:visited {
+  color: rgb(90, 90, 213)
+}

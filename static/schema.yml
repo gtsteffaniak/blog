@@ -1,0 +1,25 @@
+posts:
+  2023:
+    October:
+      - title: "The doubled edge sword of modules when developing"
+        ref: "posts/2023/October/dependency-on-dependencies.md"
+        tags: ["technology"]
+    September:
+      - title: "Comparing the top 3 compiled low-level languages in 2023"
+        ref: "posts/2023/September/comparing_compiled.md"
+        tags: ["technology"]
+    May:
+      - title: "Testing LLAMA AI chat versions"
+        ref: "posts/2023/May/llama-cpp-tests.md"
+        tags: ["technology"]
+      - title: "May the 4th be with you"
+        ref: "posts/2023/May/may-the-4th.md"
+        tags: ["culture","entertainment"]
+        theme: "space"
+    April:
+      - title: "Bash vs. Powershell"
+        ref: "posts/2023/April/bash-vs-powershell.md"
+        tags: ["technology"]
+      - title: "It's My First Post!"
+        ref: "posts/2023/April/first-post.md"
+        tags: ["announcement"]
