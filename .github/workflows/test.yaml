@@ -5,7 +5,22 @@ on:
     branches:
       - 'build'
 jobs:
-  test:
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          submodules: recursive
+      - name: npm run
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+      - run: npm i
+      - run: npm run lint
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

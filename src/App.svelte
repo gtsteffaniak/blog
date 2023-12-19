@@ -10,10 +10,10 @@
   import { getCookie } from "./shared/cookie.js";
   window.addEventListener("resize", reportWindowSize);
   theme.lightmode = false;
-  if ( getCookie("lightmode") == "true" ) {
-    theme.lightmode = true
+  if (getCookie("lightmode") == "true") {
+    theme.lightmode = true;
   } else {
-    theme.lightmode = false
+    theme.lightmode = false;
   }
   function reportWindowSize() {
     isMobile = window.innerWidth < 850;
@@ -26,35 +26,39 @@
   import MainView from "./mainCard/App.svelte";
 </script>
 
-<Sidebar bind:open bind:theme />
-<Navbar bind:sidebar={open} bind:showLogin bind:theme />
-<main class:lightmode={theme.lightmode}>
-  <SidebarLeft
-    bind:isLoading
-    bind:blog_schema
-    bind:currentPost
-    bind:isMobile
-    bind:theme
-  />
-  <MainView
-    bind:isLoading
-    bind:blog_schema
-    bind:currentPost
-    bind:isMobile
-    bind:theme
-  />
-  <SidebarRight
-  bind:isLoading
-  bind:blog_schema
-  bind:currentPost
-  bind:isMobile
-  bind:theme
-/>
-</main>
+<wrapper class:lightmode={theme.lightmode}>
+  <Sidebar bind:open bind:theme />
+  <Navbar bind:sidebar={open} bind:showLogin bind:theme />
+  <main class:lightmode={theme.lightmode}>
+
+    <SidebarLeft
+      bind:isLoading
+      bind:blog_schema
+      bind:currentPost
+      bind:isMobile
+      bind:theme
+    />
+    <MainView
+      bind:isLoading
+      bind:blog_schema
+      bind:currentPost
+      bind:isMobile
+      bind:theme
+    />
+    <SidebarRight
+      bind:isLoading
+      bind:blog_schema
+      bind:currentPost
+      bind:isMobile
+      bind:theme
+    />
+  </main>
+</wrapper>
 
 <style>
-  :global(body) {
-    overflow:hidden;
+
+  wrapper {
+    overflow: hidden;
     background-color: gray;
     background-image: radial-gradient(
       farthest-corner at -10px -10px,
@@ -64,28 +68,13 @@
     background-size: 200% 200%;
     animation: gradient 15s ease infinite;
     animation-direction: alternate;
-  }
-  main {
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    padding-top: 5em;
-    padding-left: 1em;
-    padding-bottom: 1em;
-    padding-right: 1em;
-    width: 100%;
     display: flex;
-    height: 100%;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex: 0 1 auto;
+    flex-direction: column;
   }
-  .lightmode {
-    background-image: radial-gradient(
-      farthest-corner at -10px -10px,
-      #fff 0%,
-      darkgray 90%
-    );
-  }
+
   @keyframes gradient {
     0% {
       background-position: 0%;
@@ -93,5 +82,15 @@
     100% {
       background-position: 100%;
     }
+  }
+
+  .lightmode {
+    background-image: radial-gradient(at -10px -10px, rgb(255 255 255) 0%, rgb(159 159 159) 90%)
+  }
+  main {
+    padding: 0.5em;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
   }
 </style>

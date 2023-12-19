@@ -23,7 +23,6 @@
   .myDiv {
     transition: opacity 1s;
     animation: 1s ease;
-    background-color: #dcddde;
     font-size: medium;
     padding: 1em;
     overflow-x: hidden;
@@ -33,6 +32,7 @@
     width: 100%;
     max-width: 1000px;
     border-radius: 1em;
+    background-color: #dcddde;
   }
   .darkBackground {
     background-color: #221d23 !important;
