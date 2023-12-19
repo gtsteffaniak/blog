@@ -5,9 +5,8 @@
   import { Render } from "svelte-purify";
 </script>
 
-<div
+<spaceDiv
   class:hidden={isLoading}
-  class="myDiv"
   class:style-theme={currentPost.theme == "space"}
 >
   {#if currentPost.theme == "space"}
@@ -25,13 +24,12 @@
   {:else}
     <Render html={postOutput} />
   {/if}
-</div>
+</spaceDiv>
 
 <style>
-  .myDiv {
-    margin: -1em;
+  spaceDiv {
+    margin: -1.25em;
     transition: opacity 1s;
-    backdrop-filter: contrast(1.5);
     font-size: medium;
     padding: 10px;
     overflow-x: hidden;
@@ -40,9 +38,6 @@
     padding: 20px;
     height: 100%;
     width: 100%;
-    width: -moz-available; /* WebKit-based browsers will ignore this. */
-    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    width: fill-available;
   }
   #stars {
     width: 1px;

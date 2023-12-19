@@ -10,7 +10,7 @@
   ];
 </script>
 
-<nav class:light-mode={theme.lightmode}>
+<nav class:lightmode={theme.lightmode}>
   <div class="inner">
     {#each navItems as item}
       <button class="ui button" style="background-color:{item.color}">
@@ -19,7 +19,7 @@
         {:else if item.content == "name"}
           <a href="/"><div style="width:100px;color:white">gPortal</div></a>
         {:else}
-          <a href="/login"><i class="mi mi-user" /></a>
+          <a href="?about"><i class="mi mi-user" /></a>
         {/if}
       </button>
     {/each}
@@ -39,7 +39,6 @@
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     padding: 0;
-    overflow: hidden;
     z-index: 1;
   }
   @supports (backdrop-filter: none) {
@@ -48,20 +47,21 @@
       backdrop-filter: blur(10px) brightness(50%);
     }
   }
-
+  .lightmode {
+    background-image: none;
+    background-color: lightgray;
+  }
   .inner {
     justify-content: space-between;
   }
   .mi {
     font-size: 1.6rem;
-    color: whitesmoke;
   }
   .button {
     min-width: 50px;
     padding: 3px;
     margin: 3px;
     height: 42px;
-    color: white;
     font-family: "Nunito", sans-serif;
   }
   .inner {
@@ -72,10 +72,4 @@
     height: 100%;
   }
 
-  .ui.button:hover {
-    color: white;
-  }
-  .ui.button:focus {
-    color: white;
-  }
 </style>

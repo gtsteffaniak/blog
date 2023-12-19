@@ -14,6 +14,8 @@
 <Gcard
   --card-margin-left=".5em"
   --card-width="35em"
+  --theme-color="transparent"
+  bordered="true"
   bind:hidden={isMobile}
   bind:lightmode={theme.lightmode}
   header="Contents"

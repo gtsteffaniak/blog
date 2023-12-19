@@ -32,6 +32,7 @@
     width: 100%;
     max-width: 1000px;
     border-radius: 1em;
+    background-color: #dcddde;
   }
   .darkBackground {
     background-color: #221d23 !important;

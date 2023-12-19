@@ -17,8 +17,8 @@
   export let currentPost = {};
   let styleTheme = "";
   let prevRef = "";
-  let header="Loading Post..."
-  let margin= ".5em"
+  let header = "Loading Post...";
+  let margin = ".5em";
   onMount(() => {
     window.jQuery = jQuery;
     setTimeout(function () {
@@ -29,7 +29,7 @@
       selector.on("click", function () {
         let ref = selector.dropdown("get value");
         if (ref != null) {
-          currentPost = getPost(ref,blog_schema)
+          currentPost = getPost(ref, blog_schema);
         }
       });
     }, 500); // after TRY AGAIN
@@ -59,8 +59,14 @@
       data = "Unable to find post! **so sad**";
     }
     postOutput = marked.parse(data);
-    if (currentPost.theme != null) {
+    if (
+      currentPost &&
+      typeof currentPost === "object" &&
+      currentPost.theme !== undefined
+    ) {
       styleTheme = currentPost.theme;
+    } else {
+      styleTheme = "general";
     }
     updateCSS();
     isLoading = false;
@@ -101,21 +107,20 @@
           "selectable",
           "unstackable",
           "celled",
-          "table"
+          "table",
         );
       }
     }, 100);
   }
-  function updateHeader(isMobile){
-    if (isMobile){
-      header=""
-      margin="0px"
-    }else{
-      header=currentPost.title
-      margin="0.5em"
+  function updateHeader(isMobile) {
+    if (isMobile) {
+      header = "";
+      margin = "0px";
+    } else {
+      header = currentPost.title;
+      margin = "0.5em";
     }
   }
-
 </script>
 
 <Gcard
@@ -123,7 +128,7 @@
   --theme-color={theme.color}
   bordered="true"
   bind:lightmode={theme.lightmode}
-  header={header}
+  {header}
 >
   <section class:hidden={!isLoading} class="preloader">
     <SyncLoader size="6" color="#7d0e9e" unit="em" />
@@ -161,7 +166,7 @@
   {:else if styleTheme == "space"}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
   {:else}
-    <GeneralCard bind:isLoading bind:postOutput bind:currentPost />
+    <GeneralCard bind:isLoading bind:postOutput bind:currentPost bind:theme />
   {/if}
 </Gcard>
 
@@ -181,7 +186,9 @@
   .hidden {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s 0.5s, opacity 0.5s ease-in-out;
+    transition:
+      visibility 0s 0.5s,
+      opacity 0.5s ease-in-out;
   }
   .preloader {
     position: fixed;

@@ -1,21 +1,30 @@
 body {
   overflow: hidden;
   background-color: gray;
-  background-image: radial-gradient(farthest-corner at -10px -10px,
-      #7d0e9e 0%,
-      black 80%);
-  font-family: Lato,system-ui,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  background-size: 200% 200%;
-  animation: gradient 15s ease infinite;
-  animation-direction: alternate;
+  font-family:
+    Lato,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    "Liberation Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
   display: flex;
   height: 100vh;
   margin: 0;
   flex: 0 1 auto;
   flex-direction: column;
 }
-
-
 
 img {
   max-width: 100%;
@@ -25,11 +34,13 @@ img {
 }
 
 a {
-  color: lightgray;
+  cursor:pointer;
 }
+
 a:visited {
-  color: rgb(59, 59, 221)
+  color: white
 }
+
 a:hover {
   color: white
 }
@@ -54,6 +65,7 @@ code {
   border-width: 1px;
   border-radius: 1em;
   overflow: auto;
+  font-size: medium;
 }
 
 table {
