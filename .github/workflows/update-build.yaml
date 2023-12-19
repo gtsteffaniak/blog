@@ -10,31 +10,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+          ref: main
+          path: main
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: build
+          path: build
           submodules: recursive
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '19'
-
       - name: Install dependencies
-        run: npm install
-
+        run: cd build && npm install
       - name: Build project
-        run: npm run build
-
+        run: cd build && npm run build
       - name: Copy files to public folder
-        run: cp -r dist/* public/
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
+        run: cp -r build/dist/* main/public/
       - name: Commit changes
         run: |
-          git checkout build -- public/
+          cd main
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add public/*
