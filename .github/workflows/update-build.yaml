@@ -19,17 +19,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '14' # Adjust the Node.js version to match your project
-
       - name: Install dependencies
         run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Copy files to public folder
-        run: cp -r dist/* public/
-      - name: Commit changes
+      - name: push changes
         run: |
+          npm run build
+          cp -r dist/* public/
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add public/*
