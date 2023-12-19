@@ -1,51 +1,66 @@
 <script>
-  export let theme = {};
-  export let isMobile = false;
+  // Imports and variable declarations
   import { getPost } from "../selector.js";
   import { SyncLoader } from "svelte-loading-spinners";
-  export let blog_schema;
   import { marked } from "marked";
   import hljs from "highlight.js";
   import { onMount } from "svelte";
-  export let isLoading = true;
   import StarsCard from "./styleCard/space.svelte";
   import Gcard from "../shared/Gcard.svelte";
   import AboutCard from "./styleCard/about.svelte";
   import GeneralCard from "./styleCard/general.svelte";
   import jQuery from "jquery";
-  let postOutput = "";
+
+  // Exported props
+  export let theme = {};
+  export let isMobile = false;
+  export let blog_schema;
+  export let isLoading = true;
   export let currentPost = {};
+
+  // Local variables
+  let postOutput = "";
   let styleTheme = "";
   let prevRef = "";
   let header = "Loading Post...";
   let margin = ".5em";
+
   onMount(() => {
+    // Initialize jQuery (if needed)
     window.jQuery = jQuery;
-    setTimeout(function () {
-      let selector = window.jQuery(".ui.selection.dropdown");
+
+    // Initialize marked options
+    marked.setOptions({
+      highlight: (code) => hljs.highlightAuto(code).value,
+    });
+
+    // Fetch post if URL is provided
+    const url = window.location.href.split("#")[0];
+    if (url.length > 1) {
+      fetchPost(url.split("/?")[1]);
+    }
+    window.marked = marked;
+
+    // Initialize dropdown behavior (if needed)
+    setTimeout(() => {
+      const selector = window.jQuery(".ui.selection.dropdown");
       selector.dropdown({
         clearable: true,
       });
-      selector.on("click", function () {
-        let ref = selector.dropdown("get value");
+      selector.on("click", () => {
+        const ref = selector.dropdown("get value");
         if (ref != null) {
           currentPost = getPost(ref, blog_schema);
         }
       });
     }, 500); // after TRY AGAIN
-    marked.setOptions({
-      highlight: function (code) {
-        return hljs.highlightAuto(code).value;
-      },
-    });
-    let url = window.location.href.split("#")[0];
-    if (url.length > 1) {
-      fetchPost(url.split("/?")[1]);
-    }
-    window.marked = marked;
   });
-  $: currentPost && fetchPost(currentPost.ref) && updateHeader(isMobile); // post change event listener
-  $: theme && updateCSS(); // post change event listener
+
+  // Reactive statements
+  $: currentPost && fetchPost(currentPost.ref) && updateHeader(isMobile);
+  $: theme && updateCSS();
+
+  // Function to fetch post based on reference
   async function fetchPost(ref) {
     if (ref == "" || ref == prevRef || ref == "about") {
       return;
@@ -53,29 +68,23 @@
     postOutput = "";
     isLoading = true;
     prevRef = ref;
-    var response = await fetch(ref);
+
+    const response = await fetch(ref);
     let data = await response.text();
     if (!response.ok) {
       data = "Unable to find post! **so sad**";
     }
     postOutput = marked.parse(data);
-    if (
-      currentPost &&
-      typeof currentPost === "object" &&
-      currentPost.theme !== undefined
-    ) {
-      styleTheme = currentPost.theme;
-    } else {
-      styleTheme = "general";
-    }
+
+    styleTheme = currentPost?.theme !== undefined ? currentPost.theme : "general";
     updateCSS();
     isLoading = false;
     window.scrollTo(0, 0);
-    return false;
   }
 
+  // Function to update CSS styles based on theme
   function updateCSS() {
-    setTimeout(function () {
+    setTimeout(() => {
       document.querySelectorAll("img").forEach((img) => {
         img.setAttribute("loading", "lazy");
         img.setAttribute("alt", "dominant color placeholder");
@@ -83,25 +92,20 @@
       document.querySelectorAll("pre code").forEach((code) => {
         code.style.padding = "0.5em";
       });
-      if (theme.lightmode) {
-        // Set the background color of all code elements to black
-        document.querySelectorAll("code").forEach((code) => {
-          code.style.backgroundColor = "lightgray";
-        });
-      } else {
-        // Set the background color of all code elements to black
-        document.querySelectorAll("code").forEach((code) => {
-          code.style.backgroundColor = "black";
-        });
-      }
-      let table = document.querySelectorAll("table");
-      for (var i = 0; i < table.length; ++i) {
+      
+      const codeElements = document.querySelectorAll("code");
+      codeElements.forEach((code) => {
+        code.style.backgroundColor = theme.lightmode ? "lightgray" : "black";
+      });
+
+      const tableElements = document.querySelectorAll("table");
+      tableElements.forEach((table) => {
         if (theme.lightmode) {
-          table[i].classList.remove("inverted");
+          table.classList.remove("inverted");
         } else {
-          table[i].classList.add("inverted");
+          table.classList.add("inverted");
         }
-        table[i].classList.add(
+        table.classList.add(
           "ui",
           "sortable",
           "selectable",
@@ -109,24 +113,27 @@
           "celled",
           "table",
         );
-      }
+      });
     }, 100);
   }
-  function updateHeader(isMobile) {
-    if (isMobile) {
-      header = "";
-      margin = "0px";
-    } else {
-      header = currentPost.title;
-      margin = "0.5em";
-    }
-  }
 
+  // Function to handle post change in the dropdown
   function handlePostChange(event) {
     const selectedRef = event.target.value;
     if (selectedRef !== "") {
       currentPost = getPost(selectedRef, blog_schema);
       fetchPost(selectedRef);
+    }
+  }
+
+  // Function to update header and margin based on mobile view
+  function updateHeader(isMobile) {
+    if (isMobile) {
+      header = "";
+      margin = "0px";
+    } else {
+      header = currentPost.title || "";
+      margin = "0.5em";
     }
   }
 </script>
