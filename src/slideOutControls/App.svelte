@@ -1,5 +1,5 @@
 <script>
-  import { setCookie } from '../shared/cookie.js'
+  import { setCookie } from "../shared/cookie.js";
   export let open = false;
   export let theme = {};
   export let active = false;
@@ -41,23 +41,12 @@
     height: 100%; /* Full-height: remove this if you want "auto" height */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
-    background-color: #111; /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
   }
   @supports (backdrop-filter: none) {
     aside {
       background-color: rgba(186, 186, 186, 0.5);
       backdrop-filter: blur(10px) brightness(50%);
-    }
-  }
-  .light-mode {
-    background: transparent;
-    background-color: rgb(111, 111, 111);
-  }
-  @supports (backdrop-filter: none) {
-    .light-mode {
-      background-color: rgba(59, 59, 59, 0.3);
-      backdrop-filter: blur(10px) brightness(100%);
     }
   }
   .open {

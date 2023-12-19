@@ -45,7 +45,6 @@
     window.marked = marked;
   });
   $: currentPost && fetchPost(currentPost.ref) && updateHeader(isMobile); // post change event listener
-
   $: theme && updateCSS(); // post change event listener
   async function fetchPost(ref) {
     if (ref == "" || ref == prevRef || ref == "about") {
@@ -178,12 +177,7 @@
       transform: translateX(0);
     }
   }
-  @supports (backdrop-filter: none) {
-    .light-mode {
-      background-color: rgba(250, 250, 250, 0.8);
-      backdrop-filter: blur(10px) brightness(100%);
-    }
-  }
+
   .hidden {
     visibility: hidden;
     opacity: 0;

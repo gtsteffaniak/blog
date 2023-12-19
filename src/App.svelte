@@ -10,10 +10,10 @@
   import { getCookie } from "./shared/cookie.js";
   window.addEventListener("resize", reportWindowSize);
   theme.lightmode = false;
-  if ( getCookie("lightmode") == "true" ) {
-    theme.lightmode = true
+  if (getCookie("lightmode") == "true") {
+    theme.lightmode = true;
   } else {
-    theme.lightmode = false
+    theme.lightmode = false;
   }
   function reportWindowSize() {
     isMobile = window.innerWidth < 850;
@@ -44,47 +44,22 @@
     bind:theme
   />
   <SidebarRight
-  bind:isLoading
-  bind:blog_schema
-  bind:currentPost
-  bind:isMobile
-  bind:theme
-/>
+    bind:isLoading
+    bind:blog_schema
+    bind:currentPost
+    bind:isMobile
+    bind:theme
+  />
 </main>
 
 <style>
-  :global(body) {
-    overflow:hidden;
-    background-color: gray;
-    background-image: radial-gradient(
-      farthest-corner at -10px -10px,
-      #7d0e9e 0%,
-      black 80%
-    );
-    background-size: 200% 200%;
-    animation: gradient 15s ease infinite;
-    animation-direction: alternate;
-  }
   main {
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    padding-top: 5em;
-    padding-left: 1em;
-    padding-bottom: 1em;
-    padding-right: 1em;
-    width: 100%;
+    padding: 0.5em;
     display: flex;
     height: 100%;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    align-items: center;
   }
   .lightmode {
-    background-image: radial-gradient(
-      farthest-corner at -10px -10px,
-      #fff 0%,
-      darkgray 90%
-    );
+    background-color: white
   }
   @keyframes gradient {
     0% {

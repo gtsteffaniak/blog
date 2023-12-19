@@ -28,11 +28,11 @@
 
 <style>
   nav {
-    position: fixed;
     width: 100%;
+    height: 3.75em;
     background: transparent;
     background-color: rgba(59, 59, 59, 1);
-    border-top: 5px solid #7d0e9e;
+    border-top: .25em solid #7d0e9e;
     border-bottom: 0;
     -webkit-box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
     box-shadow: 0 1px 30px rgb(0 0 0 / 10%);
@@ -40,23 +40,12 @@
     margin-bottom: 0;
     padding: 0;
     overflow: hidden;
-    height: 57px;
     z-index: 1;
   }
   @supports (backdrop-filter: none) {
     nav {
       background-color: rgba(59, 59, 59, 0.5);
       backdrop-filter: blur(10px) brightness(50%);
-    }
-  }
-  .light-mode {
-    background: transparent;
-    background-color: rgb(193, 193, 193);
-  }
-  @supports (backdrop-filter: none) {
-    .light-mode {
-      background-color: rgba(59, 59, 59, 0.3);
-      backdrop-filter: blur(10px) brightness(100%);
     }
   }
 

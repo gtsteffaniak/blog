@@ -23,7 +23,6 @@
   .myDiv {
     transition: opacity 1s;
     animation: 1s ease;
-    background-color: #dcddde;
     font-size: medium;
     padding: 1em;
     overflow-x: hidden;
