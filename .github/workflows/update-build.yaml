@@ -31,7 +31,9 @@ jobs:
       - name: Build project
         run: cd build && npm run build
       - name: Copy files to public folder
-        run: cp -r build/dist/* main/
+        run: |
+          rm -rf main/assets
+          cp -r build/dist/* main/
       - name: Commit changes
         run: |
           cd main

@@ -10,7 +10,7 @@
   import Gcard from "../shared/Gcard.svelte";
   export let blog_schema;
   async function fetchSchema() {
-    var response = await fetch("schema.yml");
+    var response = await fetch("assets/schema.yml");
     const data = await response.text();
     const posts = yaml.loadAll(data)[0].posts;
     if (response.ok) {
