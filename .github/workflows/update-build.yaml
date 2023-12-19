@@ -6,16 +6,27 @@ on:
       - build
 
 jobs:
-  auto_commit:
+  build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          submodules: recursive
+      - name: npm run
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+      - run: npm i
+      - run: npm run build
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Commit build changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add ./public/build
+          git add ./dist
           git commit -m "Auto-commit build changes"
           git push origin main
         env:
