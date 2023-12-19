@@ -121,6 +121,14 @@
       margin = "0.5em";
     }
   }
+
+  function handlePostChange(event) {
+    const selectedRef = event.target.value;
+    if (selectedRef !== "") {
+      currentPost = getPost(selectedRef, blog_schema);
+      fetchPost(selectedRef);
+    }
+  }
 </script>
 
 <Gcard
@@ -137,28 +145,24 @@
     {#if blog_schema === null || typeof blog_schema === "undefined"}
       <p>...Loading</p>
     {:else}
-      <div class="ui search selection fluid dropdown">
-        <input type="hidden" name="post" value={currentPost.ref} />
-        <i class="dropdown icon" />
-        <div class="default text">Select Post</div>
-        <div class="menu">
-          {#each Object.entries(blog_schema) as [months]}
-            {#each Object.entries(months) as [posts]}
-              {#each posts as p}
-                {#if p.ref == currentPost.ref}
-                  <div class="item active selected" data-value={p.ref}>
-                    <i class="tg flag" />{p.title}
-                  </div>
-                {:else}
-                  <div class="item" data-value={p.ref}>
-                    <i class="tg flag" />{p.title}
-                  </div>
-                {/if}
-              {/each}
+      <select id="postDropdown" on:change={handlePostChange}>
+        <option value="">Select Post</option>
+        {#each Object.entries(blog_schema) as [year, months]}
+          {#each Object.entries(months) as [month, posts]}
+            {#each posts as p}
+              {#if p.ref == currentPost.ref}
+              <option value="{p.ref}" selected>
+                {year}/{month} - {p.title}
+              </option>
+              {:else}
+              <option value="{p.ref}" >
+                {year}/{month} - {p.title}
+              </option>
+              {/if}
             {/each}
           {/each}
-        </div>
-      </div>
+        {/each}
+      </select>
     {/if}
   {/if}
   {#if currentPost.ref == "about"}
@@ -171,6 +175,10 @@
 </Gcard>
 
 <style>
+  select {
+    width: 100%;
+    margin-bottom: 1em;
+  }
   .search {
     margin-bottom: 1em;
   }
