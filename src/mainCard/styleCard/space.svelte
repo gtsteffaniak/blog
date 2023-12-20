@@ -2,7 +2,6 @@
   export let currentPost = "";
   export let postOutput = "";
   export let isLoading = true;
-  import { Render } from "svelte-purify";
 </script>
 
 <spaceDiv
@@ -19,10 +18,10 @@
     <div id="stars2" />
     <div id="stars3" />
     <div id="title">
-      <Render html={postOutput} />
+      {@html postOutput}
     </div>
   {:else}
-    <Render html={postOutput} />
+    {@html postOutput}
   {/if}
 </spaceDiv>
 
@@ -30,14 +29,8 @@
   spaceDiv {
     margin: -1.25em;
     transition: opacity 1s;
-    font-size: medium;
-    padding: 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    object-fit: cover;
-    padding: 20px;
     height: 100%;
-    width: 100%;
+    width: 120%;
   }
   #stars {
     width: 1px;
