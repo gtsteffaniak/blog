@@ -14,21 +14,13 @@
     margin: 0;
     border-radius: 1em;
     transition: opacity 1s;
-    backdrop-filter: contrast(1.5);
     font-size: medium;
-    padding: 10px;
     overflow: auto;
-    object-fit: cover;
-    padding: 20px;
+    padding: 1em;
     height: 100%;
     width: 100%;
+    max-width: 1000px;
     box-sizing: border-box;
-    width: -moz-available; /* WebKit-based browsers will ignore this. */
-    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    width: fill-available;
-    height: -moz-available; /* WebKit-based browsers will ignore this. */
-    height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    height: fill-available;
     background-color: #221d23;
   }
   .lightmode {
@@ -40,5 +32,15 @@
     transition:
       visibility 0s 0.5s,
       opacity 0.5s ease-in-out;
+  }
+  a {
+    color: #7d0e9e;
+  }
+  a {
+    color: #7d0e9e;
+  }
+  .darkBackground > a,
+  .darkBackground > * > a {
+    color: rgb(176, 90, 207);
   }
 </style>
