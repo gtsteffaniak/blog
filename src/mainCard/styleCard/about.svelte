@@ -30,6 +30,7 @@
     padding: 20px;
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
     max-width: 1000px;
     border-radius: 1em;
     background-color: #dcddde;

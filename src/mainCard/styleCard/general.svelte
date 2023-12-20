@@ -2,12 +2,12 @@
   export let postOutput = "";
   export let isLoading = true;
   export let theme = { lightmode: false };
-  import { Render } from "svelte-purify";
 </script>
 
 <general class:hidden={isLoading} class:lightmode={theme.lightmode}>
-  <Render html={postOutput} />
+  {@html postOutput}
 </general>
+
 
 <style>
   general {
@@ -22,6 +22,7 @@
     padding: 20px;
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
     width: -moz-available; /* WebKit-based browsers will ignore this. */
     width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
     width: fill-available;
