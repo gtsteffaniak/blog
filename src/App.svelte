@@ -5,7 +5,6 @@
   theme.color = "#7d0e9e";
   let isLoading = true;
   let currentPost = {};
-  let showLogin = false;
   let isMobile = window.innerWidth < 850;
   import { getCookie } from "./shared/cookie.js";
   window.addEventListener("resize", reportWindowSize);
@@ -28,7 +27,7 @@
 
 <wrapper class:lightmode={theme.lightmode}>
   <Sidebar bind:open bind:theme />
-  <Navbar bind:sidebar={open} bind:showLogin bind:theme />
+  <Navbar bind:sidebar={open} bind:theme />
   <main class:lightmode={theme.lightmode}>
     <SidebarLeft
       bind:isLoading

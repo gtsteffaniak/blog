@@ -4,7 +4,7 @@
   export let theme = { lightmode: false };
 </script>
 
-<general class:hidden={isLoading} class:lightmode={theme.lightmode}>
+<general class:hidden={isLoading} class="general-scrollcard" class:lightmode={theme.lightmode}>
   {@html postOutput}
 </general>
 
