@@ -25,11 +25,11 @@
   let prevRef = "";
   let header = "Loading Post...";
   let margin = ".5em";
-
+  let marked;
   onMount(() => {
     // Initialize jQuery (if needed)
     window.jQuery = jQuery;
-    let marked = new Marked(
+    marked = new Marked(
       markedHighlight({
         gfm: true,
         highlight: (code) => hljs.highlightAuto(code).value,
