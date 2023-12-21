@@ -28,6 +28,7 @@
 <style>
   spaceDiv {
     margin: -1.25em;
+    margin-top: 0em;
     transition: opacity 1s;
     height: 100%;
     width: 120%;
