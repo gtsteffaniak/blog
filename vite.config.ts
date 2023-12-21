@@ -1,8 +1,10 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { defineConfig } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: '',
   plugins: [svelte()],
-})
+  build: {
+    chunkSizeWarningLimit: 2000, // Change this value as needed
+  },
+});
