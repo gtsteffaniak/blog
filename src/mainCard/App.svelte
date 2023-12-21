@@ -1,7 +1,6 @@
 <script>
   // Imports and variable declarations
   import { getPost } from "../selector.js";
-  import { SyncLoader } from "svelte-loading-spinners";
   import { Marked } from "marked";
   import { markedHighlight } from "marked-highlight";
   import { gfmHeadingId } from "marked-gfm-heading-id";
@@ -146,9 +145,6 @@
   bind:lightmode={theme.lightmode}
   {header}
 >
-  <section class:hidden={!isLoading} class="preloader">
-    <SyncLoader size="6" color="#7d0e9e" unit="em" />
-  </section>
   {#if isMobile}
     {#if blog_schema === null || typeof blog_schema === "undefined"}
       <p>...Loading</p>
@@ -199,19 +195,5 @@
     100% {
       transform: translateX(0);
     }
-  }
-
-  .hidden {
-    display: none !important;
-  }
-  .preloader {
-    position: fixed;
-    top: 50%;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
   }
 </style>
