@@ -10,7 +10,6 @@
   import Gcard from "../shared/Gcard.svelte";
   import AboutCard from "./styleCard/about.svelte";
   import GeneralCard from "./styleCard/general.svelte";
-  import jQuery from "jquery";
 
   // Exported props
   export let theme = {};
@@ -27,8 +26,6 @@
   let margin = ".5em";
   let marked;
   onMount(() => {
-    // Initialize jQuery (if needed)
-    window.jQuery = jQuery;
     marked = new Marked(
       markedHighlight({
         gfm: true,
