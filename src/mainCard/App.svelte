@@ -1,15 +1,15 @@
 <script>
   // Imports and variable declarations
   import { getPost } from "../selector.js";
-  import { SyncLoader } from "svelte-loading-spinners";
-  import { marked } from "marked";
+  import { Marked } from "marked";
+  import { markedHighlight } from "marked-highlight";
+  import { gfmHeadingId } from "marked-gfm-heading-id";
   import hljs from "highlight.js";
   import { onMount } from "svelte";
   import StarsCard from "./styleCard/space.svelte";
   import Gcard from "../shared/Gcard.svelte";
   import AboutCard from "./styleCard/about.svelte";
   import GeneralCard from "./styleCard/general.svelte";
-  import jQuery from "jquery";
 
   // Exported props
   export let theme = {};
@@ -24,36 +24,21 @@
   let prevRef = "";
   let header = "Loading Post...";
   let margin = ".5em";
-
+  let marked;
   onMount(() => {
-    // Initialize jQuery (if needed)
-    window.jQuery = jQuery;
-
-    // Initialize marked options
-    marked.setOptions({
-      highlight: (code) => hljs.highlightAuto(code).value,
-    });
-
+    marked = new Marked(
+      markedHighlight({
+        gfm: true,
+        highlight: (code) => hljs.highlightAuto(code).value,
+      }),
+    );
+    marked.use(gfmHeadingId());
     // Fetch post if URL is provided
     const url = window.location.href.split("#")[0];
     if (url.length > 1) {
       fetchPost(url.split("/?")[1]);
     }
     window.marked = marked;
-
-    // Initialize dropdown behavior (if needed)
-    setTimeout(() => {
-      const selector = window.jQuery(".ui.selection.dropdown");
-      selector.dropdown({
-        clearable: true,
-      });
-      selector.on("click", () => {
-        const ref = selector.dropdown("get value");
-        if (ref != null) {
-          currentPost = getPost(ref, blog_schema);
-        }
-      });
-    }, 500); // after TRY AGAIN
   });
 
   // Reactive statements
@@ -68,18 +53,16 @@
     postOutput = "";
     isLoading = true;
     prevRef = ref;
-
     const response = await fetch(ref);
     let data = await response.text();
     if (!response.ok) {
       data = "Unable to find post! **so sad**";
     }
     postOutput = marked.parse(data);
-
-    styleTheme = currentPost?.theme !== undefined ? currentPost.theme : "general";
+    styleTheme =
+      currentPost?.theme !== undefined ? currentPost.theme : "general";
     updateCSS();
     isLoading = false;
-    window.scrollTo(0, 0);
   }
 
   // Function to update CSS styles based on theme
@@ -92,7 +75,7 @@
       document.querySelectorAll("pre code").forEach((code) => {
         code.style.padding = "0.5em";
       });
-      
+
       const codeElements = document.querySelectorAll("code");
       codeElements.forEach((code) => {
         code.style.backgroundColor = theme.lightmode ? "lightgray" : "black";
@@ -114,6 +97,20 @@
           "table",
         );
       });
+      // Get the element by the hash
+      if (window.location.hash != "") {
+        console.log("this is hash",window.location.hash)
+        const element = document.querySelector(window.location.hash);
+              // Check if the element exists
+      if (element != undefined) {
+        console.log('scrolling')
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }
+      }
     }, 100);
   }
 
@@ -145,9 +142,6 @@
   bind:lightmode={theme.lightmode}
   {header}
 >
-  <section class:hidden={!isLoading} class="preloader">
-    <SyncLoader size="6" color="#7d0e9e" unit="em" />
-  </section>
   {#if isMobile}
     {#if blog_schema === null || typeof blog_schema === "undefined"}
       <p>...Loading</p>
@@ -158,13 +152,13 @@
           {#each Object.entries(months) as [month, posts]}
             {#each posts as p}
               {#if p.ref == currentPost.ref}
-              <option value="{p.ref}" selected>
-                {year}/{month} - {p.title}
-              </option>
+                <option value={p.ref} selected>
+                  {year}/{month} - {p.title}
+                </option>
               {:else}
-              <option value="{p.ref}" >
-                {year}/{month} - {p.title}
-              </option>
+                <option value={p.ref}>
+                  {year}/{month} - {p.title}
+                </option>
               {/if}
             {/each}
           {/each}
@@ -177,7 +171,11 @@
   {:else if styleTheme == "space"}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
   {:else}
-    <GeneralCard bind:isLoading bind:postOutput bind:currentPost bind:theme />
+    <GeneralCard
+      bind:isLoading
+      bind:postOutput
+      bind:theme
+    />
   {/if}
 </Gcard>
 
@@ -194,23 +192,5 @@
     100% {
       transform: translateX(0);
     }
-  }
-
-  .hidden {
-    visibility: hidden;
-    opacity: 0;
-    transition:
-      visibility 0s 0.5s,
-      opacity 0.5s ease-in-out;
-  }
-  .preloader {
-    position: fixed;
-    top: 50%;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
   }
 </style>

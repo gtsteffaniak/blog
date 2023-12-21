@@ -5,7 +5,6 @@
   theme.color = "#7d0e9e";
   let isLoading = true;
   let currentPost = {};
-  let showLogin = false;
   let isMobile = window.innerWidth < 850;
   import { getCookie } from "./shared/cookie.js";
   window.addEventListener("resize", reportWindowSize);
@@ -28,9 +27,8 @@
 
 <wrapper class:lightmode={theme.lightmode}>
   <Sidebar bind:open bind:theme />
-  <Navbar bind:sidebar={open} bind:showLogin bind:theme />
+  <Navbar bind:sidebar={open} bind:theme />
   <main class:lightmode={theme.lightmode}>
-
     <SidebarLeft
       bind:isLoading
       bind:blog_schema
@@ -45,18 +43,19 @@
       bind:isMobile
       bind:theme
     />
-    <SidebarRight
-      bind:isLoading
-      bind:blog_schema
-      bind:currentPost
-      bind:isMobile
-      bind:theme
-    />
+    {#if false}
+      <SidebarRight
+        bind:isLoading
+        bind:blog_schema
+        bind:currentPost
+        bind:isMobile
+        bind:theme
+      />
+    {/if}
   </main>
 </wrapper>
 
 <style>
-
   wrapper {
     overflow: hidden;
     background-color: gray;
@@ -85,7 +84,11 @@
   }
 
   .lightmode {
-    background-image: radial-gradient(at -10px -10px, rgb(255 255 255) 0%, rgb(159 159 159) 90%)
+    background-image: radial-gradient(
+      at -10px -10px,
+      rgb(255 255 255) 0%,
+      rgb(159 159 159) 90%
+    );
   }
   main {
     padding: 0.5em;

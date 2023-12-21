@@ -12,20 +12,21 @@ export function getCurrentPost(blog_schema) {
 }
 
 export function setCurrentlyActive(p) {
-    const nextURL = "?" + p.ref;
-    const nextTitle = p.title;
-    const nextState = { additionalInformation: "Updated the URL with JS" };
-    window.history.pushState(nextState, nextTitle, nextURL);
-    window.history.replaceState(nextState, nextTitle, nextURL);
-    return p;
+  const hash = window.location.hash; // Retrieve the current hash
+  const nextURL = "?" + p.ref + hash; // Append the hash to the URL
+  const nextTitle = p.title;
+  const nextState = { additionalInformation: "Updated the URL with JS" };
+  window.history.pushState(nextState, nextTitle, nextURL);
+  window.history.replaceState(nextState, nextTitle, nextURL);
+  return p;
 }
 
 export function getPost(ref, blog_schema) {
-  for (const months of Object.values(blog_schema)) {
-      const post = Object.values(months).flat().find(e => e.ref === ref);
-      if (post) {
-        return setCurrentlyActive(post)
-      }
-  }
-  return setCurrentlyActive(about)
+for (const months of Object.values(blog_schema)) {
+    const post = Object.values(months).flat().find(e => e.ref === ref);
+    if (post) {
+      return setCurrentlyActive(post);
+    }
+}
+return setCurrentlyActive(about);
 }

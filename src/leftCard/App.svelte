@@ -25,15 +25,9 @@
   export let theme = {};
 </script>
 
-<svelte:head>
-  <script
-    src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"
-  ></script>
-</svelte:head>
-
 <Gcard
   bind:hidden={isMobile}
-  --card-width="35em"
+  --card-width="25em"
   --theme-color="transparent"
   bordered="true"
   bind:lightmode={theme.lightmode}
