@@ -1,13 +1,9 @@
 <script>
-  import { SyncLoader } from "svelte-loading-spinners";
   export let postOutput = "";
   export let isLoading = true;
   export let theme = { lightmode: false };
 </script>
 
-<section class:hidden={!isLoading} class="preloader">
-  <SyncLoader size="6" color="#7d0e9e" unit="em" />
-</section>
 <general
   class="general"
   class:hidden={isLoading}
@@ -48,21 +44,4 @@
     color: rgb(176, 90, 207);
   }
 
-  .hidden {
-    visibility: hidden;
-    opacity: 0;
-    transition:
-      visibility 0s 0.5s,
-      opacity 0.5s ease-in-out;
-  }
-  .preloader {
-    position: fixed;
-    top: 50%;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-  }
 </style>
