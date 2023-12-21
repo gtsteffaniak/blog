@@ -1,5 +1,4 @@
 <script>
-  import { SyncLoader } from "svelte-loading-spinners";
   export let postOutput = "";
   export let isLoading = true;
   export let theme = { lightmode: false };
