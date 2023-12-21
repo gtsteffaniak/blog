@@ -30,7 +30,6 @@
   <Sidebar bind:open bind:theme />
   <Navbar bind:sidebar={open} bind:showLogin bind:theme />
   <main class:lightmode={theme.lightmode}>
-
     <SidebarLeft
       bind:isLoading
       bind:blog_schema
@@ -45,18 +44,19 @@
       bind:isMobile
       bind:theme
     />
-    <SidebarRight
-      bind:isLoading
-      bind:blog_schema
-      bind:currentPost
-      bind:isMobile
-      bind:theme
-    />
+    {#if false}
+      <SidebarRight
+        bind:isLoading
+        bind:blog_schema
+        bind:currentPost
+        bind:isMobile
+        bind:theme
+      />
+    {/if}
   </main>
 </wrapper>
 
 <style>
-
   wrapper {
     overflow: hidden;
     background-color: gray;
@@ -85,7 +85,11 @@
   }
 
   .lightmode {
-    background-image: radial-gradient(at -10px -10px, rgb(255 255 255) 0%, rgb(159 159 159) 90%)
+    background-image: radial-gradient(
+      at -10px -10px,
+      rgb(255 255 255) 0%,
+      rgb(159 159 159) 90%
+    );
   }
   main {
     padding: 0.5em;
