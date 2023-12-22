@@ -25,7 +25,6 @@
   import MainView from "./mainCard/App.svelte";
 </script>
 
-<wrapper class:lightmode={theme.lightmode}>
   <Sidebar bind:open bind:theme />
   <Navbar bind:sidebar={open} bind:theme />
   <main class:lightmode={theme.lightmode}>
@@ -53,26 +52,8 @@
       />
     {/if}
   </main>
-</wrapper>
 
 <style>
-  wrapper {
-    overflow: hidden;
-    background-color: gray;
-    background-image: radial-gradient(
-      farthest-corner at -10px -10px,
-      #7d0e9e 0%,
-      black 80%
-    );
-    background-size: 200% 200%;
-    animation: gradient 15s ease infinite;
-    animation-direction: alternate;
-    display: flex;
-    height: 100vh;
-    margin: 0;
-    flex: 0 1 auto;
-    flex-direction: column;
-  }
 
   @keyframes gradient {
     0% {
