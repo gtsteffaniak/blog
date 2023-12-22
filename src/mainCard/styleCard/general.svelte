@@ -43,5 +43,4 @@
   :global(.general a) {
     color: rgb(176, 90, 207);
   }
-
 </style>

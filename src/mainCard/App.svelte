@@ -8,6 +8,7 @@
   import hljs from "highlight.js";
   import { onMount } from "svelte";
   import StarsCard from "./styleCard/space.svelte";
+  import SnowCard from "./styleCard/snow.svelte";
   import Gcard from "../shared/Gcard.svelte";
   import AboutCard from "./styleCard/about.svelte";
   import GeneralCard from "./styleCard/general.svelte";
@@ -17,7 +18,7 @@
   export let isMobile = false;
   export let blog_schema;
   export let isLoading = true;
-  export let currentPost = {};
+  export let currentPost = {ref: "about"};
 
   // Local variables
   let postOutput = "";
@@ -100,17 +101,17 @@
       });
       // Get the element by the hash
       if (window.location.hash != "") {
-        console.log("this is hash",window.location.hash)
+        console.log("this is hash", window.location.hash);
         const element = document.querySelector(window.location.hash);
-              // Check if the element exists
-      if (element != undefined) {
-        console.log('scrolling')
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "nearest",
-        });
-      }
+        // Check if the element exists
+        if (element != undefined) {
+          console.log("scrolling");
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest",
+          });
+        }
       }
     }, 100);
   }
@@ -134,6 +135,10 @@
       margin = "0.5em";
     }
   }
+
+  function checkCurrentPost(cp) {
+    console.log("current",cp)
+  }
 </script>
 
 <Gcard
@@ -143,9 +148,9 @@
   bind:lightmode={theme.lightmode}
   {header}
 >
-<section class:hidden={!isLoading} class="preloader">
-  <SyncLoader size="6" color="#7d0e9e" unit="em" />
-</section>
+  <section class:hidden={!isLoading} class="preloader">
+    <SyncLoader size="6" color="#7d0e9e" unit="em" />
+  </section>
   {#if isMobile}
     {#if blog_schema === null || typeof blog_schema === "undefined"}
       <p>...Loading</p>
@@ -170,16 +175,17 @@
       </select>
     {/if}
   {/if}
-  {#if currentPost.ref == "about"}
+  {#if typeof currentPost !== 'object'}
+      <div>npe</div>
+  {:else if currentPost.ref == "about"}
+      {checkCurrentPost(currentPost)}
     <AboutCard bind:theme />
   {:else if styleTheme == "space"}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
+  {:else if styleTheme == "snow"}
+    <SnowCard bind:isLoading bind:postOutput />
   {:else}
-    <GeneralCard
-      bind:isLoading
-      bind:postOutput
-      bind:theme
-    />
+    <GeneralCard bind:isLoading bind:postOutput bind:theme />
   {/if}
 </Gcard>
 
@@ -216,5 +222,4 @@
     flex-flow: column;
     align-items: center;
   }
-
 </style>

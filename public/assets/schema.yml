@@ -1,5 +1,10 @@
 posts:
   2023:
+    December:
+      - title: "Happy Holidays!"
+        ref: "posts/2023/December/happy_holidays.md"
+        tags: ["art","imagination"]
+        theme: "snow"
     October:
       - title: "The doubled edge sword of modules when developing"
         ref: "posts/2023/October/dependency-on-dependencies.md"
