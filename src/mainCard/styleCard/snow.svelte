@@ -109,12 +109,12 @@
 
 <style>
   .canvas {
-    width: 100%;
+    width: 110%;
     height: 100%;
     overflow: hidden;
     position: relative;
     background: radial-gradient(circle, rgba(37,39,40,1) 9%, rgba(36,36,36,1) 58%, rgba(57,84,106,1) 100%);
-    border-radius: 6px;
+    border-radius: 1em;
     box-shadow: 0px 0px 52px -10px rgba(23, 102, 90, 1);
   }
 
@@ -450,7 +450,7 @@
     border-radius: 40%;
     background-color: #f6f5ff;
     transform: rotate(25deg);
-    z-index: 2;
+    z-index: 7;
 
     &:after {
       content: "";
@@ -472,7 +472,7 @@
     height: 160px;
     width: 250px;
     background-color: #fff;
-    z-index: 1;
+    z-index: 6;
     transform: scaleX(1.2) skewx(20deg);
     border-radius: 80% 25%;
   }
@@ -484,7 +484,7 @@
     height: 120px;
     width: 200px;
     background-color: #edf1f7;
-    z-index: 1;
+    z-index: 6;
 
     border-radius: 80% 65%;
   }
@@ -496,7 +496,7 @@
     width: 100%;
     height: 50px;
     background-color: #f6f5ff;
-    z-index: 1;
+    z-index: 6;
   }
 
   .tree {
@@ -591,7 +591,6 @@
   }
 
   snow {
-    padding: 20px;
     color: white;
     width: 100%;
     height: 100%;
@@ -604,6 +603,5 @@
     justify-content: center;
     align-items: center;
     max-width: 750px;
-
   }
 </style>
