@@ -41,7 +41,6 @@ export function startSnow() {
   this.vMaxX = 3;                 // Maximum X velocity range for snow
   this.vMaxY = 2;                 // Maximum Y velocity range for snow
   this.zIndex = 5;                // CSS stacking order applied to each snowflake
-
   // --- "No user-serviceable parts inside" past this point, yadda yadda ---
 
   var storm = this,
