@@ -75,6 +75,6 @@
     padding: 0.5em;
     display: flex;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
   }
 </style>

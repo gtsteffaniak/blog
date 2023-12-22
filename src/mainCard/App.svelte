@@ -175,10 +175,7 @@
       </select>
     {/if}
   {/if}
-  {#if typeof currentPost !== 'object'}
-      <div>npe</div>
-  {:else if currentPost.ref == "about"}
-      {checkCurrentPost(currentPost)}
+  {#if currentPost.ref == "about"}
     <AboutCard bind:theme />
   {:else if styleTheme == "space"}
     <StarsCard bind:isLoading bind:postOutput bind:currentPost />
