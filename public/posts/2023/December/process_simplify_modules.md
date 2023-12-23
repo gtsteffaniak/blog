@@ -100,8 +100,14 @@ requiring vue2 and instead of replacing them with new modules like the original
 maintainers, I will implement it myself slowly over time removing all modules
 from the dependencies. I am in no hurry! It will be worth the effort and I see
 no need to move to vue3 now or in the future until my finally ocker images have
-vulnerabilities. Right now they are squeaky clean (unlike the original which has
-12 vulnerabilities), only the developer tools have vulnerabilities:
+vulnerabilities. Right now they are squeaky clean - unlike the original which
+has 12 vulnerabilities. Albeit, due to golang and OS... which I updated on the
+first day. Not sure why they haven't addressed that.
+
+
+Anyways, the only vulnerabilities in the workflow are due to npm packages for
+dev tools only (not present in compiled output). These can't be resolved until I
+stop using vue 2:
 
 ```bash
 npm i
@@ -210,4 +216,4 @@ usageStats = {
 };
 ```
 
-Wow. So easy, right? Well, thats two packages less.
+Wow. So easy, right? Well, thats two packages less... 
