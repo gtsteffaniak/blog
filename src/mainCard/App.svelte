@@ -136,9 +136,6 @@
     }
   }
 
-  function checkCurrentPost(cp) {
-    console.log("current",cp)
-  }
 </script>
 
 <Gcard
