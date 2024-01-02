@@ -1,9 +1,11 @@
+# The doubled edge sword of modules when developing
+
 Posted Date: Thursday, October 19th, 2023
 
 > Note: In this post, I will use the term "external module" to refer to an
 external package dependency that is imported into a program when developing.
 
-## Introduction 
+## Introduction
 
 When designing and creating projects in any language and framework there is a
 choice that every developer has to make. What modules should you use? This
@@ -68,7 +70,7 @@ External modules...
 1. Introduce risk for dependencies versioning conflicts. As dependency
    requirements drift over time, your program may find itself in a state of
    dependency conflict because two external modules depend on different versions
-   of a shared indirect dependency. 
+   of a shared indirect dependency.
 2. Introduce security risks that are out of your control. If a module has a
    vulnerability or other security-related issues, you must wait for your module
    to fix the vulnerability before your entire program can be fixed.
@@ -104,7 +106,7 @@ as they originally did. This requires extra time from the developer to identify,
 refactor, and attempt to resolve each issue... constantly for the remaining time
 the program exists. Eventually, the developer loses interest and the program is
 no longer maintained... stuck with older versions that have vulnerabilities and
-conflicts that prevent it from being renewed. 
+conflicts that prevent it from being renewed.
 
 **sigh** ok, give me a moment.
 

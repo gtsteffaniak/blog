@@ -1,6 +1,9 @@
 posts:
   2023:
     December:
+      - title: "Process to simplify a modules"
+        ref: "posts/2023/December/process_simplify_modules.md"
+        tags: ["techonology"]
       - title: "Happy Holidays!"
         ref: "posts/2023/December/happy_holidays.md"
         tags: ["art","imagination"]
