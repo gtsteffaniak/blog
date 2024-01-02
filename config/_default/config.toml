@@ -1,7 +1,7 @@
 # Change baseurl before deploy
 baseurl = "https://gportal.link/blog"
 languageCode = "en-us"
-paginate = 5
+paginate = 15
 title = "Graham's Blog"
 
 # Theme i18n support

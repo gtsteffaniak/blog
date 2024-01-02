@@ -7,7 +7,6 @@ categories:
     - messages
 theme: snow
 hidden: false
-
 ---
 
 Happy Holidays!

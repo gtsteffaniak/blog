@@ -1,4 +1,8 @@
-# Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling
+---
+title: "Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling"
+date: 2023-08-22
+hidden: false
+---
 
 > **NOTE**
 Go or what is informally known as "GoLang" will be referred to by its official name "Go". The name "Go" also emphasizes its simplicity and ease of use.
