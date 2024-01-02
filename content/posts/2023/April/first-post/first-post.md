@@ -1,4 +1,9 @@
-Posted Date: Sat Apr 29th, 2023
+---
+title: First Post!
+date: 2023-04-29
+description: An introduction to the blog
+hidden: false
+---
 
 ![](https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Party%20Popper.png)
 

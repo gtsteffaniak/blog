@@ -1,6 +1,11 @@
-# Simplifying frontend frameworks
-
-Posted Date: Thursday, December 24th, 2023
+---
+title: Simplifying frontend frameworks
+date: 2023-12-24
+categories:
+    - technology
+theme: snow
+hidden: false
+---
 
 ## Introduction
 

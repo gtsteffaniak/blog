@@ -1,4 +1,11 @@
-Posted Date: Thursday, May 4th, 2023
+---
+title: May the 4th be with you
+date: 2023-05-04
+categories:
+    - technology
+    - art
+hidden: false
+---
 
 An homage to Starwars fans everywhere
 

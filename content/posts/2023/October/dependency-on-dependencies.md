@@ -1,6 +1,10 @@
-# The doubled edge sword of modules when developing
-
-Posted Date: Thursday, October 19th, 2023
+---
+title: The doubled edge sword of modules when developing
+date: 2023-10-19
+categories:
+    - technology
+hidden: false
+---
 
 > Note: In this post, I will use the term "external module" to refer to an
 external package dependency that is imported into a program when developing.

@@ -1,10 +1,6 @@
 ---
-title: new post
-slug: test
-categories:
-    - graham
-tags:
-    - graham
+title: Test
+date: 2024-01-02
 ---
 
 Welcome to Hugo theme Stack. This is your first post. Edit or delete it, then start writing!

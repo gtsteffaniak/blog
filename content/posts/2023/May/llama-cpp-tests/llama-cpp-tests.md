@@ -1,4 +1,13 @@
-## My experience benchmarking llama
+---
+title: My experience benchmarking llama
+date: 2023-05-14
+description: Comparing some LLMs
+tags:
+    - artificial-intelligence
+categories:
+    - technology
+hidden: false
+---
 
 Today, I had the opportunity to benchmark a fascinating program called "llama.cpp" that has been ported to work with multiple programming languages, including Python and Golang. As an enthusiast of both Python and Golang, I was particularly interested in comparing the performance of these two implementations on my M1 Arm64 MacBook.
 

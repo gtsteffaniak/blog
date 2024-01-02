@@ -1,4 +1,13 @@
-Posted Date: Sat Apr 28th, 2023
+---
+title: Bash Vs Powershell
+date: 2023-05-13
+description: A short comparison of OS scripting languages.
+hidden: false
+tags:
+    - windows
+categories:
+    - technology
+---
 
 ## Part 1
 
