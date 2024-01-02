@@ -101,11 +101,9 @@
       });
       // Get the element by the hash
       if (window.location.hash != "") {
-        console.log("this is hash", window.location.hash);
         const element = document.querySelector(window.location.hash);
         // Check if the element exists
         if (element != undefined) {
-          console.log("scrolling");
           element.scrollIntoView({
             behavior: "smooth",
             block: "center",
