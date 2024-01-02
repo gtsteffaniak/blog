@@ -59,14 +59,14 @@ systemic. The problem is javascript is a deeply flawed programming language
 which is essential use to develope frontend webpages.
 
 As an aside, some have said webassembly may solve this. I believe webassembly
-will have a legacy similar to fusion, always being a few years off. My
-experience of webassembly has been very challenging. And I could see it being
-simplified in the future -- however, I truly see it following the exact same
-path as javascript. Meaning I see there being some usefully ways to implement
-webassembly, but without a standardized way to implement it will be doomed to
-fragmentation.
+will have a legacy similar to fusion energy -- always being a few years out of
+reach. My experience of webassembly has been full of frustration, but I could see
+it being simplified in the future. However, I truly see it following the exact
+same path as javascript. Meaning I see there being some usefully ways to
+implement webassembly, but without a standardized way to implement it will be
+doomed to fragmentation.
 
-### examples
+## examples
 
 ### Process for filebrowser
 
@@ -120,8 +120,7 @@ up to date, audited 766 packages in 4s
 4 moderate severity vulnerabilities
 ```
 
-so I created a copy package.json with comments to note which packages I need/plan to remove:
-
+so I created a copy `package.json` with comments to note which packages I need/plan to remove:
 
 ```json
 {
@@ -223,6 +222,8 @@ github bot complaining about vulnerabilities. I will eventually fix it, but over
 time, slowly, over multiple commits. Hopefully that will allow me to avoid the
 problem the original maintainers have trying to merge the big PR thats stuck in
 limbo.
+
+## Final thoughts
 
 As for lessons for the future - Always think about how long you want your
 project to exist. The more maintenance that is required, the more quickly it
