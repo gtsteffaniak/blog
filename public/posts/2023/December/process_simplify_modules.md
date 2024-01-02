@@ -52,7 +52,7 @@ attempts to get there. And another [main vue3
 PR](https://github.com/filebrowser/filebrowser/pull/2689) which is in a
 perpetual state of change for 6 months (still unmerged).
 
-So, how did I handle this? see [my process below](#process-for-filebrowser), but
+So, how did I handle this? Well, see [my process below](#process-for-filebrowser), but
 let me give a few examples. For now I want to dig into the problem more and what
 I believe is *my solution*, which may not be yours because the problem is
 systemic. The problem is javascript is a deeply flawed programming language
@@ -83,17 +83,17 @@ the choice to embed the frontend into the binary. I immediately separated them
 after I forked it. That way neither the frontend or backend were dependant on
 each other.
 
-Obviously a streamlined developer experience is a priority for me. So, how do I
-handle updating the framework update to vue3? Well, initially I hadn't. Still, I
-have not. But I am preparing. Rather than untangling
+Obviously, a streamlined developer experience is a priority for me. So, how do I
+handle updating the framework update to vue3? Well, originally I ignored it...
+And Still, I have not updated it. But I am preparing. Rather than untangling
 
-There is one example such as prettier module, which changed and caused the
+There is one example such as prettBytes module, which changed and caused the
 filebrowser to stop displaying properly. The original repo maintainers [updated
 it](https://github.com/filebrowser/filebrowser/pull/2779) to support the new
-version of prettier. I did it differently, I removed prettier and implemented it
-as [vanilla
+version of prettier. I did it differently, I replaced prettyBytes and
+implemented it as [vanilla
 javascript](https://github.com/gtsteffaniak/filebrowser/blob/main/frontend/src/utils/filesizes.js)
-in 5 minutes. Never again will I have to worry about it.
+in 5 minutes.
 
 So to migrate to vue3, my plan is to remove all modules with dependencies
 requiring vue2 and instead of replacing them with new modules like the original
@@ -216,4 +216,16 @@ usageStats = {
 };
 ```
 
-Wow. So easy, right? Well, thats two packages less...
+Wow. So easy, right? Well, thats two packages less... These are the easiest
+examples to do. Many others will be much more difficult. However, I am in no
+hurry. Everything still works on vue2 , but I would like to get rid of the pesky
+github bot complaining about vulnerabilities. I will eventually fix it, but over
+time, slowly, over multiple commits. Hopefully that will allow me to avoid the
+problem the original maintainers have trying to merge the big PR thats stuck in
+limbo.
+
+As for lessons for the future - Always think about how long you want your
+project to exist. The more maintenance that is required, the more quickly it
+will fall into disrepair. I will continue to think about ways to implement
+simple, natively supported solutions to challenges. I think this will save me
+time and keep my projects living longer on their own.
