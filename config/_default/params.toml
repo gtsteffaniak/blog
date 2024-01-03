@@ -2,7 +2,7 @@
 mainSections = ["posts"]
 # Output page's full content in RSS.
 rssFullContent = true
-favicon = "/favicon.png"
+favicon = "favicon.ico"
 
 [footer]
 since = 2023
@@ -13,13 +13,13 @@ published = "Jan 02, 2006"
 lastUpdated = "Jan 02, 2006 15:04 MST"
 
 [sidebar]
-emoji = "🍥"
+emoji = ""
 subtitle = "My blog about technology"
 
 [sidebar.avatar]
 enabled = true
-local = true
-src = "img/avatar.png"
+local = false
+src = "https://avatars.githubusercontent.com/u/42989099"
 
 [article]
 math = false
