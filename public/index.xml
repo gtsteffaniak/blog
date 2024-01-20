@@ -1,0 +1,1485 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Graham's Blog</title><link>/blog/</link><description>Recent content on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 02 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Test</title><link>/blog/posts/2024/january/newpost/</link><pubDate>Tue, 02 Jan 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/january/newpost/</guid><description>&lt;p>Welcome to Hugo theme Stack. This is your first post. Edit or delete it, then start writing!&lt;/p>
+&lt;p>For more information about this theme, check the documentation: &lt;a class="link" href="https://stack.jimmycai.com/" target="_blank" rel="noopener"
+>https://stack.jimmycai.com/&lt;/a>&lt;/p>
+&lt;p>Want a site like this? Check out &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+>hugo-theme-stack-stater&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+>Pawel Czerwinski&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>I wrote an/other &lt;a class="link" href="?posts/2023/October/dependency-on-dependencies.md" >post&lt;/a> about
+the frustration I have with frameworks in modern frontend software development.
+The fast pace of change is hailed as the consequence of the innovative field of
+front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every
+day. But I disagree this is simply a necessity of innovation.&lt;/p>
+&lt;p>Frontend frameworks evolve and change primarily because there is not and has
+never been one good way to use javascript. No matter how flawed javascript is as
+a programming language, it&amp;rsquo;s biggest flaw is that it was woefully incomplete
+from it&amp;rsquo;s inception. The,re has never been good tooling for javascript. So this
+massive void is constantly being filled with good-but-not-perfect solutions.
+Heard of these: npm ? yarn? webpack? rollup? vite? bable? eslint? vite?
+Typescript? I could go on and on. All these things that are typically built-in
+to a language are all separate installable packages which are managed by
+third-party maintainers. These maintainers have no obligation to keep up with
+javascript changes or more devastatingly, changes to other tooling for
+javascript. This compounds the main problem I have with frontend development&amp;hellip;
+Your frontend project will inevitably be crippled by incompatibilities. A
+project is inevitably doomed to aging out due to vulnerabilities and old
+tooling.&lt;/p>
+&lt;p>Maybe you retort, &amp;ldquo;Don&amp;rsquo;t be a developer if you can&amp;rsquo;t handle it!&amp;rdquo;? Well, that may
+be true from a certain perspective. However, look at other languages &amp;ndash; C, C++,
+Golang, Rust, Java, C# (and many more) &amp;ndash; can exist for decades and be easily
+updated to new versions. They don&amp;rsquo;t have this problem. I would actually say
+(this leads to one of the ways I could deal with this), vanilla javascript also
+fits into this category. decades old vanilla javascript projects still work &amp;ndash;
+they are simple to update for vulnerabilities. Vanilla javascript is one
+solution to the framework issue. Albeit not the best solution, it does solve the
+problem.&lt;/p>
+&lt;p>I have used vanilla javascript in a hackathon project at work to get an up and
+running project going within a week. It worked great and was incredibly simple.
+Yet, I had one coworker laughingly ask be if I really used vanilla javascript. I
+said, &amp;ldquo;yes, it works very well for this&amp;rdquo;. A hackathon project is the perfect
+scenario to skip a framework and just get something working.&lt;/p>
+&lt;p>A project becomes a devastatingly complicated web of
+dependencies that needs solving if you want your project to continue on without
+being marked legacy with thousands of vulnerabilities.&lt;/p>
+&lt;p>I maintain a fork of filebrowser/filebrowser, which I find entertaining to watch
+their &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2645" target="_blank" rel="noopener"
+>effort&lt;/a> to upgrade
+from vue2+webpack to vue3+vite. They have a multitude of half-implemented
+attempts to get there. And another &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>main vue3
+PR&lt;/a> which is in a
+perpetual state of change for 6 months (still unmerged).&lt;/p>
+&lt;p>So, how did I handle this? Well, see &lt;a class="link" href="#process-for-filebrowser" >my process below&lt;/a>, but
+let me give a few examples. For now I want to dig into the problem more and what
+I believe is &lt;em>my solution&lt;/em>, which may not be yours because the problem is
+systemic. The problem is javascript is a deeply flawed programming language
+which is essential use to develope frontend webpages.&lt;/p>
+&lt;p>As an aside, some have said webassembly may solve this. I believe webassembly
+will have a legacy similar to fusion energy &amp;ndash; always being a few years out of
+reach. My experience of webassembly has been full of frustration, but I could see
+it being simplified in the future. However, I truly see it following the exact
+same path as javascript. Meaning I see there being some usefully ways to
+implement webassembly, but without a standardized way to implement it will be
+doomed to fragmentation.&lt;/p>
+&lt;h2 id="examples">examples&lt;/h2>
+&lt;h3 id="process-for-filebrowser">Process for filebrowser&lt;/h3>
+&lt;p>My fork of filebrowser is superior to the original. Obviously, I am biased as
+the maintainer. However, look - mine is &lt;a class="link" href="https://hub.docker.com/layers/gtstef/filebrowser/latest/images/sha256-6574d5f4890a6a0aa2d995b9fd8856418b6fef34e3bdf774ae02cc209c78e650?context=repo" target="_blank" rel="noopener"
+>half the
+size&lt;/a>
+of the
+&lt;a class="link" href="https://hub.docker.com/layers/filebrowser/filebrowser/latest/images/sha256-0e0a4b700302457772b07c4efc47bc90143d7538d36731baabcf7d375360bcee?context=explore" target="_blank" rel="noopener"
+>original&lt;/a>,
+runs faster, has better search, and is a better organized project from a
+directory and tooling standpoint. Unlike the original, I can progressively
+update and test the backend and frontend side-by-side in a live hot-reload
+environment. This can&amp;rsquo;t be done in the original implementation because they made
+the choice to embed the frontend into the binary. I immediately separated them
+after I forked it. That way neither the frontend or backend were dependant on
+each other.&lt;/p>
+&lt;p>Obviously, a streamlined developer experience is a priority for me. So, how do I
+handle updating the framework update to vue3? Well, originally I ignored it&amp;hellip;
+And Still, I have not updated it. But I am preparing. Rather than untangling&lt;/p>
+&lt;p>There is one example such as prettBytes module, which changed and caused the
+filebrowser to stop displaying properly. The original repo maintainers &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2779" target="_blank" rel="noopener"
+>updated
+it&lt;/a> to support the new
+version of prettier. I did it differently, I replaced prettyBytes and
+implemented it as &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/blob/main/frontend/src/utils/filesizes.js" target="_blank" rel="noopener"
+>vanilla
+javascript&lt;/a>
+in 5 minutes.&lt;/p>
+&lt;p>So to migrate to vue3, my plan is to remove all modules with dependencies
+requiring vue2 and instead of replacing them with new modules like the original
+maintainers, I will implement it myself slowly over time removing all modules
+from the dependencies. I am in no hurry! It will be worth the effort and I see
+no need to move to vue3 now or in the future until my finally ocker images have
+vulnerabilities. Right now they are squeaky clean - unlike the original which
+has 12 vulnerabilities. Albeit, due to golang and OS&amp;hellip; which I updated on the
+first day. Not sure why they haven&amp;rsquo;t addressed that.&lt;/p>
+&lt;p>Anyways, the only vulnerabilities in the workflow are due to npm packages for
+dev tools only (not present in compiled output). These can&amp;rsquo;t be resolved until I
+stop using vue 2:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm i
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">up to date, audited &lt;span class="m">766&lt;/span> packages in 4s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">101&lt;/span> packages are looking &lt;span class="k">for&lt;/span> funding
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run &lt;span class="sb">`&lt;/span>npm fund&lt;span class="sb">`&lt;/span> &lt;span class="k">for&lt;/span> details
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">4&lt;/span> moderate severity vulnerabilities
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>so I created a copy &lt;code>package.json&lt;/code> with comments to note which packages I need/plan to remove:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;dependencies&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ace-builds&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.24.2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;clipboard&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.0.4&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;css-vars-ponyfill&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.4.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;file-loader&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^6.2.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UNNECESSARY IN VITE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;js-base64&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.5.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;lodash.clonedeep&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^4.5.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// TOO OLD - REPLACE WITH JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;lodash.throttle&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^4.1.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// TOO OLD - REPLACE WITH JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;material-icons&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.10.5&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;moment&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.29.4&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;normalize.css&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.0.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;noty&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.2.0-beta&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;pretty-bytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^6.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;qrcode.vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.7.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE TO LATEST for VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;utif&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE investigate replacement
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.6.10&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE to vue 3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-async-computed&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.9.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-i18n&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.15.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-lazyload&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.3.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-router&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE to vue 3 @vue4 https://www.npmjs.com/package/vue-router
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-simple-progress&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.1.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vuex&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE: HOW TO REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vuex-router-sync&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^5.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE: HOW TO REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;whatwg-fetch&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.6.2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;devDependencies&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;@vue/cli-service&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^5.0.8&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE for VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;compression-webpack-plugin&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^10.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;eslint&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.51.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;eslint-plugin-vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^9.17.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;vue-template-compiler&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.6.10&amp;#34;&lt;/span> &lt;span class="c1">// REPLACE VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>You can see I plan to remove the vast majority of packages. That is one solution
+I have to this. As always, this doesn&amp;rsquo;t fully resolve the long-term
+maintainability problem. But it does do one thing, it means when the day comes I
+need to change frameworks, it will be much simpler because my frontend won&amp;rsquo;t
+depend on packages that depend on a certain framework.&lt;/p>
+&lt;p>The next perfectly reasonable package to drop will be js-base64 which&amp;hellip; not
+sure why they needed considering javascript has native base64 encoding/decode
+support.&lt;/p>
+&lt;p>To make this work, I would just update this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">Base64&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;js-base64&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">JSON&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">Base64&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">decode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">parts&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]));&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>to this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">JSON&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">atob&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">parts&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]));&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Do you see that? In order to remove one more package, I spent 5 seconds
+replacing one line. Not all packages will be that easy, but that&amp;rsquo;s still one less
+package to worry about. Why didn&amp;rsquo;t the original owners do that? Probably because of
+laziness. They chose to searching the package manager for a solution to their
+problem rather than spending a few seconds or minutes to see if they could do it
+themselves. Lazy lazy lazy.&lt;/p>
+&lt;p>That was so easy lets do another right now. Lets look at prettyBytes, a very
+similar problem to one I mentioned already with prettier - oh look I already have my own library.&lt;/p>
+&lt;p>So to remove this module I can just change this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="nx">prettyBytes&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;pretty-bytes&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">usageStats&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">used&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">prettyBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">binary&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">total&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">prettyBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">binary&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">usedPercentage&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nb">Math&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">round&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>to this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;@/utils/filesizes&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">usageStats&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">used&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">total&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">usedPercentage&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nb">Math&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">round&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Wow. So easy, right? Well, thats two packages less&amp;hellip; These are the easiest
+examples to do. Many others will be much more difficult. However, I am in no
+hurry. Everything still works on vue2 , but I would like to get rid of the pesky
+github bot complaining about vulnerabilities. I will eventually fix it, but over
+time, slowly, over multiple commits. Hopefully that will allow me to avoid the
+problem the original maintainers have trying to merge the big PR thats stuck in
+limbo.&lt;/p>
+&lt;h2 id="final-thoughts">Final thoughts&lt;/h2>
+&lt;p>As for lessons for the future - Always think about how long you want your
+project to exist. The more maintenance that is required, the more quickly it
+will fall into disrepair. I will continue to think about ways to implement
+simple, natively supported solutions to challenges. I think this will save me
+time and keep my projects living longer on their own.&lt;/p></description></item><item><title>Happy Holidays!</title><link>/blog/posts/2023/december/happy_holidays/</link><pubDate>Fri, 22 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/happy_holidays/</guid><description>&lt;p>Happy Holidays!&lt;/p></description></item><item><title>The doubled edge sword of modules when developing</title><link>/blog/posts/2023/october/dependency-on-dependencies/</link><pubDate>Thu, 19 Oct 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/october/dependency-on-dependencies/</guid><description>&lt;blockquote>
+&lt;p>Note: In this post, I will use the term &amp;ldquo;external module&amp;rdquo; to refer to an
+external package dependency that is imported into a program when developing.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>When designing and creating projects in any language and framework there is a
+choice that every developer has to make. What modules should you use? This
+choice has implications for many different things. &lt;em>Personally&lt;/em>, I find it is
+best to exercise judicial usage of external models when developing for several
+reasons.&lt;/p>
+&lt;p>No matter what language or framework you choose to make your world-changing
+program in, the choice is constantly presenting itself. There are always going
+to be corners that you would rather import an external module that already has
+everything figured out - do you want to reinvent the wheel everywhere? Here are
+a few examples where it might be obvious to use an external module:&lt;/p>
+&lt;ol>
+&lt;li>For security-oriented features&amp;hellip; using reputable external modules could
+ensure security.&lt;/li>
+&lt;li>Using &amp;ldquo;frameworks&amp;rdquo; to accomplish complicated plumbing. If something would be
+an entire project on its own, you obviously wouldn&amp;rsquo;t want to double or triple
+the work you have cut out for yourself.&lt;/li>
+&lt;li>For API functions and interoperability with other programs. If an SDK or API
+framework is provided in the target language that you need to use, it doesn&amp;rsquo;t
+make any sense to code it yourself.&lt;/li>
+&lt;/ol>
+&lt;p>The above scenarios are undisputed reasons to import external modules in my
+opinion. As long as the authors of the external modules are reputable and the
+modules are in active development themselves, I don&amp;rsquo;t see any reason not to use
+external modules.&lt;/p>
+&lt;p>The problem comes from every other scenario.&lt;/p>
+&lt;p>&lt;strong>My main point:&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>If you are considering importing modules for functions you could accomplish
+yourself in a reasonably short time, it would be well worth the effort to do it
+yourself instead of relying on external modules.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="advantages-of-using-external-modules">Advantages of using external modules&lt;/h2>
+&lt;p>Let&amp;rsquo;s take a look at all the reasons you might want to use external modules.&lt;/p>
+&lt;p>External modules&amp;hellip;&lt;/p>
+&lt;ol>
+&lt;li>Initially save you time! Sometimes a significant amount of time.&lt;/li>
+&lt;li>Can do things very well. Sometimes much better than you could do something
+yourself in a short amount of time.&lt;/li>
+&lt;li>May add features over time without any effort needed from you.&lt;/li>
+&lt;li>Allow you to focus on the code in your program rather than being distracted
+by solving challenges unrelated to your project.&lt;/li>
+&lt;/ol>
+&lt;p>These are all massive benefits that mostly revolve around saving developer&amp;rsquo;s
+time. That is a very important factor in decision-making. However, there is a
+lurking issue with this. It&amp;rsquo;s like investing, the upfront cost and appearance of
+implementing your solutions instead of using external modules may appear higher,
+but I believe it is much lower over time.&lt;/p>
+&lt;p>So let&amp;rsquo;s talk about the downsides.&lt;/p>
+&lt;h1 id="disadvantages-of-using-external-modules">Disadvantages of using external modules&lt;/h1>
+&lt;p>Let&amp;rsquo;s identify some concerns I have with external modules.&lt;/p>
+&lt;p>External modules&amp;hellip;&lt;/p>
+&lt;ol>
+&lt;li>Introduce risk for dependencies versioning conflicts. As dependency
+requirements drift over time, your program may find itself in a state of
+dependency conflict because two external modules depend on different versions
+of a shared indirect dependency.&lt;/li>
+&lt;li>Introduce security risks that are out of your control. If a module has a
+vulnerability or other security-related issues, you must wait for your module
+to fix the vulnerability before your entire program can be fixed.&lt;/li>
+&lt;li>Limit your ability to tailor the functions to your needs. If you use
+dependencies to accomplish something, you are often limited to the features
+of the third-party external module.&lt;/li>
+&lt;li>Can introduce performance/stability challenges. You may not have control over
+how a function is accomplished in an external module. It&amp;rsquo;s common that issues
+such as memory leak or performance degradations exists or is introduced in
+new versions, and as the user of a module, you may be powerless to control
+it.&lt;/li>
+&lt;li>Introduces more complicated compiling and install operations. Using external
+modules means downloading and installing them, which may not be a huge deal
+depending on the module&amp;rsquo;s size. However liberal usage of modules adds up and
+can cause this to be a challenge. It may also quickly balloon your program&amp;rsquo;s
+size (looking at you &lt;code>Python&lt;/code>).&lt;/li>
+&lt;/ol>
+&lt;p>Finally, I can vent my frustrations with external modules. I find it frustrating
+how common the pattern is: a developer introduces an external module to do a
+simple task that they could easily accomplish themselves. Then, because of this,
+the program is bigger and more bloated. However, the primary issue is over time,
+as the additional complexities make the program more difficult to maintain.&lt;/p>
+&lt;p>I think the biggest offender to version conflicts and vulnerabilities is&lt;code>NPM&lt;/code>.
+When someone creates a project, they often use npm packages to accomplish the
+most basic and mundane tasks: button styles, formatting strings like date/time,
+loading bars/spinners, HTML formatting, etc. These are things that would
+literally take 5 minutes to implement without installing additional packages. It
+quickly brings a project to life &amp;ndash; it works and looks great for a MOMENT. Then,
+in the weeks or months, it drifts into version conflict, accumulates
+vulnerabilities, and receives updates that cause functions to not work the same
+as they originally did. This requires extra time from the developer to identify,
+refactor, and attempt to resolve each issue&amp;hellip; constantly for the remaining time
+the program exists. Eventually, the developer loses interest and the program is
+no longer maintained&amp;hellip; stuck with older versions that have vulnerabilities and
+conflicts that prevent it from being renewed.&lt;/p>
+&lt;p>&lt;strong>sigh&lt;/strong> ok, give me a moment.&lt;/p>
+&lt;p>Ok - so you get the picture? I mentioned &lt;code>NPM&lt;/code>, but the truth is that every
+language and program has this. NPM is just the most likely to fall victim for
+several reasons. However, &lt;code>Python&lt;/code> can have complicated PIP requirements, &lt;code>Go&lt;/code>
+can have a long list of modules to download for compile-time, &lt;code>Java&lt;/code> can get
+caught up on maven conflicts or broken builds from updates. Javascript
+Frameworks like &lt;code>React&lt;/code>, &lt;code>Svelte&lt;/code>, and &lt;code>Vue.js&lt;/code> can all be complicated to
+upgrade from version to version. It&amp;rsquo;s a challenge everywhere.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>Here&amp;rsquo;s the point, using external modules saves you time as a developer up front.
+You must consider and weigh the time savings with the possible time requirements
+in the future to maintain the codebase. It may be hard to calculate the costs
+for future maintenance, but I understand that. However, if you care for the
+program that you are investing in to exist over time, these future time
+investment costs must be considered.&lt;/p>
+&lt;p>My rule that I have come to is pretty simple: If I can mostly accomplish
+something within 30 minutes on my own, don&amp;rsquo;t even bother looking for an external
+module. If It would take more than 30 minutes but is still something I &lt;em>could&lt;/em>
+accomplish fairly easily. In that case, use a module for now, but track it for
+replacement with your implementation eventually. For everything else, I suck it
+up and deal with the challenges and necessary evil of dependencies.&lt;/p>
+&lt;h3 id="further-reading">Further reading&lt;/h3>
+&lt;p>I hope you found this informative. I would love to give examples of these types
+of issues I have run into. I plan to update with another post showing these
+examples and how I fixed them quickly without external modules.&lt;/p>
+&lt;p>I didn&amp;rsquo;t mention this, but it&amp;rsquo;s often much easier to make your program without
+modules. So, it&amp;rsquo;s not always time-saving to use modules. I plan to give examples
+on this and I will link it here in the future.&lt;/p></description></item><item><title>Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling</title><link>/blog/posts/2023/september/comparing_compiled/</link><pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/september/comparing_compiled/</guid><description>&lt;blockquote>
+&lt;p>&lt;strong>NOTE&lt;/strong>
+Go or what is informally known as &amp;ldquo;GoLang&amp;rdquo; will be referred to by its official name &amp;ldquo;Go&amp;rdquo;. The name &amp;ldquo;Go&amp;rdquo; also emphasizes its simplicity and ease of use.&lt;/p>
+&lt;/blockquote>
+&lt;p>As software development continues to evolve, developers often find themselves faced with a crucial decision: choosing the right programming language for their projects. In this blog post, we&amp;rsquo;ll compare and contrast these three languages in terms of compile time, binary size, general performance, garbage collection, modern tooling differences, and which is best for new developers.&lt;/p>
+&lt;h2 id="compile-time">Compile Time&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> One of Go&amp;rsquo;s standout features is its blazing-fast compile times. It excels in this area due to its simplicity and a focus on concurrent compilation. Even for large projects, Go compiles in a matter of seconds, making it a preferred choice for projects with tight development cycles.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s compile times are generally longer compared to Go, primarily because of its more advanced type system and borrow checker. However, the trade-off is robust memory safety. The Rust compiler ensures memory safety without relying on garbage collection, which makes the extra compilation time worthwhile for many developers.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> While modern C++ standards (C++11 and beyond) have introduced features to improve compilation speed, large codebases can still result in lengthy compile times. C++ provides fine-grained control over compilation, but this power can come at the cost of slower development feedback loops.&lt;/p>
+&lt;h2 id="binary-size">Binary Size&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go is renowned for producing compact, statically-linked binaries. This is advantageous for applications where a small memory footprint is crucial, such as cloud-native microservices. Go&amp;rsquo;s runtime includes a garbage collector, which can increase binary size slightly, but it remains efficient.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s binaries are typically smaller than those produced by Go for smaller projects. However, the larger the project gets, the binary sizes become very comparable.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ binaries can be quite large, especially when using libraries or features that introduce substantial runtime overhead. While C++ allows for low-level optimization to reduce binary size, developers need to carefully manage dependencies and compiler flags to achieve smaller executables.&lt;/p>
+&lt;p>Comparisons&lt;/p>
+&lt;h2 id="general-performance">General Performance&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go is designed for excellent runtime performance. Its goroutine-based concurrency model is efficient and makes it easy to write concurrent programs. While it may not match the raw performance of C++ in certain scenarios, it&amp;rsquo;s often considered &amp;ldquo;fast enough&amp;rdquo; for many use cases. In practice this means a 0-30% reduction in speed as compared to Rust or C++.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust is known for its focus on performance and safety. It can achieve C++ levels of performance by providing low-level control over memory management without sacrificing safety. Rust&amp;rsquo;s ownership and borrowing system allow developers to write high-performance code with confidence.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ is renowned for its performance and versatility. It&amp;rsquo;s a systems programming language that allows developers to optimize code for specific hardware and performance-critical applications. However, this level of control comes with a steeper learning curve and increased development complexity.&lt;/p>
+&lt;h2 id="garbage-collection">Garbage Collection&lt;/h2>
+&lt;p>&lt;strong>Go (Golang):&lt;/strong> Go employs a garbage collector, which simplifies memory management for developers. While garbage collection introduces a minimal runtime overhead, Go&amp;rsquo;s efficient design often offsets this impact. Developers can focus on writing code rather than managing memory.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> The Rust programming language relies on a strict ownership system, ensuring memory safety at compile-time. This approach eliminates the runtime overhead associated with garbage collection, making Rust suitable for systems programming and high-performance applications.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ doesn&amp;rsquo;t include a built-in garbage collector, giving developers complete control over memory management. However, this control can lead to memory-related bugs if not managed carefully. Developers must manually allocate and deallocate memory, which can be error-prone and extra effort.&lt;/p>
+&lt;h2 id="modern-tooling-differences">Modern Tooling Differences&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go comes with a comprehensive standard library and excellent tooling. Tools like &lt;code>go fmt&lt;/code> for code formatting, &lt;code>go test&lt;/code> for testing and coverage, and &lt;code>go mod&lt;/code> for dependency management are integral to the Go ecosystem. Go&amp;rsquo;s tooling promotes consistency and efficiency.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s tooling has made significant strides in recent years. It boasts tools like &lt;code>Cargo&lt;/code> for dependency management, building, and testing. Rust&amp;rsquo;s package manager, crates.io, offers a vast collection of libraries. The Rust community values robust tooling to ensure a smooth development experience.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ tooling can vary significantly depending on the chosen compiler and build system. While modern build systems like CMake and tools like Clang and GCC have improved C++ development, it can be more challenging for newcomers to navigate.&lt;/p>
+&lt;h2 id="best-for-new-developers">Best for New Developers&lt;/h2>
+&lt;p>Go stands out as the ultimate champion for general purpose developer tasks if performance is a key focus. Its simplicity, clean syntax, and thoughtful design make it an excellent starting point for beginners. The Go community places a strong emphasis on beginner-friendly practices and provides outstanding documentation and resources. Moreover, Go&amp;rsquo;s lightning-fast compilation times ensure that new developers receive quick feedback, enhancing the learning experience.&lt;/p>
+&lt;p>While Rust and C++ have their merits in terms of performance and control, they come with steeper learning curves and complexities that might overwhelm newcomers. Go, on the other hand, empowers new developers to dive right into coding, fostering a positive and productive environment for learning and building software.&lt;/p>
+&lt;p>In conclusion, for those starting their programming journey or looking for a language that promotes rapid skill development, Go is the undisputed choice. Its beginner-friendly nature, extensive resources, and efficient tooling make it the perfect language for new developers to embark on their coding adventures.&lt;/p></description></item><item><title>My experience benchmarking llama</title><link>/blog/posts/2023/may/llama-cpp-tests/</link><pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/llama-cpp-tests/</guid><description>&lt;p>Today, I had the opportunity to benchmark a fascinating program called &amp;ldquo;llama.cpp&amp;rdquo; that has been ported to work with multiple programming languages, including Python and Golang. As an enthusiast of both Python and Golang, I was particularly interested in comparing the performance of these two implementations on my M1 Arm64 MacBook.&lt;/p>
+&lt;p>In this benchmark, I tested three different implementations:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
+>llama.cpp&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/gotzmann/llama.go" target="_blank" rel="noopener"
+>llama.go&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Naturally, you might be curious about which implementation performed the fastest. It&amp;rsquo;s worth noting that the native version of llama.cpp is likely to have the advantage in terms of speed. This advantage stems not from the inherent speed of the programming language but rather from the fact that it is the &amp;ldquo;upstream&amp;rdquo; branch that receives all the changes and performance optimizations first. Consequently, the Python and Golang versions may not have benefited from these optimizations yet.&lt;/p>
+&lt;h2 id="llamacpp">llama.cpp&lt;/h2>
+&lt;p>execution:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="o">./&lt;/span>&lt;span class="n">main&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">~/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">build&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">548&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="n">f8c36&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">seed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1684077400&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">Users&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">steffag&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">72.75&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.09&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">1026.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.50&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">system_info&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_threads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">8&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">10&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VBMI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VNNI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">NEON&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">ARM_FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">F16C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FP16_VA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">WASM_SIMD&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">BLAS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">SSE3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">VSX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sampling&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">repeat_last_n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">repeat_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">presence_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">frequency_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">40&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">tfs_z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.950000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">typical_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.800000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_lr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_ent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5.000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">generate&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_batch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_predict&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_keep&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">←&lt;/span> &lt;span class="n">The&lt;/span> &lt;span class="n">Forgotten&lt;/span> &lt;span class="n">Story&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">First&lt;/span> &lt;span class="n">Civil&lt;/span> &lt;span class="n">War&lt;/span> &lt;span class="n">Battle&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">Kansas&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Making&lt;/span> &lt;span class="n">It&lt;/span> &lt;span class="n">Home&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">Front&lt;/span> &lt;span class="err">→&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">I&lt;/span> &lt;span class="n">Have&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">Dream&lt;/span>&lt;span class="err">—&lt;/span>&lt;span class="n">That&lt;/span> &lt;span class="n">We&lt;/span> &lt;span class="n">Finally&lt;/span> &lt;span class="n">Learn&lt;/span> &lt;span class="n">More&lt;/span> &lt;span class="n">About&lt;/span> &lt;span class="n">Frederick&lt;/span> &lt;span class="n">Douglass&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">“&lt;/span>&lt;span class="n">I&lt;/span> &lt;span class="n">have&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">9196.58&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.49&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.50&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">10716.26&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">25&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">428.65&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">11689.89&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">43&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">271.86&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22483.24&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 35 MB
+CPU usage : 85%&lt;/p>
+&lt;p>OK! Easy enough. It took 11 seconds to print, with &lt;strong>272 ms per token&lt;/strong>!&lt;/p>
+&lt;h2 id="go-llama">Go llama&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">LIBRARY_PATH&lt;/span>&lt;span class="o">=$&lt;/span>&lt;span class="n">PWD&lt;/span> &lt;span class="n">C_INCLUDE_PATH&lt;/span>&lt;span class="o">=$&lt;/span>&lt;span class="n">PWD&lt;/span> &lt;span class="n">go&lt;/span> &lt;span class="n">run&lt;/span> &lt;span class="o">./&lt;/span>&lt;span class="n">examples&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">~/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">Users&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">steffag&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">68.20&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.08&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">2052.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">128.00&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">The&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="n">successfully&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span class="n">What&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">fastest&lt;/span> &lt;span class="n">programming&lt;/span> &lt;span class="n">language&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Sending&lt;/span> &lt;span class="n">what&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">fastest&lt;/span> &lt;span class="n">programming&lt;/span> &lt;span class="n">language&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">by&lt;/span> &lt;span class="n">Cary&lt;/span> &lt;span class="n">R&lt;/span> &lt;span class="n">on&lt;/span> &lt;span class="n">Jul&lt;/span> &lt;span class="mi">18&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">at&lt;/span> &lt;span class="mi">6&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">45&lt;/span> &lt;span class="n">UTC&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">what&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="n">you&lt;/span> &lt;span class="n">think&lt;/span> &lt;span class="n">it&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">why&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">I&lt;/span>&lt;span class="s1">&amp;#39;m not sure what &amp;#34;fast&amp;#34; means for this&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">99393.39&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">32.26&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.72&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5021.80&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">10&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">502.18&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">15193.51&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">44&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">345.31&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">115311.61&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Embeddings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mf">1.3335894&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.83280444&lt;/span> &lt;span class="mf">0.9414267&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">9.215284&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0302917&lt;/span> &lt;span class="mf">1.065452&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4542901&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.24896632&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.6570409&lt;/span> &lt;span class="mf">1.9119468&lt;/span> &lt;span class="mf">0.6292349&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.14391524&lt;/span> &lt;span class="mf">0.2595427&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5855895&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.963376&lt;/span> &lt;span class="mf">1.0406973&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.1605502&lt;/span> &lt;span class="mf">1.3280734&lt;/span> &lt;span class="mf">0.37920082&lt;/span> &lt;span class="mf">0.61060756&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2766573&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.8673204&lt;/span> &lt;span class="mf">1.2690753&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4294657&lt;/span> &lt;span class="mf">0.5546539&lt;/span> &lt;span class="mf">0.11715727&lt;/span> &lt;span class="mf">0.6430202&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09789314&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.45095867&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1076287&lt;/span> &lt;span class="mf">0.042604066&lt;/span> &lt;span class="mf">0.15544033&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09977249&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3832492&lt;/span> &lt;span class="mf">0.018180523&lt;/span> &lt;span class="mf">2.2709634&lt;/span> &lt;span class="mf">0.26105422&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0794421&lt;/span> &lt;span class="mf">0.28251836&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2772827&lt;/span> &lt;span class="mf">1.3353819&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1416842&lt;/span> &lt;span class="mf">1.8800831&lt;/span> &lt;span class="mf">0.7737296&lt;/span> &lt;span class="mf">0.8329498&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1428409&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.27773026&lt;/span> &lt;span class="mf">0.59615296&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1754322&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.61925936&lt;/span> &lt;span class="mf">0.12707934&lt;/span> &lt;span class="mf">0.33790576&lt;/span> &lt;span class="mf">0.9590525&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0039365&lt;/span> &lt;span class="mf">1.2138838&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.15244572&lt;/span> &lt;span class="mf">1.3892341&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.2408304&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.41973415&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.9122008&lt;/span> &lt;span class="mf">0.61534476&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3473209&lt;/span> &lt;span class="mf">1.8957467&lt;/span> &lt;span class="mf">0.54428715&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.45334002&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.46586785&lt;/span> &lt;span class="mf">0.9365548&lt;/span> &lt;span class="mf">0.7735351&lt;/span> &lt;span class="mf">0.020367475&lt;/span> &lt;span class="mf">0.03640651&lt;/span> &lt;span class="mf">0.6072077&lt;/span> &lt;span class="mf">0.2598248&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.60497457&lt;/span> &lt;span class="mf">0.74164164&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.4986299&lt;/span> &lt;span class="mf">0.030030286&lt;/span> &lt;span class="mf">1.0310581&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.7985864&lt;/span> &lt;span class="mf">0.59369475&lt;/span> &lt;span class="mf">5.3009334&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.26436043&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0086688&lt;/span> &lt;span class="mf">0.69724923&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.082101144&lt;/span> &lt;span class="mf">0.609409&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4504542&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.57361007&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.43234673&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.621053&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3142335&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2885888&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.29704484&lt;/span> &lt;span class="mf">0.16729134&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.76317424&lt;/span> &lt;span class="mf">1.2080128&lt;/span> &lt;span class="mf">0.24425012&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.3169634&lt;/span> &lt;span class="mf">0.9270621&lt;/span> &lt;span class="mf">1.0773871&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09211676&lt;/span> &lt;span class="mf">4.2189116&lt;/span> &lt;span class="mf">1.1267253&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2751623&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.04176733&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0876625&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.19441187&lt;/span> &lt;span class="mf">0.6124146&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5224489&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.346519&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.129513&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.12585206&lt;/span> &lt;span class="mf">0.9263705&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.6089619&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.5251873&lt;/span> &lt;span class="mf">1.0640423&lt;/span> &lt;span class="mf">1.1027105&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5490974&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.85569364&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1080054&lt;/span> &lt;span class="mf">0.9023686&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0494307&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.28588632&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4288576&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.72663045&lt;/span> &lt;span class="mf">1.7789608&lt;/span> &lt;span class="mf">2.239715&lt;/span> &lt;span class="mf">0.8199781&lt;/span> &lt;span class="mf">0.4134441&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 110 MB
+CPU usage : 100%&lt;/p>
+&lt;p>Ok we have something - &lt;strong>345 ms per token&lt;/strong>. Makes sense, since it is an indirect non-native form of calling what is the first test of cpp&amp;hellip; except as a shared library via Golang. So what about natives?&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">./llama.go --model ~/models/llama-7b-fp32.bin --prompt &amp;#34;Which programming language is fastest?&amp;#34; --context 45 --predict 45
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒ /▒▒ /▒▒▒/▒▒▒ /▒▒/▒▒▒▒/▒▒ /▒▒▒/▒▒▒ /▒▒▒▒/▒▒ /▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒ /▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒▒ // /▒▒▒▒//▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒ /▒▒▒▒/▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒▒ /▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒ /▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒ /▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒▒▒/▒▒ //▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> //// /// //// /// /// //// /// // /// /// //// /// //// // /// ///
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ▒▒▒▒ [ LLaMA.go v1.4.0 ] [ LLaMA GPT in pure Golang - based on LLaMA C++ ] ▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ INIT ] Loading model, please wait .............................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ PROMPT ] Which programming language is the fastest?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ OUTPUT ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is best for a particular task?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language should I use to write my program?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> What are the advantages and disadvantages of using a particular programming language?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Comment: @
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== EVAL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">15247 | 3125 | 1742 | 3636 | 1253 | 1276 | 1420 | 1487 | 1394 | 1628 | 1659 | 5330 | 10200 | 5287 | 3114 | 1320 | 1560 | 1725 | 5190 | 1573 | 1342 | 1440 | 1365 | 3922 | 13103 | 12436 | 3441 | 1597 | 1598 | 1537 | 1487 | 8702 | 3437 | 1780 | 10625 | 15753 | 1869 | 29020 | 7898 | 1574 | 1655 | 1664 | 1652 | 1604 | 1483 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== SAMPLING TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 | 7 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 8 | 7 | 7 | 7 | 7 | 8 | 7 | 7 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 7 | 7 | 7 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== FULL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 | 15255 | 3132 | 1751 | 3643 | 1260 | 1283 | 1427 | 1495 | 1402 | 1635 | 1667 | 5339 | 10208 | 5295 | 3121 | 1328 | 1568 | 1732 | 5198 | 1581 | 1350 | 1448 | 1372 | 3930 | 13111 | 12444 | 3449 | 1605 | 1606 | 1545 | 1495 | 8710 | 3445 | 1788 | 10633 | 15761 | 1876 | 29028 | 7906 | 1581 | 1663 | 1673 | 1660 | 1612 | 1490 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ HALT ] Time per token: 4380 ms | Tokens per second: 0.23
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 25 GB
+CPU usage : 85%&lt;/p>
+&lt;p>Looks like it loaded the entire model into RAM! ok&amp;hellip; well does that translate into better performance? Not good. I can tell you it &lt;em>felt&lt;/em> slow, 4380ms seems &amp;hellip; accurate. Hmm&amp;hellip; maybe I should use the neon flag for my m1.&lt;/p>
+&lt;p>Testing neon first:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">./llama.go --model ~/models/llama-7b-fp32.bin --prompt &amp;#34;Which programming language is fastest?&amp;#34; --neon --context 45 --predict 45
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒ /▒▒ /▒▒▒/▒▒▒ /▒▒/▒▒▒▒/▒▒ /▒▒▒/▒▒▒ /▒▒▒▒/▒▒ /▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒ /▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒▒ // /▒▒▒▒//▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒ /▒▒▒▒/▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒▒ /▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒ /▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒ /▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒▒▒/▒▒ //▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> //// /// //// /// /// //// /// // /// /// //// /// //// // /// ///
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ▒▒▒▒ [ LLaMA.go v1.4.0 ] [ LLaMA GPT in pure Golang - based on LLaMA C++ ] ▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ INIT ] Loading model, please wait .............................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ PROMPT ] Which programming language is the fastest?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ OUTPUT ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is easiest to use?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is the best for beginners?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is the best for experienced programmers?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language has the most potential?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== EVAL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">12559 | 3044 | 310 | 307 | 355 | 360 | 309 | 324 | 305 | 318 | 324 | 329 | 328 | 313 | 306 | 319 | 315 | 317 | 314 | 320 | 331 | 315 | 321 | 313 | 314 | 324 | 335 | 342 | 325 | 312 | 321 | 315 | 309 | 330 | 307 | 324 | 343 | 5317 | 312 | 312 | 307 | 319 | 323 | 316 | 309 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== SAMPLING TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== FULL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 | 12567 | 3051 | 318 | 315 | 363 | 367 | 316 | 331 | 313 | 326 | 331 | 337 | 336 | 321 | 313 | 326 | 323 | 325 | 321 | 328 | 339 | 322 | 328 | 321 | 322 | 331 | 342 | 350 | 333 | 319 | 329 | 323 | 316 | 338 | 314 | 332 | 350 | 5325 | 320 | 320 | 315 | 327 | 331 | 324 | 316 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ HALT ] Time per token: 754 ms | Tokens per second: 1.33
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 25GB
+CPU usage : 66%&lt;/p>
+&lt;p>The execution time significantly improved with the latest changes! The reported duration stands at approximately &lt;strong>754 ms per token&lt;/strong>. However, upon closer examination, it becomes evident that the initial token took a whopping 40 times longer to process, while the second token took 10 times longer compared to the rest. This disparity skews the average calculation, and a more realistic estimate would be around &lt;strong>315 ms per token&lt;/strong>, which aligns better with the perceived speed.&lt;/p>
+&lt;p>Nonetheless, it is worth noting that the program still has room for further optimization, as it did not fully utilize the available CPU resources. It is disappointing to observe that the current implementation falls short in this regard. Additionally, the necessity to load the model into RAM remains a drawback, especially when compared to the native C++ version, which accomplishes the same task with minimal RAM usage and greater efficiency.&lt;/p>
+&lt;p>While the recent improvements have led to a noticeable boost in performance, there is still potential for even better optimizations. The requirement to load the model into RAM remains a limitation that hampers efficiency, particularly when compared to the native C++ version&amp;rsquo;s streamlined approach.&lt;/p>
+&lt;p>Lastly, is there any way we can use 100% of the CPU and squeeze out better performance? let&amp;rsquo;s try.&lt;/p>
+&lt;ol>
+&lt;li>using &lt;code>--neon --context 45 --predict 45 --threads 10 --silent --profile 2023/05/14 10:25:56 profile: CPU profiling enabled, cpu.pprof&lt;/code> I get 65% usage with 675 ms.&lt;/li>
+&lt;li>20 threads get 772ms&lt;/li>
+&lt;li>6 gave 50% usage with 745 ms per token&lt;/li>
+&lt;li>4 gave 35% usage with 915 ms per token&lt;/li>
+&lt;li>2 gave 20% usage with 1608 ms per token&lt;/li>
+&lt;/ol>
+&lt;p>During the course of testing, it became evident that all the runs exhibited a similar pattern. The initial two tokens took an exceptionally long time to process, but subsequently, the performance noticeably improved. In a hypothetical scenario where superior optimizations were implemented, it is plausible that the native Go version could outperform the native C++ version, particularly if it efficiently utilized all CPU threads through goroutines. However, it must be acknowledged that the current implementation falls short in terms of performance. Additionally, one notable disadvantage of the native Go version is its inability to load the model in smaller segments, as the native C++ version does, thereby avoiding the excessive consumption of 25GB of RAM.&lt;/p>
+&lt;p>In summary, although the native Go version has the potential for faster performance through effective CPU thread utilization, it currently lags behind due to performance limitations. Furthermore, it lacks the advantageous feature present in the native C++ version of loading the model in smaller, more memory-efficient chunks.&lt;/p>
+&lt;p>Ok, that&amp;rsquo;s enough of that.&lt;/p>
+&lt;h2 id="bonus-round">Bonus round&lt;/h2>
+&lt;p>The llama.cpp repo released GPU support for the program - so I had to try that out too. I don&amp;rsquo;t have anything too beefy to test it on , but I have a 1050 GPU laptop. So I went there and tested with GPU support enabled:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="o">.&lt;/span>\&lt;span class="n">main&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">exe&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="n">C&lt;/span>&lt;span class="p">:&lt;/span>\&lt;span class="n">Users&lt;/span>\&lt;span class="n">graha&lt;/span>\&lt;span class="n">OneDrive&lt;/span>\&lt;span class="n">Desktop&lt;/span>\&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="s2">&amp;#34;what is a banana doing on my lawn?&amp;#34;&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">t&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ngl&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">build&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">550&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">79&lt;/span>&lt;span class="n">b2d5b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">seed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1684092347&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">C&lt;/span>&lt;span class="p">:&lt;/span>\&lt;span class="n">Users&lt;/span>\&lt;span class="n">graha&lt;/span>\&lt;span class="n">OneDrive&lt;/span>\&lt;span class="n">Desktop&lt;/span>\&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">72.75&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.09&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">1026.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">cublas&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">offloading&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="n">layers&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">GPU&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">cublas&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">VRAM&lt;/span> &lt;span class="n">used&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">3088&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.50&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">system_info&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_threads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VBMI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VNNI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">NEON&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">ARM_FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">F16C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FP16_VA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">WASM_SIMD&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">BLAS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">SSE3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">VSX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sampling&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">repeat_last_n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">repeat_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">presence_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">frequency_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">40&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">tfs_z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.950000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">typical_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.800000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_lr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_ent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5.000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">generate&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_batch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_predict&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_keep&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">what&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">banana&lt;/span> &lt;span class="n">doing&lt;/span> &lt;span class="n">on&lt;/span> &lt;span class="n">my&lt;/span> &lt;span class="n">lawn&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">the&lt;/span> &lt;span class="n">other&lt;/span> &lt;span class="n">day&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">was&lt;/span> &lt;span class="n">looking&lt;/span> &lt;span class="n">out&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">window&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">saw&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">banana&lt;/span> &lt;span class="n">sitting&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">our&lt;/span> &lt;span class="n">front&lt;/span> &lt;span class="n">yard&lt;/span>&lt;span class="o">.&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">walked&lt;/span> &lt;span class="n">outside&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">see&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">anyone&lt;/span> &lt;span class="n">had&lt;/span> &lt;span class="n">left&lt;/span> &lt;span class="n">it&lt;/span> &lt;span class="n">there&lt;/span> &lt;span class="n">by&lt;/span> &lt;span class="n">accident&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">but&lt;/span> &lt;span class="n">no&lt;/span> &lt;span class="n">one&lt;/span> &lt;span class="n">answered&lt;/span> &lt;span class="n">when&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">called&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">them&lt;/span> &lt;span class="n">inside&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">35609.62&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">10.52&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.23&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">31931.20&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">35&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">912.32&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">36327.48&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">43&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">844.83&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">74111.62&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>CPU usage : 100%
+memory usage : 25GB&lt;/p>
+&lt;p>Hmm, okay, so GPU support doesn&amp;rsquo;t provide significant benefits apart from offloading some of the RAM usage, resulting in a token processing time of approximately 844 ms (which is similar to the non-GPU version). Interestingly, the MacBook optimized code doesn&amp;rsquo;t utilize any RAM at all. Therefore, even if you possess a powerful GPU capable of efficient processing, it seems unlikely that it would greatly enhance the performance of this particular version of the llama program. Nevertheless, it&amp;rsquo;s still fascinating to observe!&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>What have we learned from this analysis? Optimizations play a vital role in programming, the choice of programming language can significantly impact performance, and Python can be complex to configure for low-level operations. Due to these reasons, I refrained from making a direct comparison in this regard.&lt;/p></description></item><item><title>Bash Vs Powershell</title><link>/blog/posts/2023/april/bash-vs-powershell/</link><pubDate>Sat, 13 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/april/bash-vs-powershell/</guid><description>&lt;h2 id="part-1">Part 1&lt;/h2>
+&lt;p>I will start by saying, I am a fan of Powershell. Even though it doesn&amp;rsquo;t fit the need for 90% of use cases I prefer it over bash for 3 reasons:&lt;/p>
+&lt;ol>
+&lt;li>It&amp;rsquo;s object-oriented&lt;/li>
+&lt;li>Almost all commands follow the same naming convention&lt;/li>
+&lt;li>Arguments also follow a logical naming scheme.
+&lt;ul>
+&lt;li>Consider in bash what will &lt;code>-f&lt;/code> do for any random command. What about &lt;code>-c&lt;/code>? Always completely different. The only consistent one may be &lt;code>v&lt;/code> for &lt;code>verbose&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>I decided to compare the two. I will grade with the following attributes of each in mind:&lt;/p>
+&lt;ol>
+&lt;li>Performance&lt;/li>
+&lt;li>Syntax&lt;/li>
+&lt;li>Consistency&lt;/li>
+&lt;/ol>
+&lt;p>each attribute will get a score on a scale from &lt;code>1-3&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">1 = poor
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2 = average or no difference
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3 = superior
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>But first a bit of background for context.&lt;/p>
+&lt;h2 id="history">History&lt;/h2>
+&lt;h4 id="bash">bash&lt;/h4>
+&lt;p>The Bourne Again SHell &amp;ndash; or bash was created in 1988 and ultimately released as a product by the &amp;rsquo;90s. The current version of bash is 5.1 (2020), which is not much different syntactically from version 3.0 released in 2004 around the time Powershell was being developed.&lt;/p>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;p>Driven by a lack of a cohesive scripting language needed for modern automation on Windows, Microsoft created Powershell in 2005. Eventually, Powershell v1.0 was out of beta in 2006. Shortly after, PowerShell v2.0 was released in 2008.&lt;/p>
+&lt;h2 id="before-we-begin">Before we begin&lt;/h2>
+&lt;p>My laptop:&lt;/p>
+&lt;ul>
+&lt;li>10th gen intel Windows 10 with bash using WSL&lt;/li>
+&lt;/ul>
+&lt;h3 id="powershell-prompt-style">Powershell prompt style:&lt;/h3>
+&lt;p>&lt;img src="https://i.imgur.com/nfFDE4Y.png"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="bash-prompt-style">bash prompt style:&lt;/h3>
+&lt;p>&lt;img src="https://i.imgur.com/6FKxQbV.png"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="testing-commands-and-functions">Testing commands and functions&lt;/h3>
+&lt;p>I will test 15 different operations on each and judge each on the attributes listed above. Here are the 15 operations I have chosen to compare:&lt;/p>
+&lt;p>Part 1:&lt;/p>
+&lt;ol>
+&lt;li>Make the directory&lt;/li>
+&lt;li>Download the file&lt;/li>
+&lt;li>write file size to the console&lt;/li>
+&lt;li>find the file and unzip it&lt;/li>
+&lt;li>find a string in any file&lt;/li>
+&lt;li>count file sizes of a type&lt;/li>
+&lt;li>Get the process by name and append it to a new file&lt;/li>
+&lt;/ol>
+&lt;h2 id="ready-go">Ready? Go!&lt;/h2>
+&lt;h3 id="test-1-make-a-directory">Test 1: Make a Directory&lt;/h3>
+&lt;p>I will create test directories for each shell&lt;/p>
+&lt;h4 id="bash-1">Bash&lt;/h4>
+&lt;p>Command: &lt;code>mkdir -p bash/test{1..15}&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/m0cj7UU.png"
+loading="lazy"
+>
+&lt;img src="https://i.imgur.com/HYfy5rM.png"
+loading="lazy"
+>&lt;/p>
+&lt;h4 id="powershell-1">Powershell&lt;/h4>
+&lt;p>Command &lt;code>new-item -itemType directory $(1..15 | foreach{&amp;quot;powershell/test$_&amp;quot;})&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/nawxV6q.png"
+loading="lazy"
+>&lt;/p>
+&lt;h4 id="score">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>execution time&lt;/td>
+&lt;td>16.7 ms&lt;/td>
+&lt;td>11 ms&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>6&lt;/td>
+&lt;td>6&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Tie&lt;/strong>&lt;/p>
+&lt;h3 id="test-2-download-the-zip-form-online">Test 2: Download the zip form online&lt;/h3>
+&lt;h4 id="bash-2">Bash&lt;/h4>
+&lt;p>Command: &lt;code>wget https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip&lt;/code>&lt;/p>
+&lt;h4 id="powershell-2">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>Invoke-WebRequest https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip -outfile master.zip&lt;/code>&lt;/p>
+&lt;h4 id="score-1">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>execution time&lt;/td>
+&lt;td>1.724 s&lt;/td>
+&lt;td>19.364 s&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>8&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Bash&lt;/strong>&lt;/p>
+&lt;h3 id="test-3-write-file-size-to-console">Test 3: Write file size to console&lt;/h3>
+&lt;p>A simple example where you want to list a file&amp;rsquo;s size in the console&lt;/p>
+&lt;h4 id="bash-3">Bash&lt;/h4>
+&lt;p>Command : &lt;code>echo &amp;quot;Size : $(ls -lh master.zip|awk '{print $5}')&amp;quot;&lt;/code>&lt;/p>
+&lt;h4 id="powershell-3">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>write-host &amp;quot;Size: $((Get-Item master.zip).length/1KB)K&amp;quot;&lt;/code>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>7&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-4-find-a-file-and-unzip-it">Test 4: Find a file and unzip it&lt;/h3>
+&lt;h4 id="bash-4">Bash&lt;/h4>
+&lt;p>Command: &lt;code>find $(pwd) -name *.zip -exec unzip -q {} \;&lt;/code>&lt;/p>
+&lt;h4 id="powershell-4">Powershell&lt;/h4>
+&lt;p>Command: &lt;code>gci -name *.zip|foreach{Expand-Archive $_}&lt;/code>&lt;/p>
+&lt;h4 id="score-2">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-5-find-a-string-in-any-file">Test 5: Find a string in any file&lt;/h3>
+&lt;h4 id="bash-5">Bash&lt;/h4>
+&lt;p>Command: &lt;code>grep -R testing&lt;/code>&lt;/p>
+&lt;h4 id="powershell-5">Powershell&lt;/h4>
+&lt;p>Command: &lt;code>gci -Recurse | Select-String &amp;quot;testing&amp;quot; -List&lt;/code>&lt;/p>
+&lt;h4 id="score-3">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>8&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Bash&lt;/strong>&lt;/p>
+&lt;h3 id="test-6-count-file-sizes-of-a-type">Test 6: Count file sizes of a type&lt;/h3>
+&lt;h4 id="bash-6">Bash&lt;/h4>
+&lt;p>Script:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="nv">files&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>find . -name *.go&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in &lt;span class="nv">$files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">val&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>ls -l &lt;span class="nv">$i&lt;/span>&lt;span class="p">|&lt;/span>awk &lt;span class="s1">&amp;#39;{print $5}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span> &lt;span class="nv">$size&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nv">$val&lt;/span> &lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Total goLang file size:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Bytes: &lt;/span>&lt;span class="nv">$size&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Kilobytes: &lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="nv">$size&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="m">1000&lt;/span>&lt;span class="k">))&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>TotalMilliseconds: 1879&lt;/p>
+&lt;h4 id="powershell-6">Powershell&lt;/h4>
+&lt;p>Script:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$files=(gci -recurse *.go)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$size = ($files | Measure-Object -Sum Length).Sum
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Total goLang file size:&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Bytes: $size&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Kilobytes: $($size/1KB)&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>TotalMilliseconds: 80.0936&lt;/p>
+&lt;h4 id="score-4">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>9&lt;/td>
+&lt;td>4&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-7-get-the-process-by-name-and-append-it-to-a-new-file">Test 7: Get the process by name and append it to a new file&lt;/h3>
+&lt;h4 id="bash-7">Bash&lt;/h4>
+&lt;p>Command: &lt;code>pgrep -f bash &amp;gt; out-file.txt &amp;amp;&amp;amp; wc out-file.txt&lt;/code>&lt;/p>
+&lt;h4 id="powershell-7">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>(get-process -name system).id|out-file out-file.txt; gci out-file.txt|Measure-Object –Line&lt;/code>&lt;/p>
+&lt;h4 id="score-5">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>6&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Aggregate total for first 7 tests:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>15&lt;/td>
+&lt;td>15&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>16&lt;/td>
+&lt;td>15&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>18&lt;/td>
+&lt;td>14&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>49&lt;/td>
+&lt;td>44&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="powershell-feature-spotlight">Powershell Feature spotlight:&lt;/h2>
+&lt;h3 id="advanced-help-pages">Advanced help pages.&lt;/h3>
+&lt;p>Powershell has an intuitive way to find commands that you may want to use. Unlike man pages on bash, which require you to know and read the exact binary that you are needing help with. Powershell allows for searching all help pages, for example:&lt;/p>
+&lt;p>&lt;code>Get-Help -Name remoting&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Name Category Module Synopsis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Add-AppvClientConnectionGroup Cmdlet AppvClient Add-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-AppvClientConnectionGroup Cmdlet AppvClient Get-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enable-AppvClientConnectionGroup Cmdlet AppvClient Enable-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Remove-AppvClientConnectionGroup Cmdlet AppvClient Remove-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disable-AppvClientConnectionGroup Cmdlet AppvClient Disable-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Repair-AppvClientConnectionGroup Cmdlet AppvClient Repair-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Stop-AppvClientConnectionGroup Cmdlet AppvClient Stop-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-VMNetworkAdapter Cmdlet Hyper-V Connect-VMNetworkAdapter...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Grant-VMConnectAccess Cmdlet Hyper-V Grant-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-VMNetworkAdapter Cmdlet Hyper-V Disconnect-VMNetworkAdapter...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-VMConnectAccess Cmdlet Hyper-V Get-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-VMSan Cmdlet Hyper-V Disconnect-VMSan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Revoke-VMConnectAccess Cmdlet Hyper-V Revoke-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Test-VMReplicationConnection Cmdlet Hyper-V Test-VMReplicationConnection...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-VMSan Cmdlet Hyper-V Connect-VMSan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-IscsiConnection Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-IscsiTarget Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-IscsiTarget Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-WSMan Cmdlet Microsoft.WSMan.Manage... Disconnect-WSMan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-WSMan Cmdlet Microsoft.WSMan.Manage... Connect-WSMan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-NetConnectionProfile Function NetConnection ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Set-NetConnectionProfile Function NetConnection ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-NetTCPConnection Function NetTCPIP ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Test-NetConnection Function NetTCPIP ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="consistency">Consistency&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>All of Microsoft&amp;rsquo;s cmdlets have a &lt;code>Verb-Noun&lt;/code> structure.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All of Microsoft&amp;rsquo;s cmdlets can easily be researched on Google because no other program calls their commands &amp;ldquo;cmdlets&amp;rdquo;. So, you will always get something on PowerShell if you use that word.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All functions are object-oriented, making scripting and automation work the same way on every command. No more guessing which column a specific value you are looking for is on like in bash. No more trimming whitespace and tab characters.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All loops automatically use the &lt;code>$_&lt;/code> notation for the object being looped over. So for example, every loop can reference &lt;code>$_.name&lt;/code> to get the name property if it exists.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="bottom-line">Bottom Line&lt;/h2>
+&lt;p>Powershell is fundamentally a more intuitive and powerful scripting language than bash. However, the most symmetrical comparison for Powershell would be something we didn&amp;rsquo;t compare: python.&lt;/p>
+&lt;p>There is little reason to use Powershell on Linux because it&amp;rsquo;s not often packaged with Linux. However, python is more powerful than bash and is your most likely target language on Linux for automation. The only caveat is that you would want to use bash for system calls and configuration, and then have Python specifically for automation. Whereas, on windows, PowerShell can do it all.&lt;/p>
+&lt;p>If you are using Windows and looking to script and automate, PowerShell is your friend.&lt;/p></description></item><item><title>May the 4th be with you</title><link>/blog/posts/2023/may/may-the-4th/</link><pubDate>Thu, 04 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/may-the-4th/</guid><description>&lt;p>An homage to Starwars fans everywhere&lt;/p>
+&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/May_the_4th_be_with_you_%28Star_Wars_Day%29.gif"
+loading="lazy"
+>&lt;/p></description></item><item><title>First Post!</title><link>/blog/posts/2023/april/first-post/</link><pubDate>Sat, 29 Apr 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/april/first-post/</guid><description>&lt;p>&lt;img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Party%20Popper.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>Note: This blog is mainly for development purposes.&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>I have created this blogs website to accomplish a few things:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Information Sharing&lt;/strong>
+&lt;ul>
+&lt;li>I wanted a place to create posts and information for my purposes, but also for public references (sharing with hyperlinks on websites), but have never had somewhere that was both easy to create and also purely my creation.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Developer Creativity&lt;/strong>
+&lt;ul>
+&lt;li>This website allows me to express my interests in certain technologies by posting about my discoveries, how-tos, and analysis.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Personal Projects&lt;/strong>
+&lt;ul>
+&lt;li>I also can experiment and create web-framework-related ideas with actual visible usage.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="about-the-site">About the site&lt;/h3>
+&lt;p>This website is a &lt;strong>Github pages&lt;/strong> website, meaning its static content is served from my &lt;a class="link" href="https://github.com/gtsteffaniak/blog" target="_blank" rel="noopener"
+>github blog repo&lt;/a>. Since this repo is public you can take a look at how it works and maybe find inspiration yourself.&lt;/p>
+&lt;p>I think it&amp;rsquo;s the best solution to what I am looking for. I can create posts easily by :&lt;/p>
+&lt;ol>
+&lt;li>Add a new &lt;code>md&lt;/code> post, which I have decided to put in a &lt;code>posts/&lt;/code> directory on GitHub.&lt;/li>
+&lt;li>Update the &lt;code>schema.yml&lt;/code> to update the static website to automatically add the page to the html/javascript website (no rebuild needed).&lt;/li>
+&lt;li>That&amp;rsquo;s it! A new post!&lt;/li>
+&lt;/ol>
+&lt;p>Since it&amp;rsquo;s on GitHub, it has history and version control. Another concern I had was putting my blog somewhere that would be forgotten or eventually discontinued. Since GitHub is trustworthy and reliable (it won&amp;rsquo;t suffer outages), this shouldn&amp;rsquo;t be an issue. I am also leveraging a free functionality of GitHub pages for basically zero-touch configuration.&lt;/p>
+&lt;p>However, to be clear, I don&amp;rsquo;t simply use GitHub pages. I also host my website on &lt;a class="link" href="https://gportal.link" target="_blank" rel="noopener"
+>https://gportal.link&lt;/a> which is a website I have running on &lt;a class="link" href="vultr.com" >Vultr&lt;/a> for $6 a month which contains an Nginx reverse proxy and a few hosted website components such as a golang authentication server. For my peace of mind, I keep that repo private! Sorry :)&lt;/p>
+&lt;h3 id="what-about-you">What about you?&lt;/h3>
+&lt;p>So, perhaps I will allow comments one day, but there&amp;rsquo;s not much interaction yet. Stay tuned!&lt;/p>
+&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
+&lt;p>Everything I create is in the spirit of learning the best way to accomplish functionality with the following criteria always in mind:&lt;/p>
+&lt;ul>
+&lt;li>Choose the &lt;strong>simplest&lt;/strong> option that satisfies your requirements.&lt;/li>
+&lt;li>Choose what will be &lt;strong>easiest&lt;/strong> to maintaintain.&lt;/li>
+&lt;li>Choose what &lt;strong>allows configuration&lt;/strong> to meet your changing needs.&lt;/li>
+&lt;/ul>
+&lt;p>This method almost missed the mark on the final bullet point, because solely using markdown can limit my formatting. But if I need more formatting in the future, I can use javascript via Svelte to do so.&lt;/p>
+&lt;p>However you stumbled across this blog, I hope you learn something new and find it as fun as I do to create.&lt;/p>
+&lt;p>Here&amp;rsquo;s a snapshot of what the blog looks like right now.. a bit sad. Hopefully better soon:&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/D6B2xip.png"
+loading="lazy"
+>&lt;/p></description></item><item><title>Archives</title><link>/blog/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>/blog/archives/</guid><description/></item><item><title/><link>/blog/posts/2023/may/ai-in-the-news/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/ai-in-the-news/</guid><description>&lt;p>Posted Date: Sat May 13th, 2023&lt;/p>
+&lt;h2 id="why-it-matters">Why it matters&lt;/h2>
+&lt;p>I believe AI will disrupt society in exactly the same way other disruptive technologies were in the past. First it will get a lot of attention, before fading into the background of progress. Anyone preaching doom and gloom or &amp;ldquo;change like never before&amp;rdquo; are likely misguided or misinformed.&lt;/p>
+&lt;p>AI is going to be an important part of society - but so was the advent of the telephone, sewer systems, refridgeration, the auto mobile, cement for construction, or the incondecent light bulb. All life changing technologies. So too will AI be life changing.&lt;/p>
+&lt;p>The debate about whether its ultimately good or bad is unimportant to me. Whether good or bad, we don&amp;rsquo;t know. But we can say its inevitable and will cause sweeping change.&lt;/p></description></item><item><title/><link>/blog/posts/2023/may/bash-vs-powershell-2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/bash-vs-powershell-2/</guid><description>&lt;p>Part 2:
+8) find a file
+9) list file content
+10) find a string in a file
+11) Make directory
+12) find a file
+13) list file content
+14) find a string in a file&lt;/p></description></item><item><title/><link>/blog/posts/2023/may/my-infrastructure/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/my-infrastructure/</guid><description/></item><item><title>Links</title><link>/blog/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/blog/links/</guid><description>&lt;p>To use this feature, add &lt;code>links&lt;/code> section to frontmatter.&lt;/p>
+&lt;p>This page&amp;rsquo;s frontmatter:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub is the world&amp;#39;s largest software development platform.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://www.typescriptlang.org&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ts-logo-128.jpg&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>image&lt;/code> field accepts both local and external images.&lt;/p></description></item><item><title>Search</title><link>/blog/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/blog/search/</guid><description/></item></channel></rss>

@@ -3,7 +3,7 @@ name: Auto-commit build changes
 on:
   push:
     branches:
-      - build
+      - build-hugo
 
 jobs:
   auto_commit:
@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
-          ref: build
+          ref: build-hugo
           path: build
           submodules: recursive
       - name: Setup Node.js
@@ -38,6 +38,44 @@ jobs:
         run: |
           cd main
           git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Auto-commit build changes"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  deploy:
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: main
+          path: main
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: build
+          path: build
+          submodules: recursive
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.121.2'
+      - name: Build
+        run: cd build && hugo --minify
+      - name: Copy files to public folder
+        run: |
+          mkdir -p main/hugo
+          cp -r build/public/* main/hugo/
+      - name: Commit changes
+        run: |
+          cd main
+          git config user.name "GitHub Actions - from build-hugo"
           git config user.email "actions@github.com"
           git add .
           git commit -m "Auto-commit build changes"

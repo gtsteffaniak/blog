@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>windows on Graham's Blog</title><link>/blog/tags/windows/</link><description>Recent content in windows on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 13 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="/blog/tags/windows/index.xml" rel="self" type="application/rss+xml"/><item><title>Bash Vs Powershell</title><link>/blog/posts/2023/april/bash-vs-powershell/</link><pubDate>Sat, 13 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/april/bash-vs-powershell/</guid><description>&lt;h2 id="part-1">Part 1&lt;/h2>
+&lt;p>I will start by saying, I am a fan of Powershell. Even though it doesn&amp;rsquo;t fit the need for 90% of use cases I prefer it over bash for 3 reasons:&lt;/p>
+&lt;ol>
+&lt;li>It&amp;rsquo;s object-oriented&lt;/li>
+&lt;li>Almost all commands follow the same naming convention&lt;/li>
+&lt;li>Arguments also follow a logical naming scheme.
+&lt;ul>
+&lt;li>Consider in bash what will &lt;code>-f&lt;/code> do for any random command. What about &lt;code>-c&lt;/code>? Always completely different. The only consistent one may be &lt;code>v&lt;/code> for &lt;code>verbose&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>I decided to compare the two. I will grade with the following attributes of each in mind:&lt;/p>
+&lt;ol>
+&lt;li>Performance&lt;/li>
+&lt;li>Syntax&lt;/li>
+&lt;li>Consistency&lt;/li>
+&lt;/ol>
+&lt;p>each attribute will get a score on a scale from &lt;code>1-3&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">1 = poor
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2 = average or no difference
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3 = superior
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>But first a bit of background for context.&lt;/p>
+&lt;h2 id="history">History&lt;/h2>
+&lt;h4 id="bash">bash&lt;/h4>
+&lt;p>The Bourne Again SHell &amp;ndash; or bash was created in 1988 and ultimately released as a product by the &amp;rsquo;90s. The current version of bash is 5.1 (2020), which is not much different syntactically from version 3.0 released in 2004 around the time Powershell was being developed.&lt;/p>
+&lt;h4 id="powershell">PowerShell&lt;/h4>
+&lt;p>Driven by a lack of a cohesive scripting language needed for modern automation on Windows, Microsoft created Powershell in 2005. Eventually, Powershell v1.0 was out of beta in 2006. Shortly after, PowerShell v2.0 was released in 2008.&lt;/p>
+&lt;h2 id="before-we-begin">Before we begin&lt;/h2>
+&lt;p>My laptop:&lt;/p>
+&lt;ul>
+&lt;li>10th gen intel Windows 10 with bash using WSL&lt;/li>
+&lt;/ul>
+&lt;h3 id="powershell-prompt-style">Powershell prompt style:&lt;/h3>
+&lt;p>&lt;img src="https://i.imgur.com/nfFDE4Y.png"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="bash-prompt-style">bash prompt style:&lt;/h3>
+&lt;p>&lt;img src="https://i.imgur.com/6FKxQbV.png"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="testing-commands-and-functions">Testing commands and functions&lt;/h3>
+&lt;p>I will test 15 different operations on each and judge each on the attributes listed above. Here are the 15 operations I have chosen to compare:&lt;/p>
+&lt;p>Part 1:&lt;/p>
+&lt;ol>
+&lt;li>Make the directory&lt;/li>
+&lt;li>Download the file&lt;/li>
+&lt;li>write file size to the console&lt;/li>
+&lt;li>find the file and unzip it&lt;/li>
+&lt;li>find a string in any file&lt;/li>
+&lt;li>count file sizes of a type&lt;/li>
+&lt;li>Get the process by name and append it to a new file&lt;/li>
+&lt;/ol>
+&lt;h2 id="ready-go">Ready? Go!&lt;/h2>
+&lt;h3 id="test-1-make-a-directory">Test 1: Make a Directory&lt;/h3>
+&lt;p>I will create test directories for each shell&lt;/p>
+&lt;h4 id="bash-1">Bash&lt;/h4>
+&lt;p>Command: &lt;code>mkdir -p bash/test{1..15}&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/m0cj7UU.png"
+loading="lazy"
+>
+&lt;img src="https://i.imgur.com/HYfy5rM.png"
+loading="lazy"
+>&lt;/p>
+&lt;h4 id="powershell-1">Powershell&lt;/h4>
+&lt;p>Command &lt;code>new-item -itemType directory $(1..15 | foreach{&amp;quot;powershell/test$_&amp;quot;})&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/nawxV6q.png"
+loading="lazy"
+>&lt;/p>
+&lt;h4 id="score">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>execution time&lt;/td>
+&lt;td>16.7 ms&lt;/td>
+&lt;td>11 ms&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>6&lt;/td>
+&lt;td>6&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Tie&lt;/strong>&lt;/p>
+&lt;h3 id="test-2-download-the-zip-form-online">Test 2: Download the zip form online&lt;/h3>
+&lt;h4 id="bash-2">Bash&lt;/h4>
+&lt;p>Command: &lt;code>wget https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip&lt;/code>&lt;/p>
+&lt;h4 id="powershell-2">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>Invoke-WebRequest https://github.com/mongodb/mongodb-kubernetes-operator/archive/refs/heads/master.zip -outfile master.zip&lt;/code>&lt;/p>
+&lt;h4 id="score-1">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>execution time&lt;/td>
+&lt;td>1.724 s&lt;/td>
+&lt;td>19.364 s&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>8&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Bash&lt;/strong>&lt;/p>
+&lt;h3 id="test-3-write-file-size-to-console">Test 3: Write file size to console&lt;/h3>
+&lt;p>A simple example where you want to list a file&amp;rsquo;s size in the console&lt;/p>
+&lt;h4 id="bash-3">Bash&lt;/h4>
+&lt;p>Command : &lt;code>echo &amp;quot;Size : $(ls -lh master.zip|awk '{print $5}')&amp;quot;&lt;/code>&lt;/p>
+&lt;h4 id="powershell-3">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>write-host &amp;quot;Size: $((Get-Item master.zip).length/1KB)K&amp;quot;&lt;/code>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>7&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-4-find-a-file-and-unzip-it">Test 4: Find a file and unzip it&lt;/h3>
+&lt;h4 id="bash-4">Bash&lt;/h4>
+&lt;p>Command: &lt;code>find $(pwd) -name *.zip -exec unzip -q {} \;&lt;/code>&lt;/p>
+&lt;h4 id="powershell-4">Powershell&lt;/h4>
+&lt;p>Command: &lt;code>gci -name *.zip|foreach{Expand-Archive $_}&lt;/code>&lt;/p>
+&lt;h4 id="score-2">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-5-find-a-string-in-any-file">Test 5: Find a string in any file&lt;/h3>
+&lt;h4 id="bash-5">Bash&lt;/h4>
+&lt;p>Command: &lt;code>grep -R testing&lt;/code>&lt;/p>
+&lt;h4 id="powershell-5">Powershell&lt;/h4>
+&lt;p>Command: &lt;code>gci -Recurse | Select-String &amp;quot;testing&amp;quot; -List&lt;/code>&lt;/p>
+&lt;h4 id="score-3">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>8&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Bash&lt;/strong>&lt;/p>
+&lt;h3 id="test-6-count-file-sizes-of-a-type">Test 6: Count file sizes of a type&lt;/h3>
+&lt;h4 id="bash-6">Bash&lt;/h4>
+&lt;p>Script:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="nv">files&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>find . -name *.go&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> i in &lt;span class="nv">$files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">val&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>ls -l &lt;span class="nv">$i&lt;/span>&lt;span class="p">|&lt;/span>awk &lt;span class="s1">&amp;#39;{print $5}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span> &lt;span class="nv">$size&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nv">$val&lt;/span> &lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Total goLang file size:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Bytes: &lt;/span>&lt;span class="nv">$size&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Kilobytes: &lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="nv">$size&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="m">1000&lt;/span>&lt;span class="k">))&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>TotalMilliseconds: 1879&lt;/p>
+&lt;h4 id="powershell-6">Powershell&lt;/h4>
+&lt;p>Script:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$files=(gci -recurse *.go)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$size = ($files | Measure-Object -Sum Length).Sum
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Total goLang file size:&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Bytes: $size&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">write-host &amp;#34;Kilobytes: $($size/1KB)&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>TotalMilliseconds: 80.0936&lt;/p>
+&lt;h4 id="score-4">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>9&lt;/td>
+&lt;td>4&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h3 id="test-7-get-the-process-by-name-and-append-it-to-a-new-file">Test 7: Get the process by name and append it to a new file&lt;/h3>
+&lt;h4 id="bash-7">Bash&lt;/h4>
+&lt;p>Command: &lt;code>pgrep -f bash &amp;gt; out-file.txt &amp;amp;&amp;amp; wc out-file.txt&lt;/code>&lt;/p>
+&lt;h4 id="powershell-7">Powershell&lt;/h4>
+&lt;p>Command : &lt;code>(get-process -name system).id|out-file out-file.txt; gci out-file.txt|Measure-Object –Line&lt;/code>&lt;/p>
+&lt;h4 id="score-5">Score&lt;/h4>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>6&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>Winner: Powershell&lt;/strong>&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Aggregate total for first 7 tests:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stat&lt;/th>
+&lt;th>Powershell&lt;/th>
+&lt;th>Bash&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Performance&lt;/td>
+&lt;td>15&lt;/td>
+&lt;td>15&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>16&lt;/td>
+&lt;td>15&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Consistency&lt;/td>
+&lt;td>18&lt;/td>
+&lt;td>14&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/td>
+&lt;td>&amp;mdash;&amp;mdash;&amp;mdash;-&lt;/td>
+&lt;td>&amp;mdash;-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Total&lt;/td>
+&lt;td>49&lt;/td>
+&lt;td>44&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="powershell-feature-spotlight">Powershell Feature spotlight:&lt;/h2>
+&lt;h3 id="advanced-help-pages">Advanced help pages.&lt;/h3>
+&lt;p>Powershell has an intuitive way to find commands that you may want to use. Unlike man pages on bash, which require you to know and read the exact binary that you are needing help with. Powershell allows for searching all help pages, for example:&lt;/p>
+&lt;p>&lt;code>Get-Help -Name remoting&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Name Category Module Synopsis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Add-AppvClientConnectionGroup Cmdlet AppvClient Add-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-AppvClientConnectionGroup Cmdlet AppvClient Get-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enable-AppvClientConnectionGroup Cmdlet AppvClient Enable-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Remove-AppvClientConnectionGroup Cmdlet AppvClient Remove-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disable-AppvClientConnectionGroup Cmdlet AppvClient Disable-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Repair-AppvClientConnectionGroup Cmdlet AppvClient Repair-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Stop-AppvClientConnectionGroup Cmdlet AppvClient Stop-AppvClientConnectionGroup...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-VMNetworkAdapter Cmdlet Hyper-V Connect-VMNetworkAdapter...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Grant-VMConnectAccess Cmdlet Hyper-V Grant-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-VMNetworkAdapter Cmdlet Hyper-V Disconnect-VMNetworkAdapter...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-VMConnectAccess Cmdlet Hyper-V Get-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-VMSan Cmdlet Hyper-V Disconnect-VMSan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Revoke-VMConnectAccess Cmdlet Hyper-V Revoke-VMConnectAccess...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Test-VMReplicationConnection Cmdlet Hyper-V Test-VMReplicationConnection...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-VMSan Cmdlet Hyper-V Connect-VMSan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-IscsiConnection Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-IscsiTarget Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-IscsiTarget Function iSCSI ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Disconnect-WSMan Cmdlet Microsoft.WSMan.Manage... Disconnect-WSMan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Connect-WSMan Cmdlet Microsoft.WSMan.Manage... Connect-WSMan...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-NetConnectionProfile Function NetConnection ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Set-NetConnectionProfile Function NetConnection ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Get-NetTCPConnection Function NetTCPIP ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Test-NetConnection Function NetTCPIP ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="consistency">Consistency&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>All of Microsoft&amp;rsquo;s cmdlets have a &lt;code>Verb-Noun&lt;/code> structure.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All of Microsoft&amp;rsquo;s cmdlets can easily be researched on Google because no other program calls their commands &amp;ldquo;cmdlets&amp;rdquo;. So, you will always get something on PowerShell if you use that word.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All functions are object-oriented, making scripting and automation work the same way on every command. No more guessing which column a specific value you are looking for is on like in bash. No more trimming whitespace and tab characters.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>All loops automatically use the &lt;code>$_&lt;/code> notation for the object being looped over. So for example, every loop can reference &lt;code>$_.name&lt;/code> to get the name property if it exists.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="bottom-line">Bottom Line&lt;/h2>
+&lt;p>Powershell is fundamentally a more intuitive and powerful scripting language than bash. However, the most symmetrical comparison for Powershell would be something we didn&amp;rsquo;t compare: python.&lt;/p>
+&lt;p>There is little reason to use Powershell on Linux because it&amp;rsquo;s not often packaged with Linux. However, python is more powerful than bash and is your most likely target language on Linux for automation. The only caveat is that you would want to use bash for system calls and configuration, and then have Python specifically for automation. Whereas, on windows, PowerShell can do it all.&lt;/p>
+&lt;p>If you are using Windows and looking to script and automate, PowerShell is your friend.&lt;/p></description></item></channel></rss>

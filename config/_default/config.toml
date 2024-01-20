@@ -1,5 +1,5 @@
 # Change baseurl before deploy
-baseurl = "https://gportal.link/blog"
+baseurl = "https://gportal.link/blog/hugo"
 languageCode = "en-us"
 paginate = 15
 title = "Graham's Blog"
