@@ -46,8 +46,10 @@
         {{ partial "sidebar/left.html" . }}
         {{- end -}}
         {{- block "right-sidebar" . -}}{{ end }}
-        <main class="main full-width">
-            {{- block "main" . }}{{- end }}
+        <main class="main gcard full-width">
+            <div class="inner">
+                {{- block "main" . }}{{- end }}
+            </div>
         </main>
     </div>
     {{ partial "footer/include.html" . }}

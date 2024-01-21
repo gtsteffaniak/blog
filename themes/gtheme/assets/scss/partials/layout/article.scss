@@ -8,10 +8,9 @@
     }
 
     .main-article {
-        background: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        overflow: hidden;
+        width: 100%;
+        overflow: unset;
+        margin: auto;
 
         .article-header {
             .article-image {

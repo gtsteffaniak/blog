@@ -3,36 +3,32 @@
 
     .left-sidebar {
         order: -3;
+        display: none;
         max-width: var(--left-sidebar-max-width);
+        @include respond(md) {
+            display:flex;
+        }
     }
 
     .right-sidebar {
         order: -1;
         max-width: var(--right-sidebar-max-width);
-
+        display: none;
         /// Display right sidebar when min-width: lg
-        @include respond(lg) {
+        @include respond(xl) {
             display: flex;
         }
     }
 
     &.extended {
         @include respond(md) {
-            max-width: 1024px;
-            --left-sidebar-max-width: 25%;
-            --right-sidebar-max-width: 30%;
+            --left-sidebar-max-width: 250px;
+            --right-sidebar-max-width: 250px;
         }
 
         @include respond(lg) {
-            max-width: 1280px;
-            --left-sidebar-max-width: 20%;
-            --right-sidebar-max-width: 30%;
-        }
-
-        @include respond(xl) {
-            max-width: 1536px;
-            --left-sidebar-max-width: 15%;
-            --right-sidebar-max-width: 25%;
+            --left-sidebar-max-width: 300px;
+            --right-sidebar-max-width: 300px;
         }
     }
 
@@ -79,6 +75,7 @@ main.main {
     max-width: 100%;
     flex-grow: 1;
     display: flex;
+    overflow:hidden;
     z-index: 0;
     gap: var(--section-separation);
     flex-direction: column;
@@ -93,5 +90,10 @@ main.main {
     padding: .5em;
     display: flex;
     height: 100%;
-    overflow: auto;
+    max-width: 100%;
+
+    overflow: hidden;
+    @include respond(xl) {
+        margin:auto;
+    }
 }
