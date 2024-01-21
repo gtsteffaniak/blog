@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}" dir="{{ default `ltr` .Language.LanguageDirection }}">
+
+<head>
+    {{- partial "head/head.html" . -}}
+    {{- block "head" . -}}{{ end }}
+</head>
+
+<body class="{{ block `body-class` . }}{{ end }}">
+    {{- partial "head/colorScheme" . -}}
+
+    {{/* The container is wider when there's any activated widget */}}
+    {{- $hasWidget := false -}}
+    {{- range .Site.Params.widgets -}}
+    {{- if gt (len .) 0 -}}
+    {{- $hasWidget = true -}}
+    {{- end -}}
+    {{- end -}}
+    <nav class="top-navbar">
+        <div class="inner svelte-1y7m1qb">
+            <button class="button-navbar" style="background-color: rgb(125, 14, 158);">
+                <div>
+                    <svg class="ham hamRotate180 ham5 svelte-hzpm3z" viewBox="0 0 100 100" width="30">
+                        <path class="line top svelte-hzpm3z"
+                            d="m 30,33 h 40 c 0,0 8.5,-0.68551 8.5,10.375 0,8.292653 -6.122707,9.002293 -8.5,6.625 l -11.071429,-11.071429">
+                        </path>
+                        <path class="line middle svelte-hzpm3z" d="m 70,50 h -40"></path>
+                        <path class="line bottom svelte-hzpm3z"
+                            d="m 30,67 h 40 c 0,0 8.5,0.68551 8.5,-10.375 0,-8.292653 -6.122707,-9.002293 -8.5,-6.625 l -11.071429,11.071429">
+                        </path>
+                    </svg>
+                </div>
+            </button>
+            <button class="button-navbar" style="background-color: rgb(125, 14, 158);">
+                <a href="/">
+                    <div style="width:100px;color:white">gPortal</div>
+                </a>
+            </button>
+            <button class="button-navbar" style="background-color: rgb(125, 14, 158);">
+                <a href="/login/"><i class="mi mi-user-check svelte-1y7m1qb"></i></a>
+            </button>
+        </div>
+    </nav>
+    <div class="container main-container flex on-phone--column {{ if $hasWidget }}extended{{ else }}compact{{ end }}">
+        {{- block "left-sidebar" . -}}
+        {{ partial "sidebar/left.html" . }}
+        {{- end -}}
+        {{- block "right-sidebar" . -}}{{ end }}
+        <main class="main gcard full-width">
+            <div class="inner">
+                {{- block "main" . }}{{- end }}
+            </div>
+        </main>
+    </div>
+    {{ partial "footer/include.html" . }}
+</body>
+
+</html>

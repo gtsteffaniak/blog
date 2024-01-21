@@ -1,0 +1,99 @@
+.container {
+    margin: 0;
+
+    .left-sidebar {
+        order: -3;
+        display: none;
+        max-width: var(--left-sidebar-max-width);
+        @include respond(md) {
+            display:flex;
+        }
+    }
+
+    .right-sidebar {
+        order: -1;
+        max-width: var(--right-sidebar-max-width);
+        display: none;
+        /// Display right sidebar when min-width: lg
+        @include respond(xl) {
+            display: flex;
+        }
+    }
+
+    &.extended {
+        @include respond(md) {
+            --left-sidebar-max-width: 250px;
+            --right-sidebar-max-width: 250px;
+        }
+
+        @include respond(lg) {
+            --left-sidebar-max-width: 300px;
+            --right-sidebar-max-width: 300px;
+        }
+    }
+
+    &.compact {
+        @include respond(md) {
+            --left-sidebar-max-width: 25%;
+            max-width: 768px;
+        }
+
+        @include respond(lg) {
+            max-width: 1024px;
+            --left-sidebar-max-width: 20%;
+        }
+
+        @include respond(xl) {
+            max-width: 1280px;
+        }
+    }
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.on-phone--column {
+        flex-direction: column;
+        @include respond(md) {
+            flex-direction: unset;
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+}
+
+main.main {
+    order: -2;
+    min-width: 0;
+    max-width: 100%;
+    flex-grow: 1;
+    display: flex;
+    overflow:hidden;
+    z-index: 0;
+    gap: var(--section-separation);
+    flex-direction: column;
+    padding-right: 1em;
+    @include respond(md) {
+        padding-top: var(--main-top-padding);
+        padding-bottom:var(--main-bottom-padding);
+    }
+}
+
+.main-container {
+    padding: .5em;
+    display: flex;
+    height: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+    @include respond(xl) {
+        margin:auto;
+    }
+}
