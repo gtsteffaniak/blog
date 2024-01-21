@@ -7,7 +7,10 @@
 }
 
 .left-sidebar {
+<<<<<<< HEAD
+=======
     margin: 1em;
+>>>>>>> origin/build-hugo
     position: sticky;
     top: 1em;
     display: flex;
@@ -71,6 +74,7 @@
 
 
 .right-sidebar {
+    margin-left: 0.5em;
     width: 100%;
     display: none;
     flex-direction: column;
