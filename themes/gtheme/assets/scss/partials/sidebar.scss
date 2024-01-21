@@ -7,7 +7,6 @@
 }
 
 .left-sidebar {
-    margin: 1em;
     position: sticky;
     top: 1em;
     display: flex;
@@ -71,6 +70,7 @@
 
 
 .right-sidebar {
+    margin-left: 0.5em;
     width: 100%;
     display: none;
     flex-direction: column;

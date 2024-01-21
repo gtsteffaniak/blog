@@ -9,6 +9,7 @@
 
     .main-article {
         width: 100%;
+        max-width: 800px;
         overflow: unset;
         margin: auto;
 
@@ -435,5 +436,16 @@
         padding: 2px 4px;
         border-radius: 4px;
         display: inline-block;
+    }
+}
+
+[data-scheme="dark"] {
+    #TableOfContents {
+        background-color: black;
+    }
+}
+[data-scheme="light"] {
+    #TableOfContents {
+        background-color: white;
     }
 }
