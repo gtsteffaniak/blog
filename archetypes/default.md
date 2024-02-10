@@ -4,6 +4,6 @@ description:
 date: {{ .Date }}
 image:
 license:
-hidden: true
+visible: false
 comments: false
 ---

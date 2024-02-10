@@ -4,6 +4,7 @@
 <head>
     {{- partial "head/head.html" . -}}
     {{- block "head" . -}}{{ end }}
+
 </head>
 
 <body class="{{ block `body-class` . }}{{ end }}">
@@ -17,15 +18,15 @@
     {{- end -}}
     {{- end -}}
     <nav class="top-navbar">
-        <div class="inner svelte-1y7m1qb">
-            <button class="button-navbar" style="background-color: rgb(125, 14, 158);">
+        <div class="inner">
+            <button class="button-navbar" onclick="toggleClass()" style="background-color: rgb(125, 14, 158);">
                 <div>
-                    <svg class="ham hamRotate180 ham5 svelte-hzpm3z" viewBox="0 0 100 100" width="30">
-                        <path class="line top svelte-hzpm3z"
+                    <svg id="button-toggle-navbar" class="ham hamRotate180 ham5" viewBox="0 0 100 100" width="30">
+                        <path class="line top"
                             d="m 30,33 h 40 c 0,0 8.5,-0.68551 8.5,10.375 0,8.292653 -6.122707,9.002293 -8.5,6.625 l -11.071429,-11.071429">
                         </path>
-                        <path class="line middle svelte-hzpm3z" d="m 70,50 h -40"></path>
-                        <path class="line bottom svelte-hzpm3z"
+                        <path class="line middle" d="m 70,50 h -40"></path>
+                        <path class="line bottom"
                             d="m 30,67 h 40 c 0,0 8.5,0.68551 8.5,-10.375 0,-8.292653 -6.122707,-9.002293 -8.5,-6.625 l -11.071429,11.071429">
                         </path>
                     </svg>
@@ -54,5 +55,29 @@
     </div>
     {{ partial "footer/include.html" . }}
 </body>
+
+<script>
+    function navigateToHash() {
+        var hash = window.location.hash.substring(1); // Exclude the '#' character
+        let elem = document.getElementById(hash);
+        if (elem) {
+            elem.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    console.log("do tell")
+    navigateToHash();
+    var Anchors = document.querySelectorAll('#TableOfContents a');
+    for (var i = 0; i < Anchors.length; i++) {
+        Anchors[i].addEventListener("click",
+            function () {
+                setTimeout(function () {
+                    navigateToHash();
+                }, 50);
+            });
+    }
+    function toggleClass() {
+        document.getElementById('button-toggle-navbar').classList.toggle('active')
+    }
+</script>
 
 </html>
