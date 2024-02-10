@@ -2,7 +2,7 @@
 title: Bash Vs Powershell
 date: 2023-05-13
 description: A short comparison of OS scripting languages.
-hidden: false
+visible: true
 tags:
     - windows
 categories:

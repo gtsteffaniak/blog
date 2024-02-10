@@ -5,7 +5,7 @@
         order: -3;
         display: none;
         max-width: var(--left-sidebar-max-width);
-        @include respond(md) {
+        @include min(md) {
             display:flex;
         }
     }
@@ -15,35 +15,35 @@
         max-width: var(--right-sidebar-max-width);
         display: none;
         /// Display right sidebar when min-width: lg
-        @include respond(xl) {
+        @include min(xl) {
             display: flex;
         }
     }
 
     &.extended {
-        @include respond(md) {
+        @include min(md) {
             --left-sidebar-max-width: 250px;
             --right-sidebar-max-width: 250px;
         }
 
-        @include respond(lg) {
+        @include min(lg) {
             --left-sidebar-max-width: 300px;
             --right-sidebar-max-width: 300px;
         }
     }
 
     &.compact {
-        @include respond(md) {
+        @include min(md) {
             --left-sidebar-max-width: 25%;
             max-width: 768px;
         }
 
-        @include respond(lg) {
+        @include min(lg) {
             max-width: 1024px;
             --left-sidebar-max-width: 20%;
         }
 
-        @include respond(xl) {
+        @include min(xl) {
             max-width: 1280px;
         }
     }
@@ -59,7 +59,7 @@
 
     &.on-phone--column {
         flex-direction: column;
-        @include respond(md) {
+        @include min(md) {
             flex-direction: unset;
         }
     }
@@ -79,12 +79,12 @@ main.main {
     z-index: 0;
     gap: var(--section-separation);
     flex-direction: column;
+    padding-bottom: var(--main-top-padding);
     padding-right: 1em;
-    @include respond(md) {
-        padding-top: var(--main-top-padding);
-        padding-bottom:var(--main-bottom-padding);
-    }
     margin-left: 0.5em;
+    @include max(sm,md){
+        margin-left: 0;
+    }
 }
 
 .main-container {
@@ -92,9 +92,6 @@ main.main {
     display: flex;
     height: 100%;
     max-width: 100%;
-
     overflow: hidden;
-    @include respond(xl) {
-        margin:auto;
-    }
+
 }

@@ -111,7 +111,7 @@
         right: auto;
     }
 
-    @include respond(md) {
+    @include min(md) {
         display: none;
     }
 
@@ -141,14 +141,14 @@
     margin: 0 calc(var(--container-padding) * -1);
 
     padding: 30px 30px;
-    @include respond(xl) {
+    @include min(xl) {
         padding: 15px 0;
     }
 
     &,
     .menu-bottom-section {
         gap: 30px;
-        @include respond(xl) {
+        @include min(xl) {
             gap: 25px;
         }
     }
@@ -157,7 +157,7 @@
         display: flex;
     }
 
-    @include respond(md) {
+    @include min(md) {
         align-items: flex-end;
         display: flex;
         background-color: transparent;
@@ -171,7 +171,7 @@
         vertical-align: middle;
         padding: 0;
 
-        @include respond(md) {
+        @include min(md) {
             width: 100%;
         }
 

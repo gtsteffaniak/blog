@@ -7,7 +7,7 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 :root {
     --main-top-padding: 1em;
     --main-bottom-padding: 1em;
-    @include respond(xl) {
+    @include min(xl) {
         --main-top-padding: 1em;
         --main-bottom-padding: 3em;
     }
@@ -63,17 +63,17 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 
     --card-padding: 20px;
 
-    @include respond(md) {
+    @include min(md) {
         --card-padding: 25px;
     }
 
-    @include respond(xl) {
+    @include min(xl) {
         --card-padding: 30px;
     }
 
     --small-card-padding: 25px 20px;
 
-    @include respond(md) {
+    @include min(md) {
         --small-card-padding: 25px;
     }
 
@@ -94,7 +94,7 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --article-font-family: var(--base-font-family);
     --article-font-size: 1.6rem;
 
-    @include respond(md) {
+    @include min(md) {
         --article-font-size: 1.7rem;
     }
 

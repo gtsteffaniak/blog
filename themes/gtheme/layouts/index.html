@@ -1,9 +1,8 @@
 
 {{ define "main" }}
     {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-    {{ $notHidden := where .Site.RegularPages "Params.hidden" "==" false }}
-    {{ $filtered := ($pages | intersect $notHidden) }}
-    {{ $pag := .Paginate ($filtered) }}
+    {{ $visible := where .Site.RegularPages "Params.visible" "==" true }}
+    {{ $pag := .Paginate ($visible) }}
 
     <section class="article-list">
         {{ range $index, $element := $pag.Pages }}

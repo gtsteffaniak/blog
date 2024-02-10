@@ -2,7 +2,7 @@
 title: First Post!
 date: 2023-04-29
 description: An introduction to the blog
-hidden: false
+visible: true
 ---
 
 ![](https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Party%20Popper.png)

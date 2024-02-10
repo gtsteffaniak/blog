@@ -6,7 +6,7 @@ tags:
 categories:
     - messages
 theme: snow
-hidden: false
+visible: true
 ---
 
 Happy Holidays!

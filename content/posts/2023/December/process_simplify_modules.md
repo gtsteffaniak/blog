@@ -4,7 +4,7 @@ date: 2023-12-24
 categories:
     - technology
 theme: snow
-hidden: false
+visible: true
 ---
 
 ## Introduction

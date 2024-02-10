@@ -4,7 +4,7 @@ date: 2023-05-04
 categories:
     - technology
     - art
-hidden: false
+visible: false
 ---
 
 An homage to Starwars fans everywhere

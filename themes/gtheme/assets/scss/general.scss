@@ -45,6 +45,7 @@ nav {
 
 .top-navbar {
     height: 3.75em;
+    background-color:whitesmoke;
 }
 
 .top-navbar .inner {
@@ -81,11 +82,13 @@ nav {
     -moz-box-shadow: 0 1px 30px rgba(0,0,0,.1);
     overflow: hidden;
     border-radius: 1em;
-    color: #fff;
+    background-color: whitesmoke;
     display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;
+    border-style: solid;
+    border-color: var(--theme-color, rgb(125, 14, 158));
 }
 
 .gcard .inner {
@@ -99,17 +102,15 @@ nav {
     box-sizing: border-box;
     max-width: 1000px;
     border-radius: 1em;
-    background-color: #dcddde;
+    background: unset;
 }
 
 @supports (backdrop-filter: none) {
     .gcard {
-        background-color: #3b3b3b80;
         -webkit-backdrop-filter: blur(10px) brightness(50%);
         backdrop-filter: blur(10px) brightness(50%);
     }
     .top-navbar {
-        background-color: #3b3b3b80;
         -webkit-backdrop-filter: blur(10px) brightness(50%);
         backdrop-filter: blur(10px) brightness(50%);
     }
@@ -123,7 +124,6 @@ body {
     height: 100vh;
     width: 100vw;
     margin: 0;
-    background-color: gray;
     background-image: radial-gradient(at -10px -10px,#fff,#9f9f9f 90%);
     background-size: 200% 200%;
     animation: gradient 15s ease infinite;
@@ -131,10 +131,27 @@ body {
 }
 
 [data-scheme="dark"] {
+    .gcard {
+        color:white;
+    }
     body {
         background-image: radial-gradient(farthest-corner at -10px -10px,#7d0e9e,#000 50%);
     }
-    .gcard .inner {
-        background-color: #221d23;
+    .top-navbar {
+        background-color: #3b3b3b80;
+        -webkit-backdrop-filter: blur(10px) brightness(50%);
+        backdrop-filter: blur(10px) brightness(50%);
+    }
+    @supports (backdrop-filter: none) {
+        .gcard {
+            background-color: #3b3b3b80;
+            -webkit-backdrop-filter: blur(10px) brightness(50%);
+            backdrop-filter: blur(10px) brightness(50%);
+        }
+        .top-navbar {
+            background-color: #3b3b3b80;
+            -webkit-backdrop-filter: blur(10px) brightness(50%);
+            backdrop-filter: blur(10px) brightness(50%);
+        }
     }
 }

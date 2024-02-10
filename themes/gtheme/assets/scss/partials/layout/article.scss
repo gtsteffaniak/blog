@@ -2,7 +2,7 @@
     &.hide-sidebar-sm .left-sidebar {
         display: none;
 
-        @include respond(md) {
+        @include min(md) {
             display: inherit;
         }
     }

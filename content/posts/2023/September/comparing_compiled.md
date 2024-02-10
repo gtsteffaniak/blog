@@ -1,7 +1,7 @@
 ---
 title: "Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling"
 date: 2023-08-22
-hidden: false
+visible: true
 ---
 
 > **NOTE**

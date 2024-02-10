@@ -1,6 +1,6 @@
 .sidebar {
     &.sticky {
-        @include respond(md) {
+        @include min(md) {
             position: sticky;
         }
     }
@@ -21,14 +21,14 @@
     --emoji-size: 40px;
     --emoji-font-size: 20px;
 
-    @include respond(md) {
+    @include min(md) {
         width: auto;
         padding-top: var(--main-top-padding);
         padding-bottom: var(--main-bottom-padding);
         max-height: 100vh;
     }
 
-    @include respond(2xl) {
+    @include min(2xl) {
         --sidebar-avatar-size: 120px;
         --sidebar-element-separation: 25px;
         --emoji-size: 40px;
@@ -40,7 +40,7 @@
         --emoji-font-size: 15px;
 
         header {
-            @include respond(lg) {
+            @include min(lg) {
                 flex-direction: row;
             }
 
@@ -51,7 +51,7 @@
             .site-name {
                 font-size: 1.4rem;
 
-                @include respond(2xl) {
+                @include min(2xl) {
                     font-size: 1.75rem;
                 }
             }
@@ -61,7 +61,7 @@
             }
         }
     }
-    @include respond(md) {
+    @include min(md) {
         .left-sidebar {
             position:relative;
         }
@@ -80,7 +80,7 @@
         top: 0;
     }
 
-    @include respond(lg) {
+    @include min(lg) {
         padding-top: var(--main-top-padding);
         padding-bottom: var(--main-top-padding);
     }
@@ -93,7 +93,7 @@
     flex-direction: column;
     gap: var(--sidebar-element-separation);
 
-    @include respond(md) {
+    @include min(md) {
         padding: 0;
     }
 
@@ -138,7 +138,7 @@
         margin: 0;
         font-size: 1.6rem;
 
-        @include respond(2xl) {
+        @include min(2xl) {
             font-size: 1.8rem;
         }
     }
@@ -149,7 +149,7 @@
         margin: 0;
         font-size: 1.4rem;
 
-        @include respond(2xl) {
+        @include min(2xl) {
             font-size: 1.6rem;
         }
     }
