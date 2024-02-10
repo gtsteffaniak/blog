@@ -3,7 +3,7 @@ title: The doubled edge sword of modules when developing
 date: 2023-10-19
 categories:
     - technology
-hidden: false
+visible: true
 ---
 
 > Note: In this post, I will use the term "external module" to refer to an

@@ -11,7 +11,7 @@ As software development continues to evolve, developers often find themselves fa
 
 ## Compile Time
 
-**Go:** One of Go's standout features is its blazing-fast compile times. It excels in this area due to its simplicity and a focus on concurrent compilation. Even for large projects, Go compiles in a matter of seconds, making it a preferred choice for projects with tight development cycles.
+**Go:** One of Go's standout features is its blazing-fast compile times. It excels in this area due to its simplicity and a focus on concurrent compilation. Even for large projects, Go compiles in a matter of seconds, making it a preferred choice for projects with tight development cycles. Go excels with average compile times of < 1 second even for large projects due to its simple design and concurrent compilation.[[1]](https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/rust-go.html)
 
 **Rust:** Rust's compile times are generally longer compared to Go, primarily because of its more advanced type system and borrow checker. However, the trade-off is robust memory safety. The Rust compiler ensures memory safety without relying on garbage collection, which makes the extra compilation time worthwhile for many developers.
 
@@ -37,11 +37,11 @@ Comparisons
 
 ## Garbage Collection
 
-**Go (Golang):** Go employs a garbage collector, which simplifies memory management for developers. While garbage collection introduces a minimal runtime overhead, Go's efficient design often offsets this impact. Developers can focus on writing code rather than managing memory.
+**Go (Golang):** Go employs a garbage collector, which simplifies memory management for developers. While garbage collection introduces a minimal runtime overhead, Go's efficient design often offsets this impact. Developers can focus on writing code rather than managing memory. [[2]](https://tip.golang.org/doc/gc-guide)
 
 **Rust:** The Rust programming language relies on a strict ownership system, ensuring memory safety at compile-time. This approach eliminates the runtime overhead associated with garbage collection, making Rust suitable for systems programming and high-performance applications.
 
-**C++:** C++ doesn't include a built-in garbage collector, giving developers complete control over memory management. However, this control can lead to memory-related bugs if not managed carefully. Developers must manually allocate and deallocate memory, which can be error-prone and extra effort.
+**C++:** C++ doesn't include a built-in garbage collector, giving developers complete control over memory management. However, this control can lead to memory-related bugs if not managed carefully. Developers must manually allocate and deallocate memory, which can be error-prone and extra effort. [[3]](https://stackoverflow.com/questions/4687310/memory-allocation-in-c)
 
 ## Modern Tooling Differences
 
