@@ -1,0 +1,229 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Introduction I wrote an/other post about the frustration I have with frameworks in modern frontend software development. The fast pace of change is hailed as the consequence of the innovative field of front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every day. But I disagree this is simply a necessity of innovation.
+Frontend frameworks evolve and change primarily because there is not and has never been one good way to use javascript."><title>Simplifying frontend frameworks</title>
+<link rel=canonical href=/blog/hugo/posts/2023/december/process_simplify_modules/><link rel=stylesheet href=/blog/hugo/scss/style.min.cc9accc95658137abe48d682d608484867aea3e6fabde803dac5275c1c02cc85.css><meta property="og:title" content="Simplifying frontend frameworks"><meta property="og:description" content="Introduction I wrote an/other post about the frustration I have with frameworks in modern frontend software development. The fast pace of change is hailed as the consequence of the innovative field of front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every day. But I disagree this is simply a necessity of innovation.
+Frontend frameworks evolve and change primarily because there is not and has never been one good way to use javascript."><meta property="og:url" content="/blog/hugo/posts/2023/december/process_simplify_modules/"><meta property="og:site_name" content="Graham's Blog"><meta property="og:type" content="article"><meta property="article:section" content="Posts"><meta property="article:published_time" content="2023-12-24T00:00:00+00:00"><meta property="article:modified_time" content="2023-12-24T00:00:00+00:00"><meta name=twitter:title content="Simplifying frontend frameworks"><meta name=twitter:description content="Introduction I wrote an/other post about the frustration I have with frameworks in modern frontend software development. The fast pace of change is hailed as the consequence of the innovative field of front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every day. But I disagree this is simply a necessity of innovation.
+Frontend frameworks evolve and change primarily because there is not and has never been one good way to use javascript."><link rel="shortcut icon" href=/blog/hugo/favicon.ico></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><nav class=top-navbar><div class=inner><button class=button-navbar onclick=toggleClass() style=background-color:#7d0e9e><div><svg id="button-toggle-navbar" class="ham hamRotate180 ham5" viewBox="0 0 100 100" width="30"><path class="line top" d="m30 33h40s8.5-.68551 8.5 10.375c0 8.292653-6.122707 9.002293-8.5 6.625L58.928571 38.928571"/><path class="line middle" d="m70 50H30"/><path class="line bottom" d="m30 67h40s8.5.68551 8.5-10.375c0-8.292653-6.122707-9.002293-8.5-6.625L58.928571 61.071429"/></svg></div></button>
+<button class=button-navbar style=background-color:#7d0e9e>
+<a href=/><div style=width:100px;color:#fff>gPortal</div></a></button>
+<button class=button-navbar style=background-color:#7d0e9e>
+<a href=/login/><i class="mi mi-user-check svelte-1y7m1qb"></i></a></button></div></nav><div class="container main-container flex on-phone--column extended"><aside class="sidebar gcard left-sidebar"><div class=inner><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/blog/hugo><img src=https://avatars.githubusercontent.com/u/42989099 width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/blog/hugo>Graham's Blog</a></h1><h2 class=site-description>My blog about technology</h2></div></header><ol class=social-menu><li><a href=https://github.com/gtsteffaniak target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><div class=schemas_listing></div><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></div></ol></div></aside><aside class="sidebar gcard right-sidebar sticky"><div class=inner><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#introduction>Introduction</a></li><li><a href=#examples>examples</a><ol><li><a href=#process-for-filebrowser>Process for filebrowser</a></li></ol></li><li><a href=#final-thoughts>Final thoughts</a></li></ol></nav></div></section></div></aside><main class="main gcard full-width"><div class=inner><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/blog/hugo/posts/2023/december/process_simplify_modules/>Simplifying frontend frameworks</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Dec 24, 2023</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>8 minute read</time></div></footer><header class=article-category><p class=article-subtitle>Categories:</p><a href=/blog/hugo/categories/technology/>technology</a></header></div></header><section class=article-content><hr style=width:100%><h2 id=introduction>Introduction</h2><p>I wrote an/other <a class=link href=?posts/2023/October/dependency-on-dependencies.md>post</a> about
+the frustration I have with frameworks in modern frontend software development.
+The fast pace of change is hailed as the consequence of the innovative field of
+front-end frameworks. It&rsquo;s a running joke that there&rsquo;s 10 new frameworks every
+day. But I disagree this is simply a necessity of innovation.</p><p>Frontend frameworks evolve and change primarily because there is not and has
+never been one good way to use javascript. No matter how flawed javascript is as
+a programming language, it&rsquo;s biggest flaw is that it was woefully incomplete
+from it&rsquo;s inception. The,re has never been good tooling for javascript. So this
+massive void is constantly being filled with good-but-not-perfect solutions.
+Heard of these: npm ? yarn? webpack? rollup? vite? bable? eslint? vite?
+Typescript? I could go on and on. All these things that are typically built-in
+to a language are all separate installable packages which are managed by
+third-party maintainers. These maintainers have no obligation to keep up with
+javascript changes or more devastatingly, changes to other tooling for
+javascript. This compounds the main problem I have with frontend development&mldr;
+Your frontend project will inevitably be crippled by incompatibilities. A
+project is inevitably doomed to aging out due to vulnerabilities and old
+tooling.</p><p>Maybe you retort, &ldquo;Don&rsquo;t be a developer if you can&rsquo;t handle it!&rdquo;? Well, that may
+be true from a certain perspective. However, look at other languages &ndash; C, C++,
+Golang, Rust, Java, C# (and many more) &ndash; can exist for decades and be easily
+updated to new versions. They don&rsquo;t have this problem. I would actually say
+(this leads to one of the ways I could deal with this), vanilla javascript also
+fits into this category. decades old vanilla javascript projects still work &ndash;
+they are simple to update for vulnerabilities. Vanilla javascript is one
+solution to the framework issue. Albeit not the best solution, it does solve the
+problem.</p><p>I have used vanilla javascript in a hackathon project at work to get an up and
+running project going within a week. It worked great and was incredibly simple.
+Yet, I had one coworker laughingly ask be if I really used vanilla javascript. I
+said, &ldquo;yes, it works very well for this&rdquo;. A hackathon project is the perfect
+scenario to skip a framework and just get something working.</p><p>A project becomes a devastatingly complicated web of
+dependencies that needs solving if you want your project to continue on without
+being marked legacy with thousands of vulnerabilities.</p><p>I maintain a fork of filebrowser/filebrowser, which I find entertaining to watch
+their <a class=link href=https://github.com/filebrowser/filebrowser/pull/2645 target=_blank rel=noopener>effort</a> to upgrade
+from vue2+webpack to vue3+vite. They have a multitude of half-implemented
+attempts to get there. And another <a class=link href=https://github.com/filebrowser/filebrowser/pull/2689 target=_blank rel=noopener>main vue3
+PR</a> which is in a
+perpetual state of change for 6 months (still unmerged).</p><p>So, how did I handle this? Well, see <a class=link href=#process-for-filebrowser>my process below</a>, but
+let me give a few examples. For now I want to dig into the problem more and what
+I believe is <em>my solution</em>, which may not be yours because the problem is
+systemic. The problem is javascript is a deeply flawed programming language
+which is essential use to develope frontend webpages.</p><p>As an aside, some have said webassembly may solve this. I believe webassembly
+will have a legacy similar to fusion energy &ndash; always being a few years out of
+reach. My experience of webassembly has been full of frustration, but I could see
+it being simplified in the future. However, I truly see it following the exact
+same path as javascript. Meaning I see there being some usefully ways to
+implement webassembly, but without a standardized way to implement it will be
+doomed to fragmentation.</p><h2 id=examples>examples</h2><h3 id=process-for-filebrowser>Process for filebrowser</h3><p>My fork of filebrowser is superior to the original. Obviously, I am biased as
+the maintainer. However, look - mine is <a class=link href="https://hub.docker.com/layers/gtstef/filebrowser/latest/images/sha256-6574d5f4890a6a0aa2d995b9fd8856418b6fef34e3bdf774ae02cc209c78e650?context=repo" target=_blank rel=noopener>half the
+size</a>
+of the
+<a class=link href="https://hub.docker.com/layers/filebrowser/filebrowser/latest/images/sha256-0e0a4b700302457772b07c4efc47bc90143d7538d36731baabcf7d375360bcee?context=explore" target=_blank rel=noopener>original</a>,
+runs faster, has better search, and is a better organized project from a
+directory and tooling standpoint. Unlike the original, I can progressively
+update and test the backend and frontend side-by-side in a live hot-reload
+environment. This can&rsquo;t be done in the original implementation because they made
+the choice to embed the frontend into the binary. I immediately separated them
+after I forked it. That way neither the frontend or backend were dependant on
+each other.</p><p>Obviously, a streamlined developer experience is a priority for me. So, how do I
+handle updating the framework update to vue3? Well, originally I ignored it&mldr;
+And Still, I have not updated it. But I am preparing. Rather than untangling</p><p>There is one example such as prettBytes module, which changed and caused the
+filebrowser to stop displaying properly. The original repo maintainers <a class=link href=https://github.com/filebrowser/filebrowser/pull/2779 target=_blank rel=noopener>updated
+it</a> to support the new
+version of prettier. I did it differently, I replaced prettyBytes and
+implemented it as <a class=link href=https://github.com/gtsteffaniak/filebrowser/blob/main/frontend/src/utils/filesizes.js target=_blank rel=noopener>vanilla
+javascript</a>
+in 5 minutes.</p><p>So to migrate to vue3, my plan is to remove all modules with dependencies
+requiring vue2 and instead of replacing them with new modules like the original
+maintainers, I will implement it myself slowly over time removing all modules
+from the dependencies. I am in no hurry! It will be worth the effort and I see
+no need to move to vue3 now or in the future until my finally ocker images have
+vulnerabilities. Right now they are squeaky clean - unlike the original which
+has 12 vulnerabilities. Albeit, due to golang and OS&mldr; which I updated on the
+first day. Not sure why they haven&rsquo;t addressed that.</p><p>Anyways, the only vulnerabilities in the workflow are due to npm packages for
+dev tools only (not present in compiled output). These can&rsquo;t be resolved until I
+stop using vue 2:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>npm i
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>up to date, audited <span class=m>766</span> packages in 4s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>101</span> packages are looking <span class=k>for</span> funding
+</span></span><span class=line><span class=cl>  run <span class=sb>`</span>npm fund<span class=sb>`</span> <span class=k>for</span> details
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>4</span> moderate severity vulnerabilities
+</span></span></code></pre></td></tr></table></div></div><p>so I created a copy <code>package.json</code> with comments to note which packages I need/plan to remove:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;dependencies&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;ace-builds&#34;</span><span class=p>:</span> <span class=s2>&#34;^1.24.2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;clipboard&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.0.4&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;css-vars-ponyfill&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.4.3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;file-loader&#34;</span><span class=p>:</span> <span class=s2>&#34;^6.2.0&#34;</span><span class=p>,</span> <span class=c1>// UNNECESSARY IN VITE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;js-base64&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.5.1&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;lodash.clonedeep&#34;</span><span class=p>:</span> <span class=s2>&#34;^4.5.0&#34;</span><span class=p>,</span> <span class=c1>// TOO OLD - REPLACE WITH JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;lodash.throttle&#34;</span><span class=p>:</span> <span class=s2>&#34;^4.1.1&#34;</span><span class=p>,</span> <span class=c1>// TOO OLD - REPLACE WITH JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;material-icons&#34;</span><span class=p>:</span> <span class=s2>&#34;^1.10.5&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;moment&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.29.4&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;normalize.css&#34;</span><span class=p>:</span> <span class=s2>&#34;^8.0.1&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;noty&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.2.0-beta&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;pretty-bytes&#34;</span><span class=p>:</span> <span class=s2>&#34;^6.0.0&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;qrcode.vue&#34;</span><span class=p>:</span> <span class=s2>&#34;^1.7.0&#34;</span><span class=p>,</span> <span class=c1>// UPDATE TO LATEST for VUE3
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;utif&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.1.0&#34;</span><span class=p>,</span> <span class=c1>// SPIKE investigate replacement
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.6.10&#34;</span><span class=p>,</span> <span class=c1>// UPDATE to vue 3
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue-async-computed&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.9.0&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue-i18n&#34;</span><span class=p>:</span> <span class=s2>&#34;^8.15.3&#34;</span><span class=p>,</span> <span class=c1>// REMOVE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue-lazyload&#34;</span><span class=p>:</span> <span class=s2>&#34;^1.3.3&#34;</span><span class=p>,</span> <span class=c1>// REMOVE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue-router&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.1.3&#34;</span><span class=p>,</span> <span class=c1>// UPDATE to vue 3 @vue4 https://www.npmjs.com/package/vue-router
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vue-simple-progress&#34;</span><span class=p>:</span> <span class=s2>&#34;^1.1.1&#34;</span><span class=p>,</span> <span class=c1>// REPLACE WITH EQUIVALENT JS
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vuex&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.1.2&#34;</span><span class=p>,</span> <span class=c1>// SPIKE: HOW TO REMOVE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;vuex-router-sync&#34;</span><span class=p>:</span> <span class=s2>&#34;^5.0.0&#34;</span><span class=p>,</span> <span class=c1>// SPIKE: HOW TO REMOVE
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;whatwg-fetch&#34;</span><span class=p>:</span> <span class=s2>&#34;^3.6.2&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;devDependencies&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;@vue/cli-service&#34;</span><span class=p>:</span> <span class=s2>&#34;^5.0.8&#34;</span><span class=p>,</span> <span class=c1>// REMOVE for VUE3
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;compression-webpack-plugin&#34;</span><span class=p>:</span> <span class=s2>&#34;^10.0.0&#34;</span><span class=p>,</span> <span class=c1>// REPLACE VUE3
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;eslint&#34;</span><span class=p>:</span> <span class=s2>&#34;^8.51.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;eslint-plugin-vue&#34;</span><span class=p>:</span> <span class=s2>&#34;^9.17.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;vue-template-compiler&#34;</span><span class=p>:</span> <span class=s2>&#34;^2.6.10&#34;</span> <span class=c1>// REPLACE VUE3
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>You can see I plan to remove the vast majority of packages. That is one solution
+I have to this. As always, this doesn&rsquo;t fully resolve the long-term
+maintainability problem. But it does do one thing, it means when the day comes I
+need to change frameworks, it will be much simpler because my frontend won&rsquo;t
+depend on packages that depend on a certain framework.</p><p>The next perfectly reasonable package to drop will be js-base64 which&mldr; not
+sure why they needed considering javascript has native base64 encoding/decode
+support.</p><p>To make this work, I would just update this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>Base64</span> <span class=p>}</span> <span class=nx>from</span> <span class=s2>&#34;js-base64&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>data</span> <span class=o>=</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>parse</span><span class=p>(</span><span class=nx>Base64</span><span class=p>.</span><span class=nx>decode</span><span class=p>(</span><span class=nx>parts</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+</span></span></code></pre></td></tr></table></div></div><p>to this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>data</span> <span class=o>=</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>parse</span><span class=p>(</span><span class=nx>atob</span><span class=p>(</span><span class=nx>parts</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+</span></span></code></pre></td></tr></table></div></div><p>Do you see that? In order to remove one more package, I spent 5 seconds
+replacing one line. Not all packages will be that easy, but that&rsquo;s still one less
+package to worry about. Why didn&rsquo;t the original owners do that? Probably because of
+laziness. They chose to searching the package manager for a solution to their
+problem rather than spending a few seconds or minutes to see if they could do it
+themselves. Lazy lazy lazy.</p><p>That was so easy lets do another right now. Lets look at prettyBytes, a very
+similar problem to one I mentioned already with prettier - oh look I already have my own library.</p><p>So to remove this module I can just change this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>import</span> <span class=nx>prettyBytes</span> <span class=nx>from</span> <span class=s2>&#34;pretty-bytes&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>usageStats</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>used</span><span class=o>:</span> <span class=nx>prettyBytes</span><span class=p>(</span><span class=nx>usage</span><span class=p>.</span><span class=nx>used</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>,</span> <span class=p>{</span> <span class=nx>binary</span><span class=o>:</span> <span class=kc>true</span> <span class=p>}),</span>
+</span></span><span class=line><span class=cl>    <span class=nx>total</span><span class=o>:</span> <span class=nx>prettyBytes</span><span class=p>(</span><span class=nx>usage</span><span class=p>.</span><span class=nx>total</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>,</span> <span class=p>{</span> <span class=nx>binary</span><span class=o>:</span> <span class=kc>true</span> <span class=p>}),</span>
+</span></span><span class=line><span class=cl>    <span class=nx>usedPercentage</span><span class=o>:</span> <span class=nb>Math</span><span class=p>.</span><span class=nx>round</span><span class=p>((</span><span class=nx>usage</span><span class=p>.</span><span class=nx>used</span> <span class=o>/</span> <span class=nx>usage</span><span class=p>.</span><span class=nx>total</span><span class=p>)</span> <span class=o>*</span> <span class=mi>100</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><p>to this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>getHumanReadableFilesize</span> <span class=p>}</span> <span class=nx>from</span> <span class=s2>&#34;@/utils/filesizes&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>usageStats</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>used</span><span class=o>:</span> <span class=nx>getHumanReadableFilesize</span><span class=p>(</span><span class=nx>usage</span><span class=p>.</span><span class=nx>used</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=nx>total</span><span class=o>:</span> <span class=nx>getHumanReadableFilesize</span><span class=p>(</span><span class=nx>usage</span><span class=p>.</span><span class=nx>total</span> <span class=o>/</span> <span class=mi>1024</span><span class=p>,),</span>
+</span></span><span class=line><span class=cl>    <span class=nx>usedPercentage</span><span class=o>:</span> <span class=nb>Math</span><span class=p>.</span><span class=nx>round</span><span class=p>((</span><span class=nx>usage</span><span class=p>.</span><span class=nx>used</span> <span class=o>/</span> <span class=nx>usage</span><span class=p>.</span><span class=nx>total</span><span class=p>)</span> <span class=o>*</span> <span class=mi>100</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><p>Wow. So easy, right? Well, thats two packages less&mldr; These are the easiest
+examples to do. Many others will be much more difficult. However, I am in no
+hurry. Everything still works on vue2 , but I would like to get rid of the pesky
+github bot complaining about vulnerabilities. I will eventually fix it, but over
+time, slowly, over multiple commits. Hopefully that will allow me to avoid the
+problem the original maintainers have trying to merge the big PR thats stuck in
+limbo.</p><h2 id=final-thoughts>Final thoughts</h2><p>As for lessons for the future - Always think about how long you want your
+project to exist. The more maintenance that is required, the more quickly it
+will fall into disrepair. I will continue to think about ways to implement
+simple, natively supported solutions to challenges. I think this will save me
+time and keep my projects living longer on their own.</p></section><footer class=article-footer></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/blog/hugo/posts/2023/october/dependency-on-dependencies/><div class=article-details><h2 class=article-title>The doubled edge sword of modules when developing</h2></div></a></article><article><a href=/blog/hugo/posts/2023/may/llama-cpp-tests/><div class=article-details><h2 class=article-title>My experience benchmarking llama</h2></div></a></article><article><a href=/blog/hugo/posts/2023/april/bash-vs-powershell/><div class=article-details><h2 class=article-title>Bash Vs Powershell</h2></div></a></article><article><a href=/blog/hugo/posts/2023/may/may-the-4th/><div class=article-details><h2 class=article-title>May the 4th be with you</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2023 -
+2024 Graham's Blog</section><section class=powerby>Graham Steffaniak<br>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></div></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/blog/hugo/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body><script>function navigateToHash(){var t=window.location.hash.substring(1);let e=document.getElementById(t);e&&e.scrollIntoView({behavior:"smooth"})}console.log("do tell"),navigateToHash();for(var Anchors=document.querySelectorAll("#TableOfContents a"),i=0;i<Anchors.length;i++)Anchors[i].addEventListener("click",function(){setTimeout(function(){navigateToHash()},50)});function toggleClass(){document.getElementById("button-toggle-navbar").classList.toggle("active")}</script></html>
