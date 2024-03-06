@@ -118,7 +118,7 @@ function setupScrollspy() {
     }
 
     window.addEventListener("scroll", debounced(scrollHandler));
-    
+
     // Resizing may cause the offset values to change: recompute them.
     function resizeHandler() {
         sectionsOffsets = computeOffsets(headers);

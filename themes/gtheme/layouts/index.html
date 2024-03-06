@@ -1,11 +1,9 @@
-
 {{ define "main" }}
     {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-    {{ $visible := where .Site.RegularPages "Params.visible" "==" true }}
-    {{ $pag := .Paginate ($visible) }}
+    {{ $visiblePages := where $pages "Params.visible" "==" true }}
 
     <section class="article-list">
-        {{ range $index, $element := $pag.Pages }}
+        {{ range $visiblePages }}
             {{ partial "article-list/default" . }}
         {{ end }}
     </section>

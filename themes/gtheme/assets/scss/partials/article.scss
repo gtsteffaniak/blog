@@ -73,7 +73,7 @@
     }
 }
 
-.article-subtitle {
+.article-subtitle,.article-tags {
     font-weight: normal;
     color: var(--card-text-color-secondary);
     line-height: 1.5;
@@ -127,8 +127,7 @@
     }
 }
 
-.article-category,
-.article-tags {
+.article-category {
     display: flex;
     gap: 10px;
 
@@ -138,7 +137,7 @@
         padding: 8px 16px;
         border-radius: var(--tag-border-radius);
         display: inline-block;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         transition: background-color 0.5s ease;
 
         &:hover {
@@ -147,7 +146,9 @@
         }
     }
 }
-
+.article-tags a {
+    font-weight:600;
+}
 /* Compact style article list */
 .article-list--compact {
     border-radius: var(--card-border-radius);

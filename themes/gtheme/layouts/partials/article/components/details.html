@@ -59,4 +59,8 @@
         {{ end }}
     </header>
     {{ end }}
+    {{ if .Params.tags }}
+     {{ partial "article/components/tags" . }}
+    {{end}}
+
 </div>
