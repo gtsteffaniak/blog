@@ -53,14 +53,15 @@
     <header class="article-category">
         <p class="article-subtitle">Categories:</p>
         {{ range (.GetTerms "categories") }}
-        <a href="{{ .RelPermalink }}" {{ with .Params.style }}style="background-color: {{ .background }}; color: {{ .color }};" {{ end }}>
+        <a href="{{ .RelPermalink }}" {{ with .Params.style
+            }}style="background-color: {{ .background }}; color: {{ .color }};" {{ end }}>
             {{ .LinkTitle }}
         </a>
         {{ end }}
     </header>
     {{ end }}
     {{ if .Params.tags }}
-     {{ partial "article/components/tags" . }}
+    {{ partial "article/components/tags" . }}
     {{end}}
 
 </div>
