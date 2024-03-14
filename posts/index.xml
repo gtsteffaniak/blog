@@ -1,12 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Graham's Blog</title><link>/blog/posts/</link><description>Recent content in Posts on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>March Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March Update" />&lt;h3 id="quick-update">Quick update&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Graham's Blog</title><link>/blog/posts/</link><description>Recent content in Posts on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Hi to anyone lurking.&lt;/p>
+&lt;h3 id="before-and-after-blog-change">Before and after blog change&lt;/h3>
 &lt;p>I don&amp;rsquo;t post that much, but have been working on the blog in a way that I think makes it a lot better.&lt;/p>
 &lt;p>Most notably, its not using a totally different generator. It uses &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
 >hugo&lt;/a>.&lt;/p>
-&lt;p>So now, the website currently looks like this:&lt;/p>
-&lt;p>vs the original:
-&lt;img src="https://i.imgur.com/D6B2xip.png"
+&lt;p>So now, the website currently looks like this:
+&lt;img src="https://github.com/gtsteffaniak/blog/assets/42989099/a02cae0b-4d73-465a-a501-636c17f69309"
 loading="lazy"
->&lt;/p></description></item><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
+alt="image"
+>&lt;/p>
+&lt;p>vs the original:
+&lt;img src="https://github.com/gtsteffaniak/blog/assets/42989099/9fa47b6f-6fb3-439c-a255-2a718e918d3a"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;h3 id="quick-thoughts-on-why-the-change">Quick thoughts on why the change&lt;/h3>
+&lt;p>I think it looks better, but need a few tweaks still. I am enjoying the hugo html templating as well, but a little disappointed to find out the hugo templating cutom functioning everywhere out of necessity. I wish to keep the old site around as well, with maybe /old/ path, because I can&amp;rsquo;t easily do the css art styles like I could before, so for now I have those couple posts hidden. Though I think I will try to find a way to add the custom js and back for certain articles.&lt;/p>
+&lt;p>Svelte was more enjoyable to develop with when it comes to the svelte files. But the downsides were apparent: updating npm , creating my own javascript that was subpar to actual generated html. I am happy with the switch and I am happy to get more experience with templating.&lt;/p>
+&lt;p>I actually updated the &lt;a class="link" href="https://gportal.link/" target="_blank" rel="noopener"
+>gportal&lt;/a> main site to use html templates &amp;ndash; it was easy to do and results in faster load times. Since it includes built in authentication service, it still has to be a hosted site, so I might as well use &lt;a class="link" href="https://pkg.go.dev/html/template" target="_blank" rel="noopener"
+>go html templates&lt;/a> to make it &amp;ndash; which is just as easy and intuative as svelte.&lt;/p>
+&lt;h3 id="future-expectations-for-the-site">Future expectations for the site&lt;/h3>
+&lt;p>Ultimately, I just want this blog to look good, be feature rich, and not take any babysitting to keep it updated. All of these things are now possible thanks to hugo. I may even enable disqus comments soon, not that I think anyone lurking would actually want to post, but it would still be cool.&lt;/p>
+&lt;p>I plan to post more interesting posts with interactive data &amp;ndash; another reason I am looking into adding custom js to each post.&lt;/p>
+&lt;p>I also wanted to post so I would have something here for 2024, now I do :)&lt;/p></description></item><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
 &lt;p>I wrote an/other &lt;a class="link" href="?posts/2023/October/dependency-on-dependencies.md" >post&lt;/a> about
 the frustration I have with frameworks in modern frontend software development.
 The fast pace of change is hailed as the consequence of the innovative field of
