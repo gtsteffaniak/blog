@@ -100,6 +100,7 @@
     #TableOfContents {
         overflow-x: auto;
         max-height: 75vh;
+        padding-top: 1em;
 
         ol,
         ul {
@@ -124,8 +125,9 @@
         }
 
         li {
-            margin: 15px 0 15px 20px;
-            padding: 5px;
+            margin-left: 1em;
+            padding: 0;
+            margin-bottom: 1em;
 
             & > ol,
             & > ul {

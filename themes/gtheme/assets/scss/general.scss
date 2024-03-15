@@ -51,7 +51,7 @@ nav {
 
 .top-navbar {
     height: 3.75em;
-    background-color: whitesmoke;
+    background-color: #e6e6e6;
 }
 
 .top-navbar .inner {
@@ -88,7 +88,7 @@ nav {
     -moz-box-shadow: 0 1px 30px rgba(0, 0, 0, .1);
     overflow: hidden;
     border-radius: 1em;
-    background-color: whitesmoke;
+    background-color: #e6e6e6;
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -137,7 +137,7 @@ body {
     height: 100vh;
     width: 100vw;
     margin: 0;
-    background-image: radial-gradient(at -10px -10px, #fff, #9f9f9f 90%);
+    background-image: radial-gradient(at -10px -10px, #bababa, #9f9f9f 90%);
     background-size: 200% 200%;
     animation: gradient 15s ease infinite;
     animation-direction: alternate;
