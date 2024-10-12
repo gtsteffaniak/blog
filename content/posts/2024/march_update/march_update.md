@@ -1,6 +1,8 @@
 ---
 title: "March 2024 Update"
 date: 2024-03-14
+categories:
+  - announcement
 visible: true
 image: "posts/2024/march_update/banner.png"
 ---

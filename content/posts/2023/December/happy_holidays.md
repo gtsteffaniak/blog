@@ -1,10 +1,9 @@
 ---
 title: Happy Holidays!
 date: 2023-12-22
-tags:
-    - art
 categories:
-    - messages
+    - announcement
+    - art
 theme: snow
 visible: false
 ---

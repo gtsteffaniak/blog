@@ -1,6 +1,13 @@
 ---
 title: "Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling"
 date: 2023-08-22
+tags:
+  - rust
+  - go
+  - c++
+categories:
+  - technology
+  - development
 visible: true
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: First Post!
 date: 2023-04-29
+categories:
+  - announcement
 description: An introduction to the blog
 visible: true
 ---

@@ -2,8 +2,8 @@
 title: May the 4th be with you
 date: 2023-05-04
 categories:
-    - technology
-    - art
+  - announcement
+  - art
 visible: false
 ---
 

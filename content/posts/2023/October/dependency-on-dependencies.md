@@ -2,7 +2,8 @@
 title: The doubled edge sword of modules when developing
 date: 2023-10-19
 categories:
-    - technology
+  - technology
+  - development
 visible: true
 ---
 

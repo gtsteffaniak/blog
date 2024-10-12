@@ -3,7 +3,10 @@ title: My experience benchmarking llama
 date: 2023-05-14
 description: Comparing some LLMs
 tags:
-    - artificial-intelligence
+    - ai
+    - c++
+    - go
+    - llm
 categories:
     - technology
 visible: true

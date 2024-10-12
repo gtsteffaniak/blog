@@ -1,8 +1,12 @@
 ---
 title: Simplifying frontend frameworks
 date: 2023-12-24
+tags:
+  - javascript
+  - npm
 categories:
-    - technology
+  - technology
+  - development
 theme: snow
 visible: true
 ---

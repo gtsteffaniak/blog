@@ -371,6 +371,11 @@
         vertical-align: top;
     }
 
+
+    tr {
+        background-color: var(--code-background-color)
+    }
+
     tr:nth-child(even) {
         background-color: var(--tr-even-background-color);
     }
