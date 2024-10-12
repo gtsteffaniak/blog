@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ai on Graham's Blog</title><link>/blog/tags/ai/</link><description>Recent content in ai on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 14 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="/blog/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>My experience benchmarking llama</title><link>/blog/posts/2023/may/llama-cpp-tests/</link><pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/llama-cpp-tests/</guid><description>&lt;p>Today, I had the opportunity to benchmark a fascinating program called &amp;ldquo;llama.cpp&amp;rdquo; that has been ported to work with multiple programming languages, including Python and Golang. As an enthusiast of both Python and Golang, I was particularly interested in comparing the performance of these two implementations on my M1 Arm64 MacBook.&lt;/p>
+&lt;p>In this benchmark, I tested three different implementations:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
+>llama.cpp&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/gotzmann/llama.go" target="_blank" rel="noopener"
+>llama.go&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Naturally, you might be curious about which implementation performed the fastest. It&amp;rsquo;s worth noting that the native version of llama.cpp is likely to have the advantage in terms of speed. This advantage stems not from the inherent speed of the programming language but rather from the fact that it is the &amp;ldquo;upstream&amp;rdquo; branch that receives all the changes and performance optimizations first. Consequently, the Python and Golang versions may not have benefited from these optimizations yet.&lt;/p>
+&lt;h2 id="llamacpp">llama.cpp&lt;/h2>
+&lt;p>execution:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="o">./&lt;/span>&lt;span class="n">main&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">~/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">build&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">548&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="n">f8c36&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">seed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1684077400&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">Users&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">steffag&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">72.75&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.09&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">1026.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.50&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">system_info&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_threads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">8&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">10&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VBMI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VNNI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">NEON&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">ARM_FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">F16C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FP16_VA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">WASM_SIMD&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">BLAS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">SSE3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">VSX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sampling&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">repeat_last_n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">repeat_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">presence_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">frequency_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">40&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">tfs_z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.950000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">typical_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.800000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_lr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_ent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5.000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">generate&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_batch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_predict&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_keep&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">←&lt;/span> &lt;span class="n">The&lt;/span> &lt;span class="n">Forgotten&lt;/span> &lt;span class="n">Story&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">First&lt;/span> &lt;span class="n">Civil&lt;/span> &lt;span class="n">War&lt;/span> &lt;span class="n">Battle&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">Kansas&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Making&lt;/span> &lt;span class="n">It&lt;/span> &lt;span class="n">Home&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">Front&lt;/span> &lt;span class="err">→&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">I&lt;/span> &lt;span class="n">Have&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">Dream&lt;/span>&lt;span class="err">—&lt;/span>&lt;span class="n">That&lt;/span> &lt;span class="n">We&lt;/span> &lt;span class="n">Finally&lt;/span> &lt;span class="n">Learn&lt;/span> &lt;span class="n">More&lt;/span> &lt;span class="n">About&lt;/span> &lt;span class="n">Frederick&lt;/span> &lt;span class="n">Douglass&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">“&lt;/span>&lt;span class="n">I&lt;/span> &lt;span class="n">have&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">9196.58&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.49&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.50&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">10716.26&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">25&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">428.65&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">11689.89&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">43&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">271.86&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22483.24&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 35 MB
+CPU usage : 85%&lt;/p>
+&lt;p>OK! Easy enough. It took 11 seconds to print, with &lt;strong>272 ms per token&lt;/strong>!&lt;/p>
+&lt;h2 id="go-llama">Go llama&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">LIBRARY_PATH&lt;/span>&lt;span class="o">=$&lt;/span>&lt;span class="n">PWD&lt;/span> &lt;span class="n">C_INCLUDE_PATH&lt;/span>&lt;span class="o">=$&lt;/span>&lt;span class="n">PWD&lt;/span> &lt;span class="n">go&lt;/span> &lt;span class="n">run&lt;/span> &lt;span class="o">./&lt;/span>&lt;span class="n">examples&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">~/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">Users&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">steffag&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">68.20&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.08&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">2052.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">128.00&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">The&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="n">successfully&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span class="n">What&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">fastest&lt;/span> &lt;span class="n">programming&lt;/span> &lt;span class="n">language&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Sending&lt;/span> &lt;span class="n">what&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">fastest&lt;/span> &lt;span class="n">programming&lt;/span> &lt;span class="n">language&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">by&lt;/span> &lt;span class="n">Cary&lt;/span> &lt;span class="n">R&lt;/span> &lt;span class="n">on&lt;/span> &lt;span class="n">Jul&lt;/span> &lt;span class="mi">18&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">at&lt;/span> &lt;span class="mi">6&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">45&lt;/span> &lt;span class="n">UTC&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">what&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="n">you&lt;/span> &lt;span class="n">think&lt;/span> &lt;span class="n">it&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">why&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">I&lt;/span>&lt;span class="s1">&amp;#39;m not sure what &amp;#34;fast&amp;#34; means for this&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">99393.39&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">32.26&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.72&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5021.80&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">10&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">502.18&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">15193.51&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">44&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">345.31&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">115311.61&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Embeddings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mf">1.3335894&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.83280444&lt;/span> &lt;span class="mf">0.9414267&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">9.215284&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0302917&lt;/span> &lt;span class="mf">1.065452&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4542901&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.24896632&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.6570409&lt;/span> &lt;span class="mf">1.9119468&lt;/span> &lt;span class="mf">0.6292349&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.14391524&lt;/span> &lt;span class="mf">0.2595427&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5855895&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.963376&lt;/span> &lt;span class="mf">1.0406973&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.1605502&lt;/span> &lt;span class="mf">1.3280734&lt;/span> &lt;span class="mf">0.37920082&lt;/span> &lt;span class="mf">0.61060756&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2766573&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.8673204&lt;/span> &lt;span class="mf">1.2690753&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4294657&lt;/span> &lt;span class="mf">0.5546539&lt;/span> &lt;span class="mf">0.11715727&lt;/span> &lt;span class="mf">0.6430202&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09789314&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.45095867&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1076287&lt;/span> &lt;span class="mf">0.042604066&lt;/span> &lt;span class="mf">0.15544033&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09977249&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3832492&lt;/span> &lt;span class="mf">0.018180523&lt;/span> &lt;span class="mf">2.2709634&lt;/span> &lt;span class="mf">0.26105422&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0794421&lt;/span> &lt;span class="mf">0.28251836&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2772827&lt;/span> &lt;span class="mf">1.3353819&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1416842&lt;/span> &lt;span class="mf">1.8800831&lt;/span> &lt;span class="mf">0.7737296&lt;/span> &lt;span class="mf">0.8329498&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1428409&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.27773026&lt;/span> &lt;span class="mf">0.59615296&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1754322&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.61925936&lt;/span> &lt;span class="mf">0.12707934&lt;/span> &lt;span class="mf">0.33790576&lt;/span> &lt;span class="mf">0.9590525&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0039365&lt;/span> &lt;span class="mf">1.2138838&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.15244572&lt;/span> &lt;span class="mf">1.3892341&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.2408304&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.41973415&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.9122008&lt;/span> &lt;span class="mf">0.61534476&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3473209&lt;/span> &lt;span class="mf">1.8957467&lt;/span> &lt;span class="mf">0.54428715&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.45334002&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.46586785&lt;/span> &lt;span class="mf">0.9365548&lt;/span> &lt;span class="mf">0.7735351&lt;/span> &lt;span class="mf">0.020367475&lt;/span> &lt;span class="mf">0.03640651&lt;/span> &lt;span class="mf">0.6072077&lt;/span> &lt;span class="mf">0.2598248&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.60497457&lt;/span> &lt;span class="mf">0.74164164&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.4986299&lt;/span> &lt;span class="mf">0.030030286&lt;/span> &lt;span class="mf">1.0310581&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.7985864&lt;/span> &lt;span class="mf">0.59369475&lt;/span> &lt;span class="mf">5.3009334&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.26436043&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0086688&lt;/span> &lt;span class="mf">0.69724923&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.082101144&lt;/span> &lt;span class="mf">0.609409&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4504542&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.57361007&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.43234673&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.621053&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.3142335&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2885888&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.29704484&lt;/span> &lt;span class="mf">0.16729134&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.76317424&lt;/span> &lt;span class="mf">1.2080128&lt;/span> &lt;span class="mf">0.24425012&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.3169634&lt;/span> &lt;span class="mf">0.9270621&lt;/span> &lt;span class="mf">1.0773871&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.09211676&lt;/span> &lt;span class="mf">4.2189116&lt;/span> &lt;span class="mf">1.1267253&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.2751623&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.04176733&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0876625&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.19441187&lt;/span> &lt;span class="mf">0.6124146&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5224489&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.346519&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.129513&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.12585206&lt;/span> &lt;span class="mf">0.9263705&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.6089619&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.5251873&lt;/span> &lt;span class="mf">1.0640423&lt;/span> &lt;span class="mf">1.1027105&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.5490974&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.85569364&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.1080054&lt;/span> &lt;span class="mf">0.9023686&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">1.0494307&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.28588632&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.4288576&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">0.72663045&lt;/span> &lt;span class="mf">1.7789608&lt;/span> &lt;span class="mf">2.239715&lt;/span> &lt;span class="mf">0.8199781&lt;/span> &lt;span class="mf">0.4134441&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 110 MB
+CPU usage : 100%&lt;/p>
+&lt;p>Ok we have something - &lt;strong>345 ms per token&lt;/strong>. Makes sense, since it is an indirect non-native form of calling what is the first test of cpp&amp;hellip; except as a shared library via Golang. So what about natives?&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">./llama.go --model ~/models/llama-7b-fp32.bin --prompt &amp;#34;Which programming language is fastest?&amp;#34; --context 45 --predict 45
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒ /▒▒ /▒▒▒/▒▒▒ /▒▒/▒▒▒▒/▒▒ /▒▒▒/▒▒▒ /▒▒▒▒/▒▒ /▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒ /▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒▒ // /▒▒▒▒//▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒ /▒▒▒▒/▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒▒ /▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒ /▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒ /▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒▒▒/▒▒ //▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> //// /// //// /// /// //// /// // /// /// //// /// //// // /// ///
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ▒▒▒▒ [ LLaMA.go v1.4.0 ] [ LLaMA GPT in pure Golang - based on LLaMA C++ ] ▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ INIT ] Loading model, please wait .............................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ PROMPT ] Which programming language is the fastest?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ OUTPUT ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is best for a particular task?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language should I use to write my program?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> What are the advantages and disadvantages of using a particular programming language?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Comment: @
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== EVAL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">15247 | 3125 | 1742 | 3636 | 1253 | 1276 | 1420 | 1487 | 1394 | 1628 | 1659 | 5330 | 10200 | 5287 | 3114 | 1320 | 1560 | 1725 | 5190 | 1573 | 1342 | 1440 | 1365 | 3922 | 13103 | 12436 | 3441 | 1597 | 1598 | 1537 | 1487 | 8702 | 3437 | 1780 | 10625 | 15753 | 1869 | 29020 | 7898 | 1574 | 1655 | 1664 | 1652 | 1604 | 1483 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== SAMPLING TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 | 7 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 8 | 7 | 7 | 7 | 7 | 8 | 7 | 7 | 8 | 7 | 7 | 7 | 7 | 7 | 7 | 8 | 7 | 7 | 7 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== FULL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 | 15255 | 3132 | 1751 | 3643 | 1260 | 1283 | 1427 | 1495 | 1402 | 1635 | 1667 | 5339 | 10208 | 5295 | 3121 | 1328 | 1568 | 1732 | 5198 | 1581 | 1350 | 1448 | 1372 | 3930 | 13111 | 12444 | 3449 | 1605 | 1606 | 1545 | 1495 | 8710 | 3445 | 1788 | 10633 | 15761 | 1876 | 29028 | 7906 | 1581 | 1663 | 1673 | 1660 | 1612 | 1490 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ HALT ] Time per token: 4380 ms | Tokens per second: 0.23
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 25 GB
+CPU usage : 85%&lt;/p>
+&lt;p>Looks like it loaded the entire model into RAM! ok&amp;hellip; well does that translate into better performance? Not good. I can tell you it &lt;em>felt&lt;/em> slow, 4380ms seems &amp;hellip; accurate. Hmm&amp;hellip; maybe I should use the neon flag for my m1.&lt;/p>
+&lt;p>Testing neon first:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">./llama.go --model ~/models/llama-7b-fp32.bin --prompt &amp;#34;Which programming language is fastest?&amp;#34; --neon --context 45 --predict 45
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒ /▒▒ /▒▒▒/▒▒▒ /▒▒/▒▒▒▒/▒▒ /▒▒▒/▒▒▒ /▒▒▒▒/▒▒ /▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒ /▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒/ /▒▒▒ /▒▒▒▒ // /▒▒▒▒//▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒ /▒▒▒▒/▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒/▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒▒ /▒▒ /▒▒▒▒/▒▒▒▒ /▒▒▒ /▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /▒▒▒▒/▒▒▒ /▒▒▒▒/▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒ /▒▒▒ /▒▒▒ /▒▒▒▒ /▒▒▒//▒▒▒▒/▒▒ //▒▒▒/▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> //// /// //// /// /// //// /// // /// /// //// /// //// // /// ///
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ▒▒▒▒ [ LLaMA.go v1.4.0 ] [ LLaMA GPT in pure Golang - based on LLaMA C++ ] ▒▒▒▒
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ INIT ] Loading model, please wait .............................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ PROMPT ] Which programming language is the fastest?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ OUTPUT ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is easiest to use?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is the best for beginners?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language is the best for experienced programmers?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming language has the most potential?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Which programming
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== EVAL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">12559 | 3044 | 310 | 307 | 355 | 360 | 309 | 324 | 305 | 318 | 324 | 329 | 328 | 313 | 306 | 319 | 315 | 317 | 314 | 320 | 331 | 315 | 321 | 313 | 314 | 324 | 335 | 342 | 325 | 312 | 321 | 315 | 309 | 330 | 307 | 324 | 343 | 5317 | 312 | 312 | 307 | 319 | 323 | 316 | 309 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== SAMPLING TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 | 7 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">=== FULL TIME | ms ===
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 | 12567 | 3051 | 318 | 315 | 363 | 367 | 316 | 331 | 313 | 326 | 331 | 337 | 336 | 321 | 313 | 326 | 323 | 325 | 321 | 328 | 339 | 322 | 328 | 321 | 322 | 331 | 342 | 350 | 333 | 319 | 329 | 323 | 316 | 338 | 314 | 332 | 350 | 5325 | 320 | 320 | 315 | 327 | 331 | 324 | 316 |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ HALT ] Time per token: 754 ms | Tokens per second: 1.33
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Memory usage : 25GB
+CPU usage : 66%&lt;/p>
+&lt;p>The execution time significantly improved with the latest changes! The reported duration stands at approximately &lt;strong>754 ms per token&lt;/strong>. However, upon closer examination, it becomes evident that the initial token took a whopping 40 times longer to process, while the second token took 10 times longer compared to the rest. This disparity skews the average calculation, and a more realistic estimate would be around &lt;strong>315 ms per token&lt;/strong>, which aligns better with the perceived speed.&lt;/p>
+&lt;p>Nonetheless, it is worth noting that the program still has room for further optimization, as it did not fully utilize the available CPU resources. It is disappointing to observe that the current implementation falls short in this regard. Additionally, the necessity to load the model into RAM remains a drawback, especially when compared to the native C++ version, which accomplishes the same task with minimal RAM usage and greater efficiency.&lt;/p>
+&lt;p>While the recent improvements have led to a noticeable boost in performance, there is still potential for even better optimizations. The requirement to load the model into RAM remains a limitation that hampers efficiency, particularly when compared to the native C++ version&amp;rsquo;s streamlined approach.&lt;/p>
+&lt;p>Lastly, is there any way we can use 100% of the CPU and squeeze out better performance? let&amp;rsquo;s try.&lt;/p>
+&lt;ol>
+&lt;li>using &lt;code>--neon --context 45 --predict 45 --threads 10 --silent --profile 2023/05/14 10:25:56 profile: CPU profiling enabled, cpu.pprof&lt;/code> I get 65% usage with 675 ms.&lt;/li>
+&lt;li>20 threads get 772ms&lt;/li>
+&lt;li>6 gave 50% usage with 745 ms per token&lt;/li>
+&lt;li>4 gave 35% usage with 915 ms per token&lt;/li>
+&lt;li>2 gave 20% usage with 1608 ms per token&lt;/li>
+&lt;/ol>
+&lt;p>During the course of testing, it became evident that all the runs exhibited a similar pattern. The initial two tokens took an exceptionally long time to process, but subsequently, the performance noticeably improved. In a hypothetical scenario where superior optimizations were implemented, it is plausible that the native Go version could outperform the native C++ version, particularly if it efficiently utilized all CPU threads through goroutines. However, it must be acknowledged that the current implementation falls short in terms of performance. Additionally, one notable disadvantage of the native Go version is its inability to load the model in smaller segments, as the native C++ version does, thereby avoiding the excessive consumption of 25GB of RAM.&lt;/p>
+&lt;p>In summary, although the native Go version has the potential for faster performance through effective CPU thread utilization, it currently lags behind due to performance limitations. Furthermore, it lacks the advantageous feature present in the native C++ version of loading the model in smaller, more memory-efficient chunks.&lt;/p>
+&lt;p>Ok, that&amp;rsquo;s enough of that.&lt;/p>
+&lt;h2 id="bonus-round">Bonus round&lt;/h2>
+&lt;p>The llama.cpp repo released GPU support for the program - so I had to try that out too. I don&amp;rsquo;t have anything too beefy to test it on , but I have a 1050 GPU laptop. So I went there and tested with GPU support enabled:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="o">.&lt;/span>\&lt;span class="n">main&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">exe&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="n">C&lt;/span>&lt;span class="p">:&lt;/span>\&lt;span class="n">Users&lt;/span>\&lt;span class="n">graha&lt;/span>\&lt;span class="n">OneDrive&lt;/span>\&lt;span class="n">Desktop&lt;/span>\&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="s2">&amp;#34;what is a banana doing on my lawn?&amp;#34;&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">t&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ngl&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">build&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">550&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">79&lt;/span>&lt;span class="n">b2d5b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">main&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">seed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1684092347&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cpp&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loading&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">C&lt;/span>&lt;span class="p">:&lt;/span>\&lt;span class="n">Users&lt;/span>\&lt;span class="n">graha&lt;/span>\&lt;span class="n">OneDrive&lt;/span>\&lt;span class="n">Desktop&lt;/span>\&lt;span class="n">llama&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fp32&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ggjt&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pre&lt;/span> &lt;span class="c1">#1405)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_vocab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_embd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4096&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_mult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_layer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_rot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ftype&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">all&lt;/span> &lt;span class="n">F32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ff&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11008&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_parts&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="n">B&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ggml&lt;/span> &lt;span class="n">ctx&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">72.75&lt;/span> &lt;span class="n">KB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">27497.09&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">+&lt;/span> &lt;span class="mf">1026.00&lt;/span> &lt;span class="n">MB&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">cublas&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">offloading&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="n">layers&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">GPU&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_model_load_internal&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">cublas&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">VRAM&lt;/span> &lt;span class="n">used&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">3088&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_init_from_file&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">kv&lt;/span> &lt;span class="bp">self&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">22.50&lt;/span> &lt;span class="n">MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">system_info&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_threads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">12&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VBMI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">AVX512_VNNI&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">NEON&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">ARM_FMA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">F16C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">FP16_VA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">WASM_SIMD&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">BLAS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">SSE3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">VSX&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sampling&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">repeat_last_n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">repeat_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">presence_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">frequency_penalty&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">40&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">tfs_z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.950000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">typical_p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">1.000000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.800000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_lr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.100000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mirostat_ent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">5.000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">generate&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">n_ctx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_batch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">512&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_predict&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">45&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_keep&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">what&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">banana&lt;/span> &lt;span class="n">doing&lt;/span> &lt;span class="n">on&lt;/span> &lt;span class="n">my&lt;/span> &lt;span class="n">lawn&lt;/span>&lt;span class="err">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">the&lt;/span> &lt;span class="n">other&lt;/span> &lt;span class="n">day&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">was&lt;/span> &lt;span class="n">looking&lt;/span> &lt;span class="n">out&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">window&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">saw&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">banana&lt;/span> &lt;span class="n">sitting&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">our&lt;/span> &lt;span class="n">front&lt;/span> &lt;span class="n">yard&lt;/span>&lt;span class="o">.&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">walked&lt;/span> &lt;span class="n">outside&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">see&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">anyone&lt;/span> &lt;span class="n">had&lt;/span> &lt;span class="n">left&lt;/span> &lt;span class="n">it&lt;/span> &lt;span class="n">there&lt;/span> &lt;span class="n">by&lt;/span> &lt;span class="n">accident&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">but&lt;/span> &lt;span class="n">no&lt;/span> &lt;span class="n">one&lt;/span> &lt;span class="n">answered&lt;/span> &lt;span class="n">when&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="n">called&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">them&lt;/span> &lt;span class="n">inside&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">35609.62&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sample&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">10.52&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">0.23&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">prompt&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">31931.20&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">35&lt;/span> &lt;span class="n">tokens&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">912.32&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eval&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">36327.48&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">43&lt;/span> &lt;span class="n">runs&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="mf">844.83&lt;/span> &lt;span class="n">ms&lt;/span> &lt;span class="n">per&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llama_print_timings&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total&lt;/span> &lt;span class="n">time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">74111.62&lt;/span> &lt;span class="n">ms&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>CPU usage : 100%
+memory usage : 25GB&lt;/p>
+&lt;p>Hmm, okay, so GPU support doesn&amp;rsquo;t provide significant benefits apart from offloading some of the RAM usage, resulting in a token processing time of approximately 844 ms (which is similar to the non-GPU version). Interestingly, the MacBook optimized code doesn&amp;rsquo;t utilize any RAM at all. Therefore, even if you possess a powerful GPU capable of efficient processing, it seems unlikely that it would greatly enhance the performance of this particular version of the llama program. Nevertheless, it&amp;rsquo;s still fascinating to observe!&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>What have we learned from this analysis? Optimizations play a vital role in programming, the choice of programming language can significantly impact performance, and Python can be complex to configure for low-level operations. Due to these reasons, I refrained from making a direct comparison in this regard.&lt;/p></description></item></channel></rss>

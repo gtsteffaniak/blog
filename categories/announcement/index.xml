@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>announcement on Graham's Blog</title><link>/blog/categories/announcement/</link><description>Recent content in announcement on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/categories/announcement/index.xml" rel="self" type="application/rss+xml"/><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Hi to anyone lurking.&lt;/p>
+&lt;h2 id="before-and-after-blog-change">Before and after blog change&lt;/h2>
+&lt;p>I don&amp;rsquo;t post that much, but have been working on the blog in a way that I think makes it a lot better.&lt;/p>
+&lt;p>Most notably, its not using a totally different generator. It uses &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
+>hugo&lt;/a>.&lt;/p>
+&lt;p>So now, the website currently looks like this:
+&lt;img src="https://github.com/gtsteffaniak/blog/assets/42989099/a02cae0b-4d73-465a-a501-636c17f69309"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;p>vs the original:
+&lt;img src="https://github.com/gtsteffaniak/blog/assets/42989099/9fa47b6f-6fb3-439c-a255-2a718e918d3a"
+loading="lazy"
+alt="image"
+>&lt;/p>
+&lt;h2 id="quick-thoughts-on-why-the-change">Quick thoughts on why the change&lt;/h2>
+&lt;p>I think it looks better, but need a few tweaks still. I am enjoying the hugo html templating as well, but a little disappointed to find out the hugo templating cutom functioning everywhere out of necessity. I wish to keep the old site around as well, with maybe /old/ path, because I can&amp;rsquo;t easily do the css art styles like I could before, so for now I have those couple posts hidden. Though I think I will try to find a way to add the custom js and back for certain articles.&lt;/p>
+&lt;p>Svelte was more enjoyable to develop with when it comes to the svelte files. But the downsides were apparent: updating npm , creating my own javascript that was subpar to actual generated html. I am happy with the switch and I am happy to get more experience with templating.&lt;/p>
+&lt;p>I actually updated the &lt;a class="link" href="https://gportal.link/" target="_blank" rel="noopener"
+>gportal&lt;/a> main site to use html templates &amp;ndash; it was easy to do and results in faster load times. Since it includes built in authentication service, it still has to be a hosted site, so I might as well use &lt;a class="link" href="https://pkg.go.dev/html/template" target="_blank" rel="noopener"
+>go html templates&lt;/a> to make it &amp;ndash; which is just as easy and intuative as svelte.&lt;/p>
+&lt;h2 id="future-expectations-for-the-site">Future expectations for the site&lt;/h2>
+&lt;p>Ultimately, I just want this blog to look good, be feature rich, and not take any babysitting to keep it updated. All of these things are now possible thanks to hugo. I may even enable disqus comments soon, not that I think anyone lurking would actually want to post, but it would still be cool.&lt;/p>
+&lt;p>I plan to post more interesting posts with interactive data &amp;ndash; another reason I am looking into adding custom js to each post.&lt;/p>
+&lt;p>I also wanted to post so I would have something here for 2024, now I do :)&lt;/p></description></item><item><title>Happy Holidays!</title><link>/blog/posts/2023/december/happy_holidays/</link><pubDate>Fri, 22 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/happy_holidays/</guid><description>&lt;p>Happy Holidays!&lt;/p></description></item><item><title>May the 4th be with you</title><link>/blog/posts/2023/may/may-the-4th/</link><pubDate>Thu, 04 May 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/may/may-the-4th/</guid><description>&lt;p>An homage to Starwars fans everywhere&lt;/p>
+&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/May_the_4th_be_with_you_%28Star_Wars_Day%29.gif"
+loading="lazy"
+>&lt;/p></description></item><item><title>First Post!</title><link>/blog/posts/2023/april/first-post/</link><pubDate>Sat, 29 Apr 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/april/first-post/</guid><description>&lt;p>&lt;img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Party%20Popper.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>Note: This blog is mainly for development purposes.&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>I have created this blogs website to accomplish a few things:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Information Sharing&lt;/strong>
+&lt;ul>
+&lt;li>I wanted a place to create posts and information for my purposes, but also for public references (sharing with hyperlinks on websites), but have never had somewhere that was both easy to create and also purely my creation.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Developer Creativity&lt;/strong>
+&lt;ul>
+&lt;li>This website allows me to express my interests in certain technologies by posting about my discoveries, how-tos, and analysis.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Personal Projects&lt;/strong>
+&lt;ul>
+&lt;li>I also can experiment and create web-framework-related ideas with actual visible usage.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="about-the-site">About the site&lt;/h3>
+&lt;p>This website is a &lt;strong>Github pages&lt;/strong> website, meaning its static content is served from my &lt;a class="link" href="https://github.com/gtsteffaniak/blog" target="_blank" rel="noopener"
+>github blog repo&lt;/a>. Since this repo is public you can take a look at how it works and maybe find inspiration yourself.&lt;/p>
+&lt;p>I think it&amp;rsquo;s the best solution to what I am looking for. I can create posts easily by :&lt;/p>
+&lt;ol>
+&lt;li>Add a new &lt;code>md&lt;/code> post, which I have decided to put in a &lt;code>posts/&lt;/code> directory on GitHub.&lt;/li>
+&lt;li>Update the &lt;code>schema.yml&lt;/code> to update the static website to automatically add the page to the html/javascript website (no rebuild needed).&lt;/li>
+&lt;li>That&amp;rsquo;s it! A new post!&lt;/li>
+&lt;/ol>
+&lt;p>Since it&amp;rsquo;s on GitHub, it has history and version control. Another concern I had was putting my blog somewhere that would be forgotten or eventually discontinued. Since GitHub is trustworthy and reliable (it won&amp;rsquo;t suffer outages), this shouldn&amp;rsquo;t be an issue. I am also leveraging a free functionality of GitHub pages for basically zero-touch configuration.&lt;/p>
+&lt;p>However, to be clear, I don&amp;rsquo;t simply use GitHub pages. I also host my website on &lt;a class="link" href="https://gportal.link" target="_blank" rel="noopener"
+>https://gportal.link&lt;/a> which is a website I have running on &lt;a class="link" href="vultr.com" >Vultr&lt;/a> for $6 a month which contains an Nginx reverse proxy and a few hosted website components such as a golang authentication server. For my peace of mind, I keep that repo private! Sorry :)&lt;/p>
+&lt;h3 id="what-about-you">What about you?&lt;/h3>
+&lt;p>So, perhaps I will allow comments one day, but there&amp;rsquo;s not much interaction yet. Stay tuned!&lt;/p>
+&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
+&lt;p>Everything I create is in the spirit of learning the best way to accomplish functionality with the following criteria always in mind:&lt;/p>
+&lt;ul>
+&lt;li>Choose the &lt;strong>simplest&lt;/strong> option that satisfies your requirements.&lt;/li>
+&lt;li>Choose what will be &lt;strong>easiest&lt;/strong> to maintaintain.&lt;/li>
+&lt;li>Choose what &lt;strong>allows configuration&lt;/strong> to meet your changing needs.&lt;/li>
+&lt;/ul>
+&lt;p>This method almost missed the mark on the final bullet point, because solely using markdown can limit my formatting. But if I need more formatting in the future, I can use javascript via Svelte to do so.&lt;/p>
+&lt;p>However you stumbled across this blog, I hope you learn something new and find it as fun as I do to create.&lt;/p>
+&lt;p>Here&amp;rsquo;s a snapshot of what the blog looks like right now.. a bit sad. Hopefully better soon:&lt;/p>
+&lt;p>&lt;img src="https://i.imgur.com/D6B2xip.png"
+loading="lazy"
+>&lt;/p></description></item></channel></rss>

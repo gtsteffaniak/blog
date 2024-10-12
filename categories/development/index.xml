@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>development on Graham's Blog</title><link>/blog/categories/development/</link><description>Recent content in development on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/categories/development/index.xml" rel="self" type="application/rss+xml"/><item><title>Migration experience for vue 2 to vue 3</title><link>/blog/posts/2024/vue_migration/vue_migrtation/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/vue_migration/vue_migrtation/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post Migration experience for vue 2 to vue 3" />&lt;p>I wanted to write about the experience of migrating the &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser" target="_blank" rel="noopener"
+>FileBrowser Quantum&lt;/a> from vue 2 to vue 3 because it took a lot of strategy to do smoothly. I enjoy working with Vue but the experience of moving between versions was quite bad.&lt;/p>
+&lt;p>The &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>original filebrowser application&lt;/a> took almost 1 year to complete the migration and I forked the repo in the middle of the migration before it was finished. In hindsight, I am still glad for this, because it gave me valuable experience in migrating a large Vue application and the opportunity to think about components that were not needed.&lt;/p>
+&lt;p>I &lt;a class="link" href="https://gportal.link/blog/posts/2023/october/dependency-on-dependencies/" target="_blank" rel="noopener"
+>wrote about&lt;/a> my ire for unnecessary dependencies which node modules are a big part of. I later &lt;a class="link" href="https://gportal.link/blog/posts/2023/december/process_simplify_modules/" target="_blank" rel="noopener"
+>wrote about&lt;/a> some things I did to simplify the application so migration could be more easily done. This is the final post I will make about my experience finishing it.&lt;/p>
+&lt;h2 id="why-it-took-so-long">Why it took so long&lt;/h2>
+&lt;p>I was mostly to blame for the delay. Sure, it took me less time than the original repo, which had one &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>primary migration PR&lt;/a> which took 8 months to merge! My problem was that I kicked the can down the road and said I would handle it later after a couple of different attempts I made in a day were insufficient. So, I left it alone, until I realized I lost interest in developing the repo because I knew I needed to migrate and that was always in the back of my mind.&lt;/p>
+&lt;p>So, in &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases/tag/v0.2.6" target="_blank" rel="noopener"
+>version v0.2.6&lt;/a> I finally completed the migration!&lt;/p>
+&lt;h2 id="how-i-handled-the-migration">How I handled the migration&lt;/h2>
+&lt;p>In my previous posts, I mentioned I would choose a &lt;em>reduction first&lt;/em> strategy. I removed many unnecessary dependencies by replacing them with a few lines of simple code that accomplished the same thing:&lt;/p>
+&lt;p>First, in &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases/tag/v0.2.6" target="_blank" rel="noopener"
+>version v0.2.6&lt;/a>, I started preparing for the migration:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">In prep for vue3 migration, npm modules were removed:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">js-base64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pretty-bytes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">whatwg-fetch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lodash.throttle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lodash.clonedeep
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Then, in version &lt;code>v0.2.6&lt;/code> I finished the migration:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">removed npm modules:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vuex
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">noty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">moment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vue-simple-progress
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>In total there were 9 different dependencies were removed. All of which would have complicated the migration if I chose to keep them around. It also helped reduce bundle size, making the site just a little bit quicker.&lt;/p>
+&lt;p>Ultimately, the Vue 3 challenges were quite minimal (besides dependencies). There were a few state-related changes and the switch to vite was the most significant. However, the biggest hurdle (unrelated to vue itself) was that dependencies &lt;strong>had their own dependencies&lt;/strong> that required certain vue versions. Which is, in my opinion, the worst part of a tech stack&amp;hellip; untangling the web of dependencies.&lt;/p>
+&lt;h2 id="after-the-migration">After the migration&lt;/h2>
+&lt;p>Once the migration was complete, I was able to make a lot of great changes very quickly. It&amp;rsquo;s very clear that having a site held back by old versions slowed down my interest in the site and my morale. I learned a lot about what to do and not to do, but overall I feel pretty happy with how it went.&lt;/p>
+&lt;p>Take a look at how much faster &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases" target="_blank" rel="noopener"
+>The releases&lt;/a> have been since the migration:&lt;/p>
+&lt;p>2024 FileBrowser Quantum Releases Summarized:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>date&lt;/th>
+&lt;th>version&lt;/th>
+&lt;th>change&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Feb 9th&lt;/td>
+&lt;td>v0.2.4&lt;/td>
+&lt;td>prepped for migration, some sharing features&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>June 12th&lt;/td>
+&lt;td>v0.2.5&lt;/td>
+&lt;td>a minor bugfix&amp;hellip;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>July 30th&lt;/td>
+&lt;td>v0.2.6&lt;/td>
+&lt;td>The migration was completed! Yay!&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Aug 3rd  &lt;/td>
+&lt;td>v0.2.7&lt;/td>
+&lt;td>behavior changes, bugfixes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Aug 24th&lt;/td>
+&lt;td>v0.2.8&lt;/td>
+&lt;td>LOTS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Sept 17th&lt;/td>
+&lt;td>v0.2.9&lt;/td>
+&lt;td>LOTS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Oct 7th  &lt;/td>
+&lt;td>v0.2.10&lt;/td>
+&lt;td>Folder size feature, bugfixes&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>You can see the pace &lt;strong>clearly&lt;/strong> picked up! In the first half of 2024, I didn&amp;rsquo;t make any significant changes. Once the migration was completed, I was able to work on a lot more things.&lt;/p>
+&lt;p>I am glad its all done and looking forward to making some of the more meaningful changes that I have wanted to do for a while.&lt;/p></description></item><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>I wrote an/other &lt;a class="link" href="?posts/2023/October/dependency-on-dependencies.md" >post&lt;/a> about
+the frustration I have with frameworks in modern frontend software development.
+The fast pace of change is hailed as the consequence of the innovative field of
+front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every
+day. But I disagree this is simply a necessity of innovation.&lt;/p>
+&lt;p>Frontend frameworks evolve and change primarily because there is not and has
+never been one good way to use javascript. No matter how flawed javascript is as
+a programming language, it&amp;rsquo;s biggest flaw is that it was woefully incomplete
+from it&amp;rsquo;s inception. The,re has never been good tooling for javascript. So this
+massive void is constantly being filled with good-but-not-perfect solutions.
+Heard of these: npm ? yarn? webpack? rollup? vite? bable? eslint? vite?
+Typescript? I could go on and on. All these things that are typically built-in
+to a language are all separate installable packages which are managed by
+third-party maintainers. These maintainers have no obligation to keep up with
+javascript changes or more devastatingly, changes to other tooling for
+javascript. This compounds the main problem I have with frontend development&amp;hellip;
+Your frontend project will inevitably be crippled by incompatibilities. A
+project is inevitably doomed to aging out due to vulnerabilities and old
+tooling.&lt;/p>
+&lt;p>Maybe you retort, &amp;ldquo;Don&amp;rsquo;t be a developer if you can&amp;rsquo;t handle it!&amp;rdquo;? Well, that may
+be true from a certain perspective. However, look at other languages &amp;ndash; C, C++,
+Golang, Rust, Java, C# (and many more) &amp;ndash; can exist for decades and be easily
+updated to new versions. They don&amp;rsquo;t have this problem. I would actually say
+(this leads to one of the ways I could deal with this), vanilla javascript also
+fits into this category. decades old vanilla javascript projects still work &amp;ndash;
+they are simple to update for vulnerabilities. Vanilla javascript is one
+solution to the framework issue. Albeit not the best solution, it does solve the
+problem.&lt;/p>
+&lt;p>I have used vanilla javascript in a hackathon project at work to get an up and
+running project going within a week. It worked great and was incredibly simple.
+Yet, I had one coworker laughingly ask be if I really used vanilla javascript. I
+said, &amp;ldquo;yes, it works very well for this&amp;rdquo;. A hackathon project is the perfect
+scenario to skip a framework and just get something working.&lt;/p>
+&lt;p>A project becomes a devastatingly complicated web of
+dependencies that needs solving if you want your project to continue on without
+being marked legacy with thousands of vulnerabilities.&lt;/p>
+&lt;p>I maintain a fork of filebrowser/filebrowser, which I find entertaining to watch
+their &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2645" target="_blank" rel="noopener"
+>effort&lt;/a> to upgrade
+from vue2+webpack to vue3+vite. They have a multitude of half-implemented
+attempts to get there. And another &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>main vue3
+PR&lt;/a> which is in a
+perpetual state of change for 6 months (still unmerged).&lt;/p>
+&lt;p>So, how did I handle this? Well, see &lt;a class="link" href="#process-for-filebrowser" >my process below&lt;/a>, but
+let me give a few examples. For now I want to dig into the problem more and what
+I believe is &lt;em>my solution&lt;/em>, which may not be yours because the problem is
+systemic. The problem is javascript is a deeply flawed programming language
+which is essential use to develope frontend webpages.&lt;/p>
+&lt;p>As an aside, some have said webassembly may solve this. I believe webassembly
+will have a legacy similar to fusion energy &amp;ndash; always being a few years out of
+reach. My experience of webassembly has been full of frustration, but I could see
+it being simplified in the future. However, I truly see it following the exact
+same path as javascript. Meaning I see there being some usefully ways to
+implement webassembly, but without a standardized way to implement it will be
+doomed to fragmentation.&lt;/p>
+&lt;h2 id="examples">examples&lt;/h2>
+&lt;h3 id="process-for-filebrowser">Process for filebrowser&lt;/h3>
+&lt;p>My fork of filebrowser is superior to the original. Obviously, I am biased as
+the maintainer. However, look - mine is &lt;a class="link" href="https://hub.docker.com/layers/gtstef/filebrowser/latest/images/sha256-6574d5f4890a6a0aa2d995b9fd8856418b6fef34e3bdf774ae02cc209c78e650?context=repo" target="_blank" rel="noopener"
+>half the
+size&lt;/a>
+of the
+&lt;a class="link" href="https://hub.docker.com/layers/filebrowser/filebrowser/latest/images/sha256-0e0a4b700302457772b07c4efc47bc90143d7538d36731baabcf7d375360bcee?context=explore" target="_blank" rel="noopener"
+>original&lt;/a>,
+runs faster, has better search, and is a better organized project from a
+directory and tooling standpoint. Unlike the original, I can progressively
+update and test the backend and frontend side-by-side in a live hot-reload
+environment. This can&amp;rsquo;t be done in the original implementation because they made
+the choice to embed the frontend into the binary. I immediately separated them
+after I forked it. That way neither the frontend or backend were dependant on
+each other.&lt;/p>
+&lt;p>Obviously, a streamlined developer experience is a priority for me. So, how do I
+handle updating the framework update to vue3? Well, originally I ignored it&amp;hellip;
+And Still, I have not updated it. But I am preparing. Rather than untangling&lt;/p>
+&lt;p>There is one example such as prettBytes module, which changed and caused the
+filebrowser to stop displaying properly. The original repo maintainers &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2779" target="_blank" rel="noopener"
+>updated
+it&lt;/a> to support the new
+version of prettier. I did it differently, I replaced prettyBytes and
+implemented it as &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/blob/main/frontend/src/utils/filesizes.js" target="_blank" rel="noopener"
+>vanilla
+javascript&lt;/a>
+in 5 minutes.&lt;/p>
+&lt;p>So to migrate to vue3, my plan is to remove all modules with dependencies
+requiring vue2 and instead of replacing them with new modules like the original
+maintainers, I will implement it myself slowly over time removing all modules
+from the dependencies. I am in no hurry! It will be worth the effort and I see
+no need to move to vue3 now or in the future until my finally ocker images have
+vulnerabilities. Right now they are squeaky clean - unlike the original which
+has 12 vulnerabilities. Albeit, due to golang and OS&amp;hellip; which I updated on the
+first day. Not sure why they haven&amp;rsquo;t addressed that.&lt;/p>
+&lt;p>Anyways, the only vulnerabilities in the workflow are due to npm packages for
+dev tools only (not present in compiled output). These can&amp;rsquo;t be resolved until I
+stop using vue 2:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm i
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">up to date, audited &lt;span class="m">766&lt;/span> packages in 4s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">101&lt;/span> packages are looking &lt;span class="k">for&lt;/span> funding
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run &lt;span class="sb">`&lt;/span>npm fund&lt;span class="sb">`&lt;/span> &lt;span class="k">for&lt;/span> details
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">4&lt;/span> moderate severity vulnerabilities
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>so I created a copy &lt;code>package.json&lt;/code> with comments to note which packages I need/plan to remove:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;dependencies&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ace-builds&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.24.2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;clipboard&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.0.4&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;css-vars-ponyfill&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.4.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;file-loader&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^6.2.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UNNECESSARY IN VITE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;js-base64&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.5.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;lodash.clonedeep&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^4.5.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// TOO OLD - REPLACE WITH JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;lodash.throttle&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^4.1.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// TOO OLD - REPLACE WITH JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;material-icons&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.10.5&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;moment&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.29.4&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;normalize.css&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.0.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;noty&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.2.0-beta&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;pretty-bytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^6.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;qrcode.vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.7.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE TO LATEST for VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;utif&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE investigate replacement
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.6.10&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE to vue 3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-async-computed&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.9.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-i18n&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.15.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-lazyload&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.3.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-router&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// UPDATE to vue 3 @vue4 https://www.npmjs.com/package/vue-router
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vue-simple-progress&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^1.1.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE WITH EQUIVALENT JS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vuex&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.1.2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE: HOW TO REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;vuex-router-sync&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^5.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// SPIKE: HOW TO REMOVE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;whatwg-fetch&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^3.6.2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;devDependencies&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;@vue/cli-service&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^5.0.8&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REMOVE for VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;compression-webpack-plugin&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^10.0.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// REPLACE VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nt">&amp;#34;eslint&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^8.51.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;eslint-plugin-vue&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^9.17.0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;vue-template-compiler&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;^2.6.10&amp;#34;&lt;/span> &lt;span class="c1">// REPLACE VUE3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>You can see I plan to remove the vast majority of packages. That is one solution
+I have to this. As always, this doesn&amp;rsquo;t fully resolve the long-term
+maintainability problem. But it does do one thing, it means when the day comes I
+need to change frameworks, it will be much simpler because my frontend won&amp;rsquo;t
+depend on packages that depend on a certain framework.&lt;/p>
+&lt;p>The next perfectly reasonable package to drop will be js-base64 which&amp;hellip; not
+sure why they needed considering javascript has native base64 encoding/decode
+support.&lt;/p>
+&lt;p>To make this work, I would just update this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">Base64&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;js-base64&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">JSON&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">Base64&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">decode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">parts&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]));&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>to this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">JSON&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">atob&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">parts&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]));&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Do you see that? In order to remove one more package, I spent 5 seconds
+replacing one line. Not all packages will be that easy, but that&amp;rsquo;s still one less
+package to worry about. Why didn&amp;rsquo;t the original owners do that? Probably because of
+laziness. They chose to searching the package manager for a solution to their
+problem rather than spending a few seconds or minutes to see if they could do it
+themselves. Lazy lazy lazy.&lt;/p>
+&lt;p>That was so easy lets do another right now. Lets look at prettyBytes, a very
+similar problem to one I mentioned already with prettier - oh look I already have my own library.&lt;/p>
+&lt;p>So to remove this module I can just change this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="nx">prettyBytes&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;pretty-bytes&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">usageStats&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">used&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">prettyBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">binary&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">total&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">prettyBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">binary&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">usedPercentage&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nb">Math&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">round&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>to this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;@/utils/filesizes&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">usageStats&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">used&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">total&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">getHumanReadableFilesize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">,),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">usedPercentage&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nb">Math&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">round&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">used&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nx">usage&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">total&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Wow. So easy, right? Well, thats two packages less&amp;hellip; These are the easiest
+examples to do. Many others will be much more difficult. However, I am in no
+hurry. Everything still works on vue2 , but I would like to get rid of the pesky
+github bot complaining about vulnerabilities. I will eventually fix it, but over
+time, slowly, over multiple commits. Hopefully that will allow me to avoid the
+problem the original maintainers have trying to merge the big PR thats stuck in
+limbo.&lt;/p>
+&lt;h2 id="final-thoughts">Final thoughts&lt;/h2>
+&lt;p>As for lessons for the future - Always think about how long you want your
+project to exist. The more maintenance that is required, the more quickly it
+will fall into disrepair. I will continue to think about ways to implement
+simple, natively supported solutions to challenges. I think this will save me
+time and keep my projects living longer on their own.&lt;/p></description></item><item><title>The doubled edge sword of modules when developing</title><link>/blog/posts/2023/october/dependency-on-dependencies/</link><pubDate>Thu, 19 Oct 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/october/dependency-on-dependencies/</guid><description>&lt;blockquote>
+&lt;p>Note: In this post, I will use the term &amp;ldquo;external module&amp;rdquo; to refer to an
+external package dependency that is imported into a program when developing.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>When designing and creating projects in any language and framework there is a
+choice that every developer has to make. What modules should you use? This
+choice has implications for many different things. &lt;em>Personally&lt;/em>, I find it is
+best to exercise judicial usage of external models when developing for several
+reasons.&lt;/p>
+&lt;p>No matter what language or framework you choose to make your world-changing
+program in, the choice is constantly presenting itself. There are always going
+to be corners that you would rather import an external module that already has
+everything figured out - do you want to reinvent the wheel everywhere? Here are
+a few examples where it might be obvious to use an external module:&lt;/p>
+&lt;ol>
+&lt;li>For security-oriented features&amp;hellip; using reputable external modules could
+ensure security.&lt;/li>
+&lt;li>Using &amp;ldquo;frameworks&amp;rdquo; to accomplish complicated plumbing. If something would be
+an entire project on its own, you obviously wouldn&amp;rsquo;t want to double or triple
+the work you have cut out for yourself.&lt;/li>
+&lt;li>For API functions and interoperability with other programs. If an SDK or API
+framework is provided in the target language that you need to use, it doesn&amp;rsquo;t
+make any sense to code it yourself.&lt;/li>
+&lt;/ol>
+&lt;p>The above scenarios are undisputed reasons to import external modules in my
+opinion. As long as the authors of the external modules are reputable and the
+modules are in active development themselves, I don&amp;rsquo;t see any reason not to use
+external modules.&lt;/p>
+&lt;p>The problem comes from every other scenario.&lt;/p>
+&lt;p>&lt;strong>My main point:&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>If you are considering importing modules for functions you could accomplish
+yourself in a reasonably short time, it would be well worth the effort to do it
+yourself instead of relying on external modules.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="advantages-of-using-external-modules">Advantages of using external modules&lt;/h2>
+&lt;p>Let&amp;rsquo;s take a look at all the reasons you might want to use external modules.&lt;/p>
+&lt;p>External modules&amp;hellip;&lt;/p>
+&lt;ol>
+&lt;li>Initially save you time! Sometimes a significant amount of time.&lt;/li>
+&lt;li>Can do things very well. Sometimes much better than you could do something
+yourself in a short amount of time.&lt;/li>
+&lt;li>May add features over time without any effort needed from you.&lt;/li>
+&lt;li>Allow you to focus on the code in your program rather than being distracted
+by solving challenges unrelated to your project.&lt;/li>
+&lt;/ol>
+&lt;p>These are all massive benefits that mostly revolve around saving developer&amp;rsquo;s
+time. That is a very important factor in decision-making. However, there is a
+lurking issue with this. It&amp;rsquo;s like investing, the upfront cost and appearance of
+implementing your solutions instead of using external modules may appear higher,
+but I believe it is much lower over time.&lt;/p>
+&lt;p>So let&amp;rsquo;s talk about the downsides.&lt;/p>
+&lt;h1 id="disadvantages-of-using-external-modules">Disadvantages of using external modules&lt;/h1>
+&lt;p>Let&amp;rsquo;s identify some concerns I have with external modules.&lt;/p>
+&lt;p>External modules&amp;hellip;&lt;/p>
+&lt;ol>
+&lt;li>Introduce risk for dependencies versioning conflicts. As dependency
+requirements drift over time, your program may find itself in a state of
+dependency conflict because two external modules depend on different versions
+of a shared indirect dependency.&lt;/li>
+&lt;li>Introduce security risks that are out of your control. If a module has a
+vulnerability or other security-related issues, you must wait for your module
+to fix the vulnerability before your entire program can be fixed.&lt;/li>
+&lt;li>Limit your ability to tailor the functions to your needs. If you use
+dependencies to accomplish something, you are often limited to the features
+of the third-party external module.&lt;/li>
+&lt;li>Can introduce performance/stability challenges. You may not have control over
+how a function is accomplished in an external module. It&amp;rsquo;s common that issues
+such as memory leak or performance degradations exists or is introduced in
+new versions, and as the user of a module, you may be powerless to control
+it.&lt;/li>
+&lt;li>Introduces more complicated compiling and install operations. Using external
+modules means downloading and installing them, which may not be a huge deal
+depending on the module&amp;rsquo;s size. However liberal usage of modules adds up and
+can cause this to be a challenge. It may also quickly balloon your program&amp;rsquo;s
+size (looking at you &lt;code>Python&lt;/code>).&lt;/li>
+&lt;/ol>
+&lt;p>Finally, I can vent my frustrations with external modules. I find it frustrating
+how common the pattern is: a developer introduces an external module to do a
+simple task that they could easily accomplish themselves. Then, because of this,
+the program is bigger and more bloated. However, the primary issue is over time,
+as the additional complexities make the program more difficult to maintain.&lt;/p>
+&lt;p>I think the biggest offender to version conflicts and vulnerabilities is&lt;code>NPM&lt;/code>.
+When someone creates a project, they often use npm packages to accomplish the
+most basic and mundane tasks: button styles, formatting strings like date/time,
+loading bars/spinners, HTML formatting, etc. These are things that would
+literally take 5 minutes to implement without installing additional packages. It
+quickly brings a project to life &amp;ndash; it works and looks great for a MOMENT. Then,
+in the weeks or months, it drifts into version conflict, accumulates
+vulnerabilities, and receives updates that cause functions to not work the same
+as they originally did. This requires extra time from the developer to identify,
+refactor, and attempt to resolve each issue&amp;hellip; constantly for the remaining time
+the program exists. Eventually, the developer loses interest and the program is
+no longer maintained&amp;hellip; stuck with older versions that have vulnerabilities and
+conflicts that prevent it from being renewed.&lt;/p>
+&lt;p>&lt;strong>sigh&lt;/strong> ok, give me a moment.&lt;/p>
+&lt;p>Ok - so you get the picture? I mentioned &lt;code>NPM&lt;/code>, but the truth is that every
+language and program has this. NPM is just the most likely to fall victim for
+several reasons. However, &lt;code>Python&lt;/code> can have complicated PIP requirements, &lt;code>Go&lt;/code>
+can have a long list of modules to download for compile-time, &lt;code>Java&lt;/code> can get
+caught up on maven conflicts or broken builds from updates. Javascript
+Frameworks like &lt;code>React&lt;/code>, &lt;code>Svelte&lt;/code>, and &lt;code>Vue.js&lt;/code> can all be complicated to
+upgrade from version to version. It&amp;rsquo;s a challenge everywhere.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>Here&amp;rsquo;s the point, using external modules saves you time as a developer up front.
+You must consider and weigh the time savings with the possible time requirements
+in the future to maintain the codebase. It may be hard to calculate the costs
+for future maintenance, but I understand that. However, if you care for the
+program that you are investing in to exist over time, these future time
+investment costs must be considered.&lt;/p>
+&lt;p>My rule that I have come to is pretty simple: If I can mostly accomplish
+something within 30 minutes on my own, don&amp;rsquo;t even bother looking for an external
+module. If It would take more than 30 minutes but is still something I &lt;em>could&lt;/em>
+accomplish fairly easily. In that case, use a module for now, but track it for
+replacement with your implementation eventually. For everything else, I suck it
+up and deal with the challenges and necessary evil of dependencies.&lt;/p>
+&lt;h3 id="further-reading">Further reading&lt;/h3>
+&lt;p>I hope you found this informative. I would love to give examples of these types
+of issues I have run into. I plan to update with another post showing these
+examples and how I fixed them quickly without external modules.&lt;/p>
+&lt;p>I didn&amp;rsquo;t mention this, but it&amp;rsquo;s often much easier to make your program without
+modules. So, it&amp;rsquo;s not always time-saving to use modules. I plan to give examples
+on this and I will link it here in the future.&lt;/p></description></item><item><title>Comparing Go, Rust, and C++: A Deep Dive into Language Performance and Tooling</title><link>/blog/posts/2023/september/comparing_compiled/</link><pubDate>Tue, 22 Aug 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/september/comparing_compiled/</guid><description>&lt;blockquote>
+&lt;p>&lt;strong>NOTE&lt;/strong>
+Go or what is informally known as &amp;ldquo;GoLang&amp;rdquo; will be referred to by its official name &amp;ldquo;Go&amp;rdquo;. The name &amp;ldquo;Go&amp;rdquo; also emphasizes its simplicity and ease of use.&lt;/p>
+&lt;/blockquote>
+&lt;p>As software development continues to evolve, developers often find themselves faced with a crucial decision: choosing the right programming language for their projects. In this blog post, we&amp;rsquo;ll compare and contrast these three languages in terms of compile time, binary size, general performance, garbage collection, modern tooling differences, and which is best for new developers.&lt;/p>
+&lt;h2 id="compile-time">Compile Time&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> One of Go&amp;rsquo;s standout features is its blazing-fast compile times. It excels in this area due to its simplicity and a focus on concurrent compilation. Even for large projects, Go compiles in a matter of seconds, making it a preferred choice for projects with tight development cycles. Go excels with average compile times of &amp;lt; 1 second even for large projects due to its simple design and concurrent compilation.&lt;a class="link" href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/rust-go.html" target="_blank" rel="noopener"
+>[1]&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s compile times are generally longer compared to Go, primarily because of its more advanced type system and borrow checker. However, the trade-off is robust memory safety. The Rust compiler ensures memory safety without relying on garbage collection, which makes the extra compilation time worthwhile for many developers.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> While modern C++ standards (C++11 and beyond) have introduced features to improve compilation speed, large codebases can still result in lengthy compile times. C++ provides fine-grained control over compilation, but this power can come at the cost of slower development feedback loops.&lt;/p>
+&lt;h2 id="binary-size">Binary Size&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go is renowned for producing compact, statically-linked binaries. This is advantageous for applications where a small memory footprint is crucial, such as cloud-native microservices. Go&amp;rsquo;s runtime includes a garbage collector, which can increase binary size slightly, but it remains efficient.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s binaries are typically smaller than those produced by Go for smaller projects. However, the larger the project gets, the binary sizes become very comparable.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ binaries can be quite large, especially when using libraries or features that introduce substantial runtime overhead. While C++ allows for low-level optimization to reduce binary size, developers need to carefully manage dependencies and compiler flags to achieve smaller executables.&lt;/p>
+&lt;p>Comparisons&lt;/p>
+&lt;h2 id="general-performance">General Performance&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go is designed for excellent runtime performance. Its goroutine-based concurrency model is efficient and makes it easy to write concurrent programs. While it may not match the raw performance of C++ in certain scenarios, it&amp;rsquo;s often considered &amp;ldquo;fast enough&amp;rdquo; for many use cases. In practice this means a 0-30% reduction in speed as compared to Rust or C++.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust is known for its focus on performance and safety. It can achieve C++ levels of performance by providing low-level control over memory management without sacrificing safety. Rust&amp;rsquo;s ownership and borrowing system allow developers to write high-performance code with confidence.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ is renowned for its performance and versatility. It&amp;rsquo;s a systems programming language that allows developers to optimize code for specific hardware and performance-critical applications. However, this level of control comes with a steeper learning curve and increased development complexity.&lt;/p>
+&lt;h2 id="garbage-collection">Garbage Collection&lt;/h2>
+&lt;p>&lt;strong>Go (Golang):&lt;/strong> Go employs a garbage collector, which simplifies memory management for developers. While garbage collection introduces a minimal runtime overhead, Go&amp;rsquo;s efficient design often offsets this impact. Developers can focus on writing code rather than managing memory. &lt;a class="link" href="https://tip.golang.org/doc/gc-guide" target="_blank" rel="noopener"
+>[2]&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> The Rust programming language relies on a strict ownership system, ensuring memory safety at compile-time. This approach eliminates the runtime overhead associated with garbage collection, making Rust suitable for systems programming and high-performance applications.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ doesn&amp;rsquo;t include a built-in garbage collector, giving developers complete control over memory management. However, this control can lead to memory-related bugs if not managed carefully. Developers must manually allocate and deallocate memory, which can be error-prone and extra effort. &lt;a class="link" href="https://stackoverflow.com/questions/4687310/memory-allocation-in-c" target="_blank" rel="noopener"
+>[3]&lt;/a>&lt;/p>
+&lt;h2 id="modern-tooling-differences">Modern Tooling Differences&lt;/h2>
+&lt;p>&lt;strong>Go:&lt;/strong> Go comes with a comprehensive standard library and excellent tooling. Tools like &lt;code>go fmt&lt;/code> for code formatting, &lt;code>go test&lt;/code> for testing and coverage, and &lt;code>go mod&lt;/code> for dependency management are integral to the Go ecosystem. Go&amp;rsquo;s tooling promotes consistency and efficiency.&lt;/p>
+&lt;p>&lt;strong>Rust:&lt;/strong> Rust&amp;rsquo;s tooling has made significant strides in recent years. It boasts tools like &lt;code>Cargo&lt;/code> for dependency management, building, and testing. Rust&amp;rsquo;s package manager, crates.io, offers a vast collection of libraries. The Rust community values robust tooling to ensure a smooth development experience.&lt;/p>
+&lt;p>&lt;strong>C++:&lt;/strong> C++ tooling can vary significantly depending on the chosen compiler and build system. While modern build systems like CMake and tools like Clang and GCC have improved C++ development, it can be more challenging for newcomers to navigate.&lt;/p>
+&lt;h2 id="best-for-new-developers">Best for New Developers&lt;/h2>
+&lt;p>Go stands out as the ultimate champion for general purpose developer tasks if performance is a key focus. Its simplicity, clean syntax, and thoughtful design make it an excellent starting point for beginners. The Go community places a strong emphasis on beginner-friendly practices and provides outstanding documentation and resources. Moreover, Go&amp;rsquo;s lightning-fast compilation times ensure that new developers receive quick feedback, enhancing the learning experience.&lt;/p>
+&lt;p>While Rust and C++ have their merits in terms of performance and control, they come with steeper learning curves and complexities that might overwhelm newcomers. Go, on the other hand, empowers new developers to dive right into coding, fostering a positive and productive environment for learning and building software.&lt;/p>
+&lt;p>In conclusion, for those starting their programming journey or looking for a language that promotes rapid skill development, Go is the undisputed choice. Its beginner-friendly nature, extensive resources, and efficient tooling make it the perfect language for new developers to embark on their coding adventures.&lt;/p></description></item></channel></rss>

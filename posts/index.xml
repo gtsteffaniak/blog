@@ -1,4 +1,109 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Graham's Blog</title><link>/blog/posts/</link><description>Recent content in Posts on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Hi to anyone lurking.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Graham's Blog</title><link>/blog/posts/</link><description>Recent content in Posts on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 12 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Migration experience for vue 2 to vue 3</title><link>/blog/posts/2024/vue_migration/vue_migrtation/</link><pubDate>Sat, 12 Oct 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/vue_migration/vue_migrtation/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post Migration experience for vue 2 to vue 3" />&lt;p>I wanted to write about the experience of migrating the &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser" target="_blank" rel="noopener"
+>FileBrowser Quantum&lt;/a> from vue 2 to vue 3 because it took a lot of strategy to do smoothly. I enjoy working with Vue but the experience of moving between versions was quite bad.&lt;/p>
+&lt;p>The &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>original filebrowser application&lt;/a> took almost 1 year to complete the migration and I forked the repo in the middle of the migration before it was finished. In hindsight, I am still glad for this, because it gave me valuable experience in migrating a large Vue application and the opportunity to think about components that were not needed.&lt;/p>
+&lt;p>I &lt;a class="link" href="https://gportal.link/blog/posts/2023/october/dependency-on-dependencies/" target="_blank" rel="noopener"
+>wrote about&lt;/a> my ire for unnecessary dependencies which node modules are a big part of. I later &lt;a class="link" href="https://gportal.link/blog/posts/2023/december/process_simplify_modules/" target="_blank" rel="noopener"
+>wrote about&lt;/a> some things I did to simplify the application so migration could be more easily done. This is the final post I will make about my experience finishing it.&lt;/p>
+&lt;h2 id="why-it-took-so-long">Why it took so long&lt;/h2>
+&lt;p>I was mostly to blame for the delay. Sure, it took me less time than the original repo, which had one &lt;a class="link" href="https://github.com/filebrowser/filebrowser/pull/2689" target="_blank" rel="noopener"
+>primary migration PR&lt;/a> which took 8 months to merge! My problem was that I kicked the can down the road and said I would handle it later after a couple of different attempts I made in a day were insufficient. So, I left it alone, until I realized I lost interest in developing the repo because I knew I needed to migrate and that was always in the back of my mind.&lt;/p>
+&lt;p>So, in &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases/tag/v0.2.6" target="_blank" rel="noopener"
+>version v0.2.6&lt;/a> I finally completed the migration!&lt;/p>
+&lt;h2 id="how-i-handled-the-migration">How I handled the migration&lt;/h2>
+&lt;p>In my previous posts, I mentioned I would choose a &lt;em>reduction first&lt;/em> strategy. I removed many unnecessary dependencies by replacing them with a few lines of simple code that accomplished the same thing:&lt;/p>
+&lt;p>First, in &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases/tag/v0.2.6" target="_blank" rel="noopener"
+>version v0.2.6&lt;/a>, I started preparing for the migration:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">In prep for vue3 migration, npm modules were removed:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">js-base64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pretty-bytes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">whatwg-fetch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lodash.throttle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lodash.clonedeep
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Then, in version &lt;code>v0.2.6&lt;/code> I finished the migration:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">removed npm modules:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vuex
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">noty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">moment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vue-simple-progress
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>In total there were 9 different dependencies were removed. All of which would have complicated the migration if I chose to keep them around. It also helped reduce bundle size, making the site just a little bit quicker.&lt;/p>
+&lt;p>Ultimately, the Vue 3 challenges were quite minimal (besides dependencies). There were a few state-related changes and the switch to vite was the most significant. However, the biggest hurdle (unrelated to vue itself) was that dependencies &lt;strong>had their own dependencies&lt;/strong> that required certain vue versions. Which is, in my opinion, the worst part of a tech stack&amp;hellip; untangling the web of dependencies.&lt;/p>
+&lt;h2 id="after-the-migration">After the migration&lt;/h2>
+&lt;p>Once the migration was complete, I was able to make a lot of great changes very quickly. It&amp;rsquo;s very clear that having a site held back by old versions slowed down my interest in the site and my morale. I learned a lot about what to do and not to do, but overall I feel pretty happy with how it went.&lt;/p>
+&lt;p>Take a look at how much faster &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser/releases" target="_blank" rel="noopener"
+>The releases&lt;/a> have been since the migration:&lt;/p>
+&lt;p>2024 FileBrowser Quantum Releases Summarized:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>date&lt;/th>
+&lt;th>version&lt;/th>
+&lt;th>change&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Feb 9th&lt;/td>
+&lt;td>v0.2.4&lt;/td>
+&lt;td>prepped for migration, some sharing features&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>June 12th&lt;/td>
+&lt;td>v0.2.5&lt;/td>
+&lt;td>a minor bugfix&amp;hellip;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>July 30th&lt;/td>
+&lt;td>v0.2.6&lt;/td>
+&lt;td>The migration was completed! Yay!&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Aug 3rd  &lt;/td>
+&lt;td>v0.2.7&lt;/td>
+&lt;td>behavior changes, bugfixes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Aug 24th&lt;/td>
+&lt;td>v0.2.8&lt;/td>
+&lt;td>LOTS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Sept 17th&lt;/td>
+&lt;td>v0.2.9&lt;/td>
+&lt;td>LOTS&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Oct 7th  &lt;/td>
+&lt;td>v0.2.10&lt;/td>
+&lt;td>Folder size feature, bugfixes&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>You can see the pace &lt;strong>clearly&lt;/strong> picked up! In the first half of 2024, I didn&amp;rsquo;t make any significant changes. Once the migration was completed, I was able to work on a lot more things.&lt;/p>
+&lt;p>I am glad its all done and looking forward to making some of the more meaningful changes that I have wanted to do for a while.&lt;/p></description></item><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Hi to anyone lurking.&lt;/p>
 &lt;h2 id="before-and-after-blog-change">Before and after blog change&lt;/h2>
 &lt;p>I don&amp;rsquo;t post that much, but have been working on the blog in a way that I think makes it a lot better.&lt;/p>
 &lt;p>Most notably, its not using a totally different generator. It uses &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
