@@ -20,16 +20,13 @@ function setupSmoothAnchors() {
         }
         aElement.addEventListener("click", clickEvent => {
             clickEvent.preventDefault();
-
-            const targetId = decodeURI(aElement.getAttribute("href").substring(1)),
-                target = document.getElementById(targetId) as HTMLElement,
-                offset = target.getBoundingClientRect().top - document.documentElement.getBoundingClientRect().top;
-
-            window.history.pushState({}, "", aElement.getAttribute("href"));
-            scrollTo({
-                top: offset,
-                behavior: "smooth"
+            const targetId = decodeURI(aElement.getAttribute("href").substring(1));
+            window.history.pushState({}, "", `#${targetId}`);
+            // Scroll smoothly to the element
+            document.getElementById(targetId).scrollIntoView({
+                behavior: 'smooth'  // Smooth scrolling animation
             });
+
         });
     });
 }

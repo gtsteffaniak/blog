@@ -13,6 +13,14 @@ import StackColorScheme from 'ts/colorScheme';
 import { setupScrollspy } from 'ts/scrollspy';
 import { setupSmoothAnchors } from "ts/smoothAnchors";
 
+function goToTitle(id) {
+    window.history.pushState(null, null, `#${id}`);
+    // Scroll smoothly to the element
+    document.getElementById(id).scrollIntoView({
+        behavior: 'smooth'  // Smooth scrolling animation
+    });
+}
+
 let Stack = {
     init: () => {
         /**
@@ -25,6 +33,19 @@ let Stack = {
             new StackGallery(articleContent);
             setupSmoothAnchors();
             setupScrollspy();
+            let h3links = articleContent.querySelectorAll('h3')
+            h3links.forEach(entry => { 
+                entry.addEventListener('click', function() {
+                    goToTitle(entry.id); // Call the function with the id
+                });
+            })
+            let h2links = articleContent.querySelectorAll('h2')
+            h2links.forEach(entry => { 
+                entry.addEventListener('click', function() {
+                    goToTitle(entry.id); // Call the function with the id
+                });
+            })
+
         }
 
         /**

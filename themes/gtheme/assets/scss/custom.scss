@@ -1,1 +1,5 @@
 /* Place your custom SCSS in HUGO_SITE_FOLDER/assets/scss/custom.scss */
+.article-content h3:hover,h2:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
