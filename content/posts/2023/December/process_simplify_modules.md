@@ -13,7 +13,7 @@ visible: true
 
 ## Introduction
 
-I wrote an/other [post](?posts/2023/October/dependency-on-dependencies.md) about
+I wrote an/other [post](/blog/posts/2023/october/dependency-on-dependencies) about
 the frustration I have with frameworks in modern frontend software development.
 The fast pace of change is hailed as the consequence of the innovative field of
 front-end frameworks. It's a running joke that there's 10 new frameworks every
