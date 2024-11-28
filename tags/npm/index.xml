@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>npm on Graham's Blog</title><link>/blog/tags/npm/</link><description>Recent content in npm on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 24 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="/blog/tags/npm/index.xml" rel="self" type="application/rss+xml"/><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
-&lt;p>I wrote an/other &lt;a class="link" href="?posts/2023/October/dependency-on-dependencies.md" >post&lt;/a> about
+&lt;p>I wrote an/other &lt;a class="link" href="https://gportal.link/blog/blog/posts/2023/october/dependency-on-dependencies" >post&lt;/a> about
 the frustration I have with frameworks in modern frontend software development.
 The fast pace of change is hailed as the consequence of the innovative field of
 front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every

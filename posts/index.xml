@@ -128,7 +128,7 @@ alt="image"
 &lt;p>Ultimately, I just want this blog to look good, be feature rich, and not take any babysitting to keep it updated. All of these things are now possible thanks to hugo. I may even enable disqus comments soon, not that I think anyone lurking would actually want to post, but it would still be cool.&lt;/p>
 &lt;p>I plan to post more interesting posts with interactive data &amp;ndash; another reason I am looking into adding custom js to each post.&lt;/p>
 &lt;p>I also wanted to post so I would have something here for 2024, now I do :)&lt;/p></description></item><item><title>Simplifying frontend frameworks</title><link>/blog/posts/2023/december/process_simplify_modules/</link><pubDate>Sun, 24 Dec 2023 00:00:00 +0000</pubDate><guid>/blog/posts/2023/december/process_simplify_modules/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
-&lt;p>I wrote an/other &lt;a class="link" href="?posts/2023/October/dependency-on-dependencies.md" >post&lt;/a> about
+&lt;p>I wrote an/other &lt;a class="link" href="https://gportal.link/blog/blog/posts/2023/october/dependency-on-dependencies" >post&lt;/a> about
 the frustration I have with frameworks in modern frontend software development.
 The fast pace of change is hailed as the consequence of the innovative field of
 front-end frameworks. It&amp;rsquo;s a running joke that there&amp;rsquo;s 10 new frameworks every
