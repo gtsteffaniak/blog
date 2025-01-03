@@ -155,6 +155,7 @@
     box-shadow: var(--shadow-l1);
     background-color: var(--card-background);
     --image-size: 50px;
+    margin-top: 1em;
 
     @include min(md) {
         --image-size: 60px;
