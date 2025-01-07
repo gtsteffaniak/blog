@@ -7,6 +7,8 @@ categories:
 visible: true
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 > Note: In this post, I will use the term "external module" to refer to an
 external package dependency that is imported into a program when developing.
 
