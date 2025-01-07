@@ -12,6 +12,8 @@ categories:
 visible: true
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 Today, I had the opportunity to benchmark a fascinating program called "llama.cpp" that has been ported to work with multiple programming languages, including Python and Golang. As an enthusiast of both Python and Golang, I was particularly interested in comparing the performance of these two implementations on my M1 Arm64 MacBook.
 
 In this benchmark, I tested three different implementations:

@@ -7,6 +7,8 @@ visible: true
 image: "posts/2024/march_update/banner.png"
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 Hi to anyone lurking.
 
 ## Before and after blog change

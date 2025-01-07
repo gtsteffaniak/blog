@@ -11,6 +11,8 @@ categories:
 visible: true
 ---
 
+Disclosure: AI was used in the process of writing this article.
+
 > **NOTE**
 Go or what is informally known as "GoLang" will be referred to by its official name "Go". The name "Go" also emphasizes its simplicity and ease of use.
 

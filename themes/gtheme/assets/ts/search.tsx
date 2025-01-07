@@ -203,6 +203,7 @@ class Search {
     }
 
     public async getData() {
+
         if (!this.data) {
             /// Not fetched yet
             const jsonURL = this.form.dataset.json;

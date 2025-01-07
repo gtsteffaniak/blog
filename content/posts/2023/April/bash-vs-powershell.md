@@ -9,6 +9,8 @@ categories:
     - technology
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 ## Part 1
 
 I will start by saying, I am a fan of Powershell. Even though it doesn't fit the need for 90% of use cases I prefer it over bash for 3 reasons:

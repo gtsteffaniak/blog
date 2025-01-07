@@ -11,6 +11,8 @@ categories:
 image: "posts/2024/vue_migration/banner.png"
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 I wanted to write about the experience of migrating the [FileBrowser Quantum](https://github.com/gtsteffaniak/filebrowser) from vue 2 to vue 3 because it took a lot of strategy to do smoothly. I enjoy working with Vue but the experience of moving between versions was quite bad.
 
 The [original filebrowser application](https://github.com/filebrowser/filebrowser/pull/2689) took almost 1 year to complete the migration and I forked the repo in the middle of the migration before it was finished. In hindsight, I am still glad for this, because it gave me valuable experience in migrating a large Vue application and the opportunity to think about components that were not needed.

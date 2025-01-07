@@ -11,6 +11,8 @@ theme: snow
 visible: true
 ---
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 ## Introduction
 
 I wrote an/other [post](/blog/posts/2023/october/dependency-on-dependencies) about

@@ -11,6 +11,8 @@ visible: true
 
 Note: This blog is mainly for development purposes.
 
+Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.
+
 ## Summary
 
 I have created this blogs website to accomplish a few things:
