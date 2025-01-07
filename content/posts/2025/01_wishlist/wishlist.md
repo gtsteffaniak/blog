@@ -58,3 +58,11 @@ It will probably be another decade before we can truly know the social ripple ef
 I think for my age range it caused people to skip straight to a "home life" rather than exploring the world or moving to exciting locations for a time you usually do in your 20s.
 
 I think "home life" can be anti-social in many ways. Going out can be uncomfortable. It can mean taking risks and doing things that are new and possibly regretful. Staying home is easy. It's hard for me to distinguish if this is a natural progression from 20 to 30 years of age, or if something related to covid did happen. But I think it's mostly a net negative. If we don't spend time as much around people we may not agree with or hang out with, we lose those social skills and how to participate in society in a "human" and reasonable way.
+
+## I want to create and contribute more
+
+Like many, the ultimate goal would be to have financial and personal freedom. This is often unrealistic and sometimes not a proper use of time. However, I enjoy creating products, services, and things that work like I imagine before they become reality. I enjoy that creative pursuit. I have always wanted to master a creative craft in tech like image editing, 3d modeling, and video editing, video game creation, but I feel too far behind the curve on most of the technologies needed to master them. So, perhaps I can lightly incorporate some of these ideals into what I believe I have done a pretty decent job at mastering: cicd, cloud services, and scalable applications.
+
+I would love to have some unified portfolio where all my applications borrow from each other, dip into the domain of creative arts, and also provide a valuable contribution to society. In 2025 I want to see that vision through, create truly useful and unique products with the talents that I have and expand into those creative domains... if only slightly.
+
+If others found the products useful or worthwhile, I wouldn't turn down donations. Imagine, if I had full bandwidth to work on my own products, I could accomplish so much. For now, it's only a dream, but 2025 I plan to work towards that dream and maybe I could get lucky and see a financial incentive -- or the advantage of having a contribution that brings others some use. Either way, I would like that to happen some day.
