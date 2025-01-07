@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>announcement on Graham's Blog</title><link>/blog/categories/announcement/</link><description>Recent content in announcement on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/categories/announcement/index.xml" rel="self" type="application/rss+xml"/><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Hi to anyone lurking.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>announcement on Graham's Blog</title><link>/blog/categories/announcement/</link><description>Recent content in announcement on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="/blog/categories/announcement/index.xml" rel="self" type="application/rss+xml"/><item><title>March 2024 Update</title><link>/blog/posts/2024/march_update/march_update/</link><pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate><guid>/blog/posts/2024/march_update/march_update/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post March 2024 Update" />&lt;p>Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.&lt;/p>
+&lt;p>Hi to anyone lurking.&lt;/p>
 &lt;h2 id="before-and-after-blog-change">Before and after blog change&lt;/h2>
 &lt;p>I don&amp;rsquo;t post that much, but have been working on the blog in a way that I think makes it a lot better.&lt;/p>
 &lt;p>Most notably, its not using a totally different generator. It uses &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
@@ -29,6 +30,7 @@ loading="lazy"
 loading="lazy"
 >&lt;/p>
 &lt;p>Note: This blog is mainly for development purposes.&lt;/p>
+&lt;p>Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creation.&lt;/p>
 &lt;h2 id="summary">Summary&lt;/h2>
 &lt;p>I have created this blogs website to accomplish a few things:&lt;/p>
 &lt;ol>
