@@ -1,18 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Graham's Blog</title><link>/blog/</link><description>Recent content on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 30 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Thank God for Deepseek</title><link>/blog/posts/2025/02_deepseek/deepseek/</link><pubDate>Thu, 30 Jan 2025 00:00:00 +0000</pubDate><guid>/blog/posts/2025/02_deepseek/deepseek/</guid><description>&lt;p>Well, it took many years to come to this but the biggest advancement in LLM&amp;rsquo;s is finally here. Make no mistake - deepseek is the most significant development in AI since chatGPT&amp;rsquo;s introduction in 2022.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Graham's Blog</title><link>/blog/</link><description>Recent content on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 30 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Thank God for Deepseek</title><link>/blog/posts/2025/02_deepseek/deepseek/</link><pubDate>Thu, 30 Jan 2025 00:00:00 +0000</pubDate><guid>/blog/posts/2025/02_deepseek/deepseek/</guid><description>&lt;p>Well, it took many years to come to this but the &lt;strong>biggest advancement&lt;/strong> in LLM&amp;rsquo;s is finally here! Make no mistake - deepseek is the most significant development in AI since chatGPT&amp;rsquo;s introduction in 2022.&lt;/p>
 &lt;p>As I mentioned before, AI is way more than just LLM&amp;rsquo;s and I want to see more. However, LLM&amp;rsquo;s are the driving force of AI investment, hardware development, and global impact. So, when a seismic shift in LLM technology happens, that&amp;rsquo;s a huge thing.&lt;/p>
+&lt;blockquote>
 &lt;p>Disclosure: The words in this post were not AI-generated or altered in any meaningful way. Spell check and other tools were used, but all content and phrases are my own creations.&lt;/p>
+&lt;/blockquote>
 &lt;h2 id="why-is-deepseek-so-hyped">Why is deepseek so hyped?&lt;/h2>
 &lt;p>There are so many reasons deepseek is a huge breakthrough, but let me order them in my top 5:&lt;/p>
 &lt;ol>
-&lt;li>&lt;strong>It&amp;rsquo;s open source&lt;/strong>: Unlike Closed source &amp;ldquo;openAI&amp;rdquo; models like ChatGPT.&lt;/li>
-&lt;li>&lt;strong>It&amp;rsquo;s novel&lt;/strong>: It uses a new reduction technique that solves a lot of challenges with LLMs &amp;ndash; and does so while still topping the benchmarks on performance.&lt;/li>
-&lt;li>&lt;strong>You can run it yourself&lt;/strong>: Not just because the code and models are open source, but also because of the reduction technique used, you can do it on regular hardware, with as little as 9GB of memory.&lt;/li>
-&lt;li>&lt;strong>It reduces hardware needs&lt;/strong>: This is not just a benefit for a hobbyist, this resets the insane power requirements of LLMs back down to reasonable levels.&lt;/li>
-&lt;li>&lt;strong>It comes just in time&lt;/strong>: We need this as humanity. Otherwise, Nvidia will assume full control with a wide range of propriety AI tech that requires everyone to buy a dizzying amount of hardware. Now, not only do you need to buy less, but you can run the model on alternative hardware &amp;ndash; such as Apple and NPUs created by other hardware companies like AMD, Qualcomm, and intel.&lt;/li>
+&lt;li>&lt;strong>It&amp;rsquo;s open source&lt;/strong>
+&lt;ul>
+&lt;li>This is Unlike Closed source &amp;ldquo;openAI&amp;rdquo; models like ChatGPT.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>It&amp;rsquo;s novel&lt;/strong>
+&lt;ul>
+&lt;li>It uses a new reduction technique that solves a lot of challenges with LLMs &amp;ndash; and does so while still topping the benchmarks on performance.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>You can run it yourself&lt;/strong>
+&lt;ul>
+&lt;li>Not just because the code and models are open source, but also because of the reduction technique used, you can do it on regular hardware, with as little as 9GB of memory.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>It reduces hardware needs&lt;/strong>
+&lt;ul>
+&lt;li>This is not just a benefit for a hobbyist, this resets the insane power requirements of LLMs back down to reasonable levels.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>It comes just in time&lt;/strong>
+&lt;ul>
+&lt;li>We need this as humanity. Otherwise, Nvidia will assume full control with a wide range of propriety AI tech that requires everyone to buy a dizzying amount of hardware. Now, not only do you need to buy less, but you can run the model on alternative hardware &amp;ndash; such as Apple and NPUs created by other hardware companies like AMD, Qualcomm, and intel.&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ol>
 &lt;h2 id="comparing-with-openai-and-gemini">Comparing with OpenAI and Gemini&lt;/h2>
 &lt;p>Let me just show one simple example. I want to test &lt;code>censorship&lt;/code>, &lt;code>comprehension&lt;/code>, &lt;code>speed&lt;/code>, and &lt;code>relevance&lt;/code> between them, with that in mind.&lt;/p>
-&lt;p>First, a simple question &lt;code>What is the biggest engineering innovation of 2024 involving math and why?&lt;/code> followed by &lt;code>Give me a technical analysis of the mathematical algorithms related to the quantum computing innovation.&lt;/code>:&lt;/p>
+&lt;p>First, a simple question :&lt;/p>
+&lt;blockquote>
+&lt;p>What is the biggest engineering innovation of 2024 involving math and why?&lt;/p>
+&lt;/blockquote>
+&lt;p>followed by&lt;/p>
+&lt;blockquote>
+&lt;p>Give me a technical analysis of the mathematical algorithms related to the quantum computing innovation.&lt;/p>
+&lt;/blockquote>
 &lt;p>&lt;strong>Gemini&lt;/strong>:&lt;/p>
 &lt;ol>
 &lt;li>incredibly fast, gave 3 general topics: AI, quantum computing, and simulation&amp;hellip; and a summary saying &lt;code>It's still early in 2024&lt;/code> oops.&lt;/li>
@@ -28,7 +57,14 @@
 &lt;li>gave a similar response to Gemini.&lt;/li>
 &lt;li>gave a very similar response as Gemini.&lt;/li>
 &lt;/ol>
-&lt;p>Now, one more that leans on censorship. The question &lt;code>Which countries have the most nuclear warheads and which ones are the biggest threat because of that?&lt;/code> with the followup, &lt;code>Should I be concerned living in the West if Asian countries have nuclear weapons?&lt;/code>&lt;/p>
+&lt;p>Now, one more that leans on censorship.&lt;/p>
+&lt;blockquote>
+&lt;p>Which countries have the most nuclear warheads and which ones are the biggest threat because of that?&lt;/p>
+&lt;/blockquote>
+&lt;p>with the followup&lt;/p>
+&lt;blockquote>
+&lt;p>Should I be concerned living in the West if Asian countries have nuclear weapons?&lt;/p>
+&lt;/blockquote>
 &lt;p>&lt;strong>Gemini&lt;/strong>:&lt;/p>
 &lt;ol>
 &lt;li>Quick response, but very poor quality answer. It gave no specifics including a list. It mentioned Russia and the US had a certain number of nuclear weapons but steered away from describing any specific threats or mentioning any countries in a negative way.&lt;/li>
