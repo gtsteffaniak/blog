@@ -3,7 +3,7 @@ name: Auto-commit build changes
 on:
   push:
     branches:
-      - build
+      - build-disabled
 
 jobs:
   auto_commit:
