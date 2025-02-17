@@ -52,6 +52,8 @@ nav {
 .top-navbar {
     height: 3.75em;
     background-color: #e6e6e6;
+    -webkit-backdrop-filter: blur(10px) brightness(50%);
+    backdrop-filter: blur(10px) brightness(50%);
 }
 
 .top-navbar .inner {
@@ -95,6 +97,8 @@ nav {
     align-items: center;
     border-style: solid;
     border-color: var(--theme-color, rgb(125, 14, 158));
+    -webkit-backdrop-filter: blur(10px) brightness(50%);
+    backdrop-filter: blur(10px) brightness(50%);
 }
 
 .gcard .inner {
@@ -116,18 +120,6 @@ nav {
 
 .gcard .inner::-webkit-scrollbar {
     display: none;
-}
-
-@supports (backdrop-filter: none) {
-    .gcard {
-        -webkit-backdrop-filter: blur(10px) brightness(50%);
-        backdrop-filter: blur(10px) brightness(50%);
-    }
-
-    .top-navbar {
-        -webkit-backdrop-filter: blur(10px) brightness(50%);
-        backdrop-filter: blur(10px) brightness(50%);
-    }
 }
 
 body {
@@ -159,18 +151,10 @@ body {
         backdrop-filter: blur(10px) brightness(50%);
     }
 
-    @supports (backdrop-filter: none) {
-        .gcard {
-            background-color: #3b3b3b80;
-            -webkit-backdrop-filter: blur(10px) brightness(50%);
-            backdrop-filter: blur(10px) brightness(50%);
-        }
-
-        .top-navbar {
-            background-color: #3b3b3b80;
-            -webkit-backdrop-filter: blur(10px) brightness(50%);
-            backdrop-filter: blur(10px) brightness(50%);
-        }
+    .gcard {
+        background-color: #3b3b3b80;
+        -webkit-backdrop-filter: blur(10px) brightness(50%);
+        backdrop-filter: blur(10px) brightness(50%);
     }
 }
 
