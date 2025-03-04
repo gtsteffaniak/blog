@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>technology on Graham's Blog</title><link>/blog/categories/technology/</link><description>Recent content in technology on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 03 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="/blog/categories/technology/index.xml" rel="self" type="application/rss+xml"/><item><title>AI is now a commodity</title><link>/blog/posts/2025/03_ai_commodity/commodity/</link><pubDate>Mon, 03 Mar 2025 00:00:00 +0000</pubDate><guid>/blog/posts/2025/03_ai_commodity/commodity/</guid><description>&lt;p>I believe 2025 is the year that AI has become a &lt;a class="link" href="https://www.investopedia.com/terms/c/commodity.asp" target="_blank" rel="noopener"
 >commodity&lt;/a> &amp;ndash; particularly for LLMs. This shift plays a significant role in economics, whereas previously AI was married to specific actors like google, nvidia, or openAI and was a technological asset for each company.&lt;/p>
 &lt;h2 id="what-does-it-mean-to-be-a-commodity">What does it mean to be a commodity?&lt;/h2>
-&lt;p>A commodity is a common resource that can be traded with a known value. When I say AI is now a commodity, I am effectively saying the big companies are losing their technology advantage. Instead of a company getting ahead financially because of having the &amp;ldquo;Best AI&amp;rdquo;, instead companies get ahead by making AI as cheap as possible.&lt;/p>
+&lt;p>A commodity is a common resource that can be traded with a known value. When I say AI is now a commodity, I am effectively saying that the big companies are losing their technology advantage. Instead of a company getting ahead financially because of having the &amp;ldquo;Best AI&amp;rdquo;, instead companies get ahead by making AI as cheap as possible.&lt;/p>
 &lt;blockquote>
-&lt;p>Articulating it in a simple terms, AI is no longer about having a superior technology but instead about providing aff
-We have seen the progress in AI models converge to a &amp;ldquo;good enough&amp;rdquo; output from every player.&lt;/p>
+&lt;p>In a simple terms, AI is no longer about having a superior technology but instead about providing value and efficiency.&lt;/p>
 &lt;/blockquote>
-&lt;p>All the new advancements give very minimal advantage and sometimes come at a cost. So, we are seeing products like o3-mini, deepseek distilled, grok-3 mini varients, which offer better economic value.&lt;/p>
+&lt;p>We have seen the progress in AI models converge to a &amp;ldquo;good enough&amp;rdquo; output from every player. Because new advancements give very minimal advantage and sometimes come at a cost, products like o3-mini, deepseek distilled, grok-3 mini varients, have emerged offering better economic value.&lt;/p>
 &lt;p>It&amp;rsquo;s a process known as &lt;code>commoditization&lt;/code>, which according to investopedia:&lt;/p>
 &lt;blockquote>
 &lt;p>[Commoditization] removes the individual, unique characteristics, and brand identity of the product so that it becomes interchangeable with other products of the same type. Making commodities interchangeable allows competition with a basis of price only and not on different characteristics.&lt;/p>
 &lt;/blockquote>
-&lt;p>The main point: price is now king.&lt;/p>
 &lt;h2 id="what-does-that-mean-for-ai-advancements">What does that mean for AI advancements?&lt;/h2>
-&lt;p>I believe AI will still have marginal advancements when it comes to logic and reasoning. The results of the bigger models will get better, but I don&amp;rsquo;t think its going to be a driving factor for AI.&lt;/p>
-&lt;p>Instead, companies will see the benefit of using AI ways that wasn&amp;rsquo;t economical before.&lt;/p>
-&lt;p>Ultimately, I do think AI will see a bit of a plataue in performance benchmarks.&lt;/p>
+&lt;p>AI will still have marginal advancements when it comes to logic and reasoning. The results of the bigger models will get better, but its not0 going to be a driving factor for AI.&lt;/p>
+&lt;p>Companies will see the benefit of using AI ways that wasn&amp;rsquo;t economical before. Ultimately, AI will see a bit of a plataue in performance benchmarks.&lt;/p>
 &lt;h2 id="what-is-the-impact-of-this-for-companies">What is the impact of this for companies?&lt;/h2>
 &lt;p>Most companies will continue to operate as they do now: offering AI features to customers as an incentive to use their product.&lt;/p>
 &lt;p>Winners:&lt;/p>
@@ -29,7 +26,7 @@ We have seen the progress in AI models converge to a &amp;ldquo;good enough&amp;
 &lt;li>Companies such as Nvidia will see the biggest hit from the commoditization of AI, because their products are not the only path to AI. AI models will no longer rely on propreitary technology from nvidia.&lt;/li>
 &lt;/ul>
 &lt;h2 id="when-will-full-commoditization-occur">When will full commoditization occur?&lt;/h2>
-&lt;p>This transition to a fully commodized AI world will take time and a full transition primarily depends on 3 factors that will happen:&lt;/p>
+&lt;p>The transition to a fully commodized AI world will take time and depends on 3 factors:&lt;/p>
 &lt;ol>
 &lt;li>AI models will fully shift to &amp;ldquo;mini&amp;rdquo; variants and companies will use distilled versions for more things.&lt;/li>
 &lt;li>Companies will begin purchasing alternative hardware that is optimized for inferencing tasks on these mini models, saving cost over time.&lt;/li>
@@ -37,8 +34,8 @@ We have seen the progress in AI models converge to a &amp;ldquo;good enough&amp;
 &lt;/ol>
 &lt;p>I expect the vast majority of this to happen by the beginning of 2026.&lt;/p>
 &lt;h2 id="is-commoditization-good">Is commoditization good?&lt;/h2>
-&lt;p>In general, my opinion is commoditization is always a good thing because it moves the product category to a market that is free.&lt;/p>
-&lt;p>Being a commodities opens up the playing field for more competition, which benefits the customers on a cost basis.&lt;/p>
+&lt;p>In general, commoditization is a good thing because it moves the product category to a market that is free.&lt;/p>
+&lt;p>Commodities open up the playing field for more competition, which benefits the customers on a cost basis.&lt;/p>
 &lt;p>The biggest disadvantage is that performance advancements are no longer the most important thing, which can slow down innovation in that respect.&lt;/p>
 &lt;h2 id="bottom-line">Bottom line&lt;/h2>
 &lt;p>All popular technology products become a commodity eventually. The personal compute, the mobile phone, etc. AI is no exception. and particularly LLM&amp;rsquo;s have needed this transition quite badly &amp;ndash; it has scaled faster than infrastructure can keep up.&lt;/p>
