@@ -16,7 +16,7 @@
         {{ if $image.exists }}
         <div class="article-image">
             {{ if $image.resource }}
-            {{- $Permalink := $image.resource.RelPermalink -}}
+            {{- $Permalink := $image.permalink -}}
             {{- $Width := $image.resource.Width -}}
             {{- $Height := $image.resource.Height -}}
 
@@ -29,7 +29,7 @@
 
             <img src="{{ $Permalink }}" width="{{ $Width }}" height="{{ $Height }}" alt="{{ .Title }}" loading="lazy">
             {{ else }}
-            <img src="{{ $image.RelPermalink }}" loading="lazy" alt="Featured image of post {{ .Title }}" />
+            <img src="{{ $image.permalink }}" loading="lazy" alt="Featured image of post {{ .Title }}" />
             {{ end }}
         </div>
         {{ end }}
