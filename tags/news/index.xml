@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>news on Graham's Blog</title><link>/blog/tags/news/</link><description>Recent content in news on Graham's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 13 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="/blog/tags/news/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Microsoft's strategic choice to use Go for Typescript compiler matters</title><link>/blog/posts/2025/04_typescript_port_go/typescript_go/</link><pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate><guid>/blog/posts/2025/04_typescript_port_go/typescript_go/</guid><description>&lt;img src="https://gportal.link/blog" alt="Featured image of post Why Microsoft's strategic choice to use Go for Typescript compiler matters" />&lt;p>Microsoft gave a surprise announcement recently: they are &lt;a class="link" href="https://devblogs.microsoft.com/typescript/typescript-native-port/" target="_blank" rel="noopener"
+>porting the typscript compiler to go&lt;/a>! This is exciting for many reasons but also surprising for many other reasons.&lt;/p>
+&lt;p>I&amp;rsquo;ll address the central question right from the start - &lt;em>Why go instead of other languages&lt;/em>? Because go easily allows them to do a &lt;em>port&lt;/em> of typescript code vs a complete re-write. So, backwards compatibility and the timeline for release is much improved.&lt;/p>
+&lt;p>Using go makes sense to me: it&amp;rsquo;s a fast, lightweight, proven language that has all the necessary type features needed for the job.&lt;/p>
+&lt;p>Now, in this article, I want to explain my thoughts on typescript and give some of my opinions on typescript in general.&lt;/p>
+&lt;h2 id="why-improving-the-typescript-compiler-matters---a-lot">Why improving the typescript compiler matters - a lot&lt;/h2>
+&lt;p>Nobody likes waiting.&lt;/p>
+&lt;p>I have always been hesitant to embrace typescript for my projects. I am fully aware of the benefits of using typescript, but it also has cons that need to be weighed. Many of my projects have very minimal and lightweight frontends. So much so, that I have often opted not to use any framework to build them and use vanilla javascript. Yes, that&amp;rsquo;s right - vanilla javascript. For a very simple reason: I want my build process to be &lt;strong>blazingly fast&lt;/strong>. I highly value and prioritize faster developer feedback in the form of fast compile times (one reason I love go!). For a small project, I think the value of fast feedback for changes outweighs the type safety benefits of typescript.&lt;/p>
+&lt;blockquote>
+&lt;p>The moment you include typescript, you need a framework, and your project suddenly balloons in size.&lt;/p>
+&lt;/blockquote>
+&lt;p>If your project&amp;rsquo;s goal is fast and minimal, typescript is at odds. It needs a typescript-compatible framework to be useful. Otherwise, you have to use the typescript compiler on its own and essentially build your framework around the compiler.&lt;/p>
+&lt;p>With this in mind, typescript compilation becomes an unfortunate bottleneck in the process. Compling typescript code to javascript increases build time significantly. So, if Microsoft is able to solve the problem, that solves half my issue with typescript.&lt;/p>
+&lt;h2 id="compile-time-challenges">Compile time challenges&lt;/h2>
+&lt;p>Let me put this into perspective with a real-world example. I maintain a &lt;a class="link" href="https://github.com/gtsteffaniak/filebrowser" target="_blank" rel="noopener"
+>fork&lt;/a> of the &lt;a class="link" href="https://github.com/filebrowser/filebrowser" target="_blank" rel="noopener"
+>filebrowser repository&lt;/a> that is vastly different and superior in many ways.&lt;/p>
+&lt;p>One of those ways: &lt;strong>compile time&lt;/strong>.&lt;/p>
+&lt;p>When the original repo moved to Vue 3, they also converted most of the javascript to TypeScript- a choice I mostly avoided. This was intentional - because I noticed typscript significantly slowed down build times, I chose to keep the javascript versions mostly the same.&lt;/p>
+&lt;p>How much slower was it? Well, see for yourself:&lt;/p>
+&lt;h3 id="original-filebrowser-frontend-build-time-mostly-typescript">Original Filebrowser frontend build time (mostly typescript)&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;gt; vue-tsc -p ./tsconfig.tsc.json --noEmit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">✓ 1140 modules transformed.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">✓ built in 19.12s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="filebrowser-quantum-frontend-build-time-mostly-javascript">Filebrowser Quantum frontend build time (mostly javascript)&lt;/h3>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;gt; vite build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">✓ 188 modules transformed.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">✓ built in 1.83s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>That&amp;rsquo;s a &lt;strong>more than 10x improvement&lt;/strong>! This means I can make changes and test them much more quickly. Sure, there may be type-related errors in my code, but I will catch them while I debug. It&amp;rsquo;s not ideal, but neither is using typescript.&lt;/p>
+&lt;p>I had the same problem using Svelte &amp;ndash; I began to prefer Vue3 because I found my Svelte compile times (even without javascript) were quite slow, sometimes taking 10-15 seconds. Using vue3 with similar projects compiled quickly in under 1 second. I view compile time as a top priority, so it&amp;rsquo;s unfortunate that I am limited to using certain frameworks because of it.&lt;/p>
+&lt;h2 id="typescript-is-currently-a-catch-22">Typescript is currently a catch-22&lt;/h2>
+&lt;p>The benefit of typescript is a bit of a catch-22. Its purpose is to ensure code quality, and it does that job well in many circumstances. If a project is maintained by a team, its &amp;ldquo;pros&amp;rdquo; can outweigh the &amp;ldquo;cons&amp;rdquo;.&lt;/p>
+&lt;p>However, for independent projects, I believe the cons outweigh the pros. Because, if using typescript slows down development, those type-related bugs could be found with playwright or javascript tests or during local debugging with the time you save waiting for compilation.&lt;/p>
+&lt;p>So, if typescript slows down developer feedback, it partly defeats the organic developer bug hunt. That&amp;rsquo;s not always the case, but I hope I have made my point that sometimes it is.&lt;/p>
+&lt;h2 id="will-i-use-typescript-more-when-its-faster">Will I use typescript more when it&amp;rsquo;s faster&lt;/h2>
+&lt;p>The final question is why I&amp;rsquo;m personally excited for Typescript 7 with faster compile times. Once compile times have been reduced, it opens my options back up I can use more frameworks if the feedback loop is faster. I would much prefer a type-safe language that needs to be compiled first. My main reservation is the build time. And it looks like Microsoft is preparing to fix that!&lt;/p>
+&lt;p>So, yes &amp;ndash; I can&amp;rsquo;t wait to use Typescript 7.&lt;/p></description></item></channel></rss>
