@@ -12,17 +12,19 @@
 &lt;p>Every major advantage of Python is gone. All except one &amp;ndash; which I will talk about later.&lt;/p>
 &lt;h2 id="developer-experience">Developer Experience&lt;/h2>
 &lt;p>Let&amp;rsquo;s list some problems with Python:&lt;/p>
-&lt;pre>&lt;code>- **Getting started:** When I prototype a project, Python starts with nothing. I have to pick the package manager... just requirements.txt? pipenv? poetry? uv? anacanda? Ok, just starting out, how about just a virtual environment?. Then what version of Python? The fragmentation of compatibility is quite exhausting.
-- **Validation:** Sure, you can lint and add VSCode plugins to help validate your code before running, but it's another extra step that doesn't come for free with the Python interpreter.
-- **Packaging:** How the heck should I &amp;quot;package&amp;quot; this for consumption? Docker makes the most sense, covering the most ground, and does solve a lot of my problems. But it requires WSL for Windows and an extra layer there. The build process and virtual env behavior for Docker is sometimes tricky to get working exactly right.
-- **resource usage:** Python can be lean and simple when run natively as a script on a host. And in the past, a Python Docker image was only 50 MB as a minimum. But now the Python slim images are 200MB plus your package code, which usually doubles the size.
-&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>&lt;strong>Getting started:&lt;/strong> When I prototype a project, Python starts with nothing. I have to pick the package manager&amp;hellip; just requirements.txt? pipenv? poetry? uv? anacanda? Ok, just starting out, how about just a virtual environment?. Then what version of Python? The fragmentation of compatibility is quite exhausting.&lt;/li>
+&lt;li>&lt;strong>Validation:&lt;/strong> Sure, you can lint and add VSCode plugins to help validate your code before running, but it&amp;rsquo;s another extra step that doesn&amp;rsquo;t come for free with the Python interpreter.&lt;/li>
+&lt;li>&lt;strong>Packaging:&lt;/strong> How the heck should I &amp;ldquo;package&amp;rdquo; this for consumption? Docker makes the most sense, covering the most ground, and does solve a lot of my problems. But it requires WSL for Windows and an extra layer there. The build process and virtual env behavior for Docker is sometimes tricky to get working exactly right.&lt;/li>
+&lt;li>&lt;strong>resource usage:&lt;/strong> Python can be lean and simple when run natively as a script on a host. And in the past, a Python Docker image was only 50 MB as a minimum. But now the Python slim images are 200MB plus your package code, which usually doubles the size.&lt;/li>
+&lt;/ul>
 &lt;p>Why does Go do it better?&lt;/p>
-&lt;pre>&lt;code>- **Getting started:** Go is a simple binary compiler and linter program that does everything out of the box. You can always use the latest Go binary, and it has guaranteed backwards compatibility.
-- **Validation:** You can't run your program unless it passes compile checks and simple built-in static checks.
-- **Packaging:** It produces an executable file, by default for your platform or easily and quickly for any target platform. All with blazing fast compile times.
-- **resource usage:** You can put an executable in a Docker image if you want, a Docker image that is 1.5MB in size that does the same as the 500MB Python image.
-&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>&lt;strong>Getting started:&lt;/strong> Go is a simple binary compiler and linter program that does everything out of the box. You can always use the latest Go binary, and it has guaranteed backwards compatibility.&lt;/li>
+&lt;li>&lt;strong>Validation:&lt;/strong> You can&amp;rsquo;t run your program unless it passes compile checks and simple built-in static checks.&lt;/li>
+&lt;li>&lt;strong>Packaging:&lt;/strong> It produces an executable file, by default for your platform or easily and quickly for any target platform. All with blazing fast compile times.&lt;/li>
+&lt;li>&lt;strong>resource usage:&lt;/strong> You can put an executable in a Docker image if you want, a Docker image that is 1.5MB in size that does the same as the 500MB Python image.&lt;/li>
+&lt;/ul>
 &lt;p>My jaw always drops when I switch my prototyped project from Go to Python because of these advantages. I constantly think &amp;ldquo;I should have done this from the beginning&amp;rdquo;.&lt;/p>
 &lt;h2 id="theres-just-one-problem">There&amp;rsquo;s just one problem&lt;/h2>
 &lt;p>Python&amp;rsquo;s ecosystem is robust. That&amp;rsquo;s both good and bad. If you want to do something simple like JSONpath query, there&amp;rsquo;s a robust library for that. Sure, it&amp;rsquo;s going to add 100MB of dependencies to your project, but it&amp;rsquo;s simple to add and works.&lt;/p>
